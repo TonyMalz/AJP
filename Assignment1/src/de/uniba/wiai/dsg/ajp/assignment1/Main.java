@@ -1,14 +1,17 @@
 package de.uniba.wiai.dsg.ajp.assignment1;
 
+import java.io.IOException;
+
+import de.uniba.wiai.dsg.ajp.assignment1.search.SearchTask;
 import de.uniba.wiai.dsg.ajp.assignment1.search.TokenFinder;
 import de.uniba.wiai.dsg.ajp.assignment1.search.TokenFinderException;
-import de.uniba.wiai.dsg.ajp.assignment1.search.SearchTask;
 import de.uniba.wiai.dsg.ajp.assignment1.search.impl.SimpleTokenFinder;
 import de.uniba.wiai.dsg.ajp.assignment1.util.Timer;
 
 public class Main {
 
-	public static void main(String[] args) throws TokenFinderException {
+	public static void main(String[] args) throws TokenFinderException,
+			IOException {
 		validate(args);
 		SearchTask searchTask = toSearchTask(args);
 		print(searchTask);
@@ -25,7 +28,8 @@ public class Main {
 
 	private static void printUsage() {
 		System.out.println("Usage: ");
-		System.out.println("ROOT_FOLDER FILE_EXTENSION SEARCH_TOKEN RESULT_FILE");
+		System.out
+				.println("ROOT_FOLDER FILE_EXTENSION SEARCH_TOKEN RESULT_FILE");
 	}
 
 	private static SearchTask toSearchTask(String[] args) {
@@ -48,7 +52,8 @@ public class Main {
 		System.out.println();
 	}
 
-	private static void search(SearchTask searchTask) throws TokenFinderException {
+	private static void search(SearchTask searchTask)
+			throws TokenFinderException, IOException {
 		Timer timer = new Timer();
 
 		TokenFinder searchService = new SimpleTokenFinder();
@@ -64,6 +69,5 @@ public class Main {
 			System.out.println(timer);
 		}
 	}
-
 
 }
