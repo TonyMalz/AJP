@@ -1,17 +1,19 @@
 package de.uniba.wiai.dsg.ajp.assignment1.search.impl;
 
 public class ScanResult {
-    // TODO implement Mathias
-    // public
-    // file name
-    String fileName;
 
-    String token;
+    /** the name of the file where the token was found. */
+    public String fileName;
 
-    String lineContent;
+    /** the token which is found. */
+    public String token;
 
-    int lineNumber;
+    /** the content of the line where the token is found. */
+    public String lineContent;
 
-    int colum;
+    /** the line number where the token was found. */
+    public int lineNumber;
 
+    /** the index where the token starts in the line. */
+    public int colum;
 }
