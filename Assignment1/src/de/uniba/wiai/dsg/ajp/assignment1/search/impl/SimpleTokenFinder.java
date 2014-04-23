@@ -55,7 +55,7 @@ public class SimpleTokenFinder implements TokenFinder {
 	final String rootFolder = task.getRootFolder();
 	final String fileExtension = task.getFileExtension();
 	final BufferedWriter writer = Files.newBufferedWriter(
-	        Paths.get(task.getResultFile()), c);
+		Paths.get(task.getResultFile()), c);
 	BufferedReader reader;
 
 	// files and folders of "rootFolder" into fileArray
@@ -74,7 +74,7 @@ public class SimpleTokenFinder implements TokenFinder {
 	    // if "tmpFile" is file -> read
 	    if (tmpFile.isFile()
 		    && fileList.get(0).getFileName().toString()
-		            .contains("." + fileExtension)) {
+			    .contains("." + fileExtension)) {
 
 		// read with bufferedReader
 		reader = Files.newBufferedReader(fileList.get(0), c);
@@ -104,24 +104,24 @@ public class SimpleTokenFinder implements TokenFinder {
 			System.out.print(" > ");
 			writer.write(" > ");
 			final String beforeToken = line
-			        .substring(0, tokenIndex);
+				.substring(0, tokenIndex);
 			final String afterToken = line.substring(tokenIndex
-			        + token.length());
+				+ token.length());
 			System.out.println(beforeToken + "**" + token + "**"
-			        + afterToken);
+				+ afterToken);
 			writer.write(beforeToken + "**" + token + "**"
-			        + afterToken);
+				+ afterToken);
 			writer.newLine();
 			// add deleted chars of "searchLine" (see below) to
 			// deletedChars
 			deletedChars = deletedChars
-			        + searchLine.subSequence(0,
-			                searchLine.indexOf(token)).length()
-			        + token.length();
+				+ searchLine.subSequence(0,
+					searchLine.indexOf(token)).length()
+				+ token.length();
 			// delete found token and everything before eg.:
 			// asdfsimpleasdf -> asdf
 			searchLine = searchLine.substring(searchLine
-			        .indexOf(token) + token.length());
+				.indexOf(token) + token.length());
 			// +1 to found results in file
 			foundFile++;
 		    }
@@ -135,9 +135,9 @@ public class SimpleTokenFinder implements TokenFinder {
 		// print & write summary
 		foundProject = foundProject + foundFile;
 		System.out.println(fileList.get(0) + " includes " + token + " "
-		        + foundFile + " time(s)");
+			+ foundFile + " time(s)");
 		writer.write(fileList.get(0) + " includes " + token + " "
-		        + Integer.toString(foundFile) + " time(s)");
+			+ Integer.toString(foundFile) + " time(s)");
 		writer.newLine();
 		System.out.println("");
 		writer.newLine();
@@ -161,9 +161,9 @@ public class SimpleTokenFinder implements TokenFinder {
 	}
 
 	System.out.println("The project includes " + token + " " + foundProject
-	        + " time(s)");
+		+ " time(s)");
 	writer.write("The project includes " + token + " "
-	        + Integer.toString(foundProject) + " time(s)");
+		+ Integer.toString(foundProject) + " time(s)");
 	writer.newLine();
 	writer.flush();
 	writer.close();
