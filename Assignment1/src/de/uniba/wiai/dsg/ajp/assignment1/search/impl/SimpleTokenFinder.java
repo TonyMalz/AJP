@@ -32,9 +32,24 @@ public class SimpleTokenFinder implements TokenFinder {
     @Override
     public void search(final SearchTask task) throws TokenFinderException,
 	    IOException {
-	/*
-	 * IMPLEMENT THIS
-	 */
+	if (task == null) {
+	    throw new IllegalArgumentException("task is null");
+	}
+	if (task.getFileExtension() == null) {
+	    throw new IllegalArgumentException(
+		    "file exctention of the task is null");
+	}
+	if (task.getResultFile() == null) {
+	    throw new IllegalArgumentException(
+		    "result file of the task is null");
+	}
+	if (task.getRootFolder() == null) {
+	    throw new IllegalArgumentException(
+		    "root folder of the task is null");
+	}
+	if (task.getToken() == null) {
+	    throw new IllegalArgumentException("token of the task is null");
+	}
 
 	final Charset c = StandardCharsets.UTF_8;
 	int foundProject = 0;
