@@ -33,22 +33,20 @@ public class SimpleTokenFinder implements TokenFinder {
     public void search(final SearchTask task) throws TokenFinderException,
 	    IOException {
 	if (task == null) {
-	    throw new IllegalArgumentException("task is null");
+	    throw new TokenFinderException("task is null");
 	}
 	if (task.getFileExtension() == null) {
-	    throw new IllegalArgumentException(
+	    throw new TokenFinderException(
 		    "file exctention of the task is null");
 	}
 	if (task.getResultFile() == null) {
-	    throw new IllegalArgumentException(
-		    "result file of the task is null");
+	    throw new TokenFinderException("result file of the task is null");
 	}
 	if (task.getRootFolder() == null) {
-	    throw new IllegalArgumentException(
-		    "root folder of the task is null");
+	    throw new TokenFinderException("root folder of the task is null");
 	}
 	if (task.getToken() == null) {
-	    throw new IllegalArgumentException("token of the task is null");
+	    throw new TokenFinderException("token of the task is null");
 	}
 
 	final Charset c = StandardCharsets.UTF_8;
@@ -64,8 +62,9 @@ public class SimpleTokenFinder implements TokenFinder {
 	final File f = new File(rootFolder);
 	String[] fileArray = f.list();
 	final List<Path> fileList = new ArrayList<>();
-
-	fileList.addAll(fileList);
+	for (final String file : fileArray) {
+	    fileList.add(Paths.get(file));
+	}
 
 	// until "fileList" is empty
 	while (!fileList.isEmpty()) {
