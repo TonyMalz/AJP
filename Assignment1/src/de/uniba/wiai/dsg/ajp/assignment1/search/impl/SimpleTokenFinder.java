@@ -169,4 +169,39 @@ public class SimpleTokenFinder implements TokenFinder {
 	writer.close();
     }
 
+    public void searchImpl(final SearchTask task) throws TokenFinderException,
+	    IOException {
+	// information from the search task
+	if (task == null) {
+	    throw new IllegalArgumentException("task is null");
+	}
+	final String rootPath = task.getRootFolder();
+	if (rootPath == null) {
+	    throw new IllegalArgumentException("the root Path is null");
+	}
+	final String fileExtention = task.getFileExtension();
+	if (fileExtention == null) {
+	    throw new IllegalArgumentException("file extention is null");
+	}
+	final String token = task.getToken();
+	if (token == null) {
+	    throw new IllegalArgumentException("token is null");
+	}
+	final String outputPath = task.getResultFile();
+	if (outputPath == null) {
+	    throw new IllegalArgumentException("outputpath is null");
+	}
+
+	final List<Path> pathsWithExtention = new ArrayList<Path>();
+	// TODO add all paths from the DirectoryScanner impl
+
+	final List<ScanResult> searchResultUnfiltered = new ArrayList<ScanResult>();
+	final FileScanner fileScanner = new FileScannerImpl();
+	for (final Path path : pathsWithExtention) {
+	    searchResultUnfiltered.addAll(fileScanner.scanFile(path, token));
+	}
+
+	// TODO give the scanResults to the OutputFormatter impl
+
+    }
 }
