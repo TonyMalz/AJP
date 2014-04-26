@@ -15,5 +15,5 @@ public class ScanResult {
     public int lineNumber;
 
     /** the index where the token starts in the line. */
-    public int colum;
+    public int column;
 }

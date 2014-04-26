@@ -85,8 +85,8 @@ public class FileScannerImpl implements FileScanner {
 		// configuration of the current ScanResult
 		tempResult.lineContent = line;
 		tempResult.token = token;
-		tempResult.colum = i;
-		tempResult.colum = lineCounter;
+		tempResult.column = i;
+		tempResult.column = lineCounter;
 		tempResult.fileName = fileName;
 		result.add(tempResult);
 		// the start of the next substring is the index after the
