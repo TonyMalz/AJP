@@ -8,6 +8,7 @@ import java.util.List;
 import de.uniba.wiai.dsg.ajp.assignment1.search.impl.OutputFormatterImpl;
 import de.uniba.wiai.dsg.ajp.assignment1.search.impl.result.IScanResult;
 import de.uniba.wiai.dsg.ajp.assignment1.search.impl.result.ScanResultFound;
+import de.uniba.wiai.dsg.ajp.assignment1.search.impl.result.ScanResultNoPath;
 import de.uniba.wiai.dsg.ajp.assignment1.search.impl.result.ScanResultNotFound;
 
 /**
@@ -49,7 +50,11 @@ public class OutputFormatterTest {
 	srnf2.fileName = "data/not.txt";
 	srnf2.token = "simple";
 
+	ScanResultNoPath srnp1 = new ScanResultNoPath();
+	srnp1.token = "simple";
+
 	List<IScanResult> results = new ArrayList<IScanResult>();
+	// results.add(srnp1);
 	results.add(srnf2);
 	results.add(sr1);
 	results.add(srnf1);

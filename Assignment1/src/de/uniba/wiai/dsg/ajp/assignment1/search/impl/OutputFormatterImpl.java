@@ -9,6 +9,7 @@ import java.util.List;
 
 import de.uniba.wiai.dsg.ajp.assignment1.search.impl.result.IScanResult;
 import de.uniba.wiai.dsg.ajp.assignment1.search.impl.result.ScanResultFound;
+import de.uniba.wiai.dsg.ajp.assignment1.search.impl.result.ScanResultNoPath;
 import de.uniba.wiai.dsg.ajp.assignment1.search.impl.result.ScanResultNotFound;
 
 public class OutputFormatterImpl implements OutputFormatter {
@@ -33,13 +34,18 @@ public class OutputFormatterImpl implements OutputFormatter {
 
 	try (BufferedWriter writer = Files.newBufferedWriter(resultPath,
 		StandardCharsets.UTF_8)) {
-	    // got no results
-	    if (results.isEmpty()) {
-		writer.write("No search results!");
+	    // if list "results" has no results, just "ScanResultNoPath"
+	    if (results.get(0) instanceof ScanResultNoPath) {
+		writer.write("The project includes "
+			+ ((ScanResultNoPath) results.get(0)).token
+			+ " 0 time(s)");
 	    }
-	    // got results
+	    // else "results" isn't empty
 	    else {
+		// counter for iterating list "results"
+		// projectFound for counting results
 		int counter = 0;
+		int projectFound = 0;
 		String currentFile;
 		String token;
 		if (results.get(0) instanceof ScanResultFound) {
@@ -47,10 +53,10 @@ public class OutputFormatterImpl implements OutputFormatter {
 		} else {
 		    token = ((ScanResultNotFound) results.get(0)).token;
 		}
-		int projectFound = 0;
 
 		while (counter < results.size()) {
-
+		    // if entry is instance of "ScanResultNotFound" there is no
+		    // searchResult in this file, so print file summary
 		    if (results.get(counter) instanceof ScanResultNotFound) {
 			writer.write(((ScanResultNotFound) results.get(counter)).fileName
 				+ " includes "
@@ -62,13 +68,12 @@ public class OutputFormatterImpl implements OutputFormatter {
 		    } else {
 
 			// save fileName as currentFile
-
 			currentFile = ((ScanResultFound) results.get(counter)).fileName;
 			int fileFound = 0;
 
-			// while fileNames equal currentFile and not all results
-			// are
-			// processed, write result-line
+			// while not all results are processed and entry is a
+			// real found result and fileNames equal currentFile,
+			// write result-line
 			// -> means, write all lines for the whole file
 			while (counter < results.size()
 				&& results.get(counter) instanceof ScanResultFound
