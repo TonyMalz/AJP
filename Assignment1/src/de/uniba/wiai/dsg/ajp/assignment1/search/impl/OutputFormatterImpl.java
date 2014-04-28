@@ -38,8 +38,8 @@ public class OutputFormatterImpl implements OutputFormatter {
 		int counter = 0;
 		String currentFile;
 		String token;
-		if (results.get(0) instanceof ScanResult) {
-		    token = ((ScanResult) results.get(0)).token;
+		if (results.get(0) instanceof ScanResultFound) {
+		    token = ((ScanResultFound) results.get(0)).token;
 		} else {
 		    token = ((ScanResultNotFound) results.get(0)).token;
 		}
@@ -59,7 +59,7 @@ public class OutputFormatterImpl implements OutputFormatter {
 
 			// save fileName as currentFile
 
-			currentFile = ((ScanResult) results.get(counter)).fileName;
+			currentFile = ((ScanResultFound) results.get(counter)).fileName;
 			int fileFound = 0;
 
 			// while fileNames equal currentFile and not all results
@@ -67,10 +67,10 @@ public class OutputFormatterImpl implements OutputFormatter {
 			// processed, write result-line
 			// -> means, write all lines for the whole file
 			while (counter < results.size()
-				&& results.get(counter) instanceof ScanResult
-				&& ((ScanResult) results.get(counter)).fileName
+				&& results.get(counter) instanceof ScanResultFound
+				&& ((ScanResultFound) results.get(counter)).fileName
 					.equals(currentFile)) {
-			    ScanResult scanElement = (ScanResult) results
+			    ScanResultFound scanElement = (ScanResultFound) results
 				    .get(counter);
 			    writer.write(scanElement.fileName + ":");
 			    writer.write(scanElement.lineNumber + ",");

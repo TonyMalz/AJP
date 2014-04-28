@@ -1,6 +1,6 @@
 package de.uniba.wiai.dsg.ajp.assignment1.search.impl;
 
-public class ScanResult implements IScanResult {
+public class ScanResultFound implements IScanResult {
 
     /** the name of the file where the token was found. */
     public String fileName;

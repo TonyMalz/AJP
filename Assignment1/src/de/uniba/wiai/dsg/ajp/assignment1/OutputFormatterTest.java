@@ -7,7 +7,7 @@ import java.util.List;
 
 import de.uniba.wiai.dsg.ajp.assignment1.search.impl.IScanResult;
 import de.uniba.wiai.dsg.ajp.assignment1.search.impl.OutputFormatterImpl;
-import de.uniba.wiai.dsg.ajp.assignment1.search.impl.ScanResult;
+import de.uniba.wiai.dsg.ajp.assignment1.search.impl.ScanResultFound;
 import de.uniba.wiai.dsg.ajp.assignment1.search.impl.ScanResultNotFound;
 
 /**
@@ -20,21 +20,21 @@ import de.uniba.wiai.dsg.ajp.assignment1.search.impl.ScanResultNotFound;
 public class OutputFormatterTest {
 
     public static void main(String[] args) throws IOException {
-	ScanResult sr1 = new ScanResult();
+	ScanResultFound sr1 = new ScanResultFound();
 	sr1.fileName = "data/other.txt";
 	sr1.token = "simple";
 	sr1.lineContent = "simple";
 	sr1.lineNumber = 2;
 	sr1.column = 0;
 
-	ScanResult sr2 = new ScanResult();
+	ScanResultFound sr2 = new ScanResultFound();
 	sr2.fileName = "data/test.txt";
 	sr2.token = "simple";
 	sr2.lineContent = "very simple and extremely simple";
 	sr2.lineNumber = 2;
 	sr2.column = 5;
 
-	ScanResult sr3 = new ScanResult();
+	ScanResultFound sr3 = new ScanResultFound();
 	sr3.fileName = "data/test.txt";
 	sr3.token = "simple";
 	sr3.lineContent = "very simple and extremely simple";

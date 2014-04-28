@@ -89,7 +89,7 @@ public class FileScannerImpl implements FileScanner {
 	    // ScanResult is created.
 	    final String subString = line.substring(i, i + tokenLength);
 	    if (token.equals(subString)) {
-		final ScanResult tempResult = new ScanResult();
+		final ScanResultFound tempResult = new ScanResultFound();
 		// configuration of the current ScanResult
 		tempResult.lineContent = line;
 		tempResult.token = token;
