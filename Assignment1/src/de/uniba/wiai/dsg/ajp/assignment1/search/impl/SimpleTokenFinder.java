@@ -191,17 +191,32 @@ public class SimpleTokenFinder implements TokenFinder {
 	if (outputPath == null) {
 	    throw new IllegalArgumentException("outputpath is null");
 	}
+	final Path resultPath = Paths.get(outputPath);
 
 	final List<Path> pathsWithExtention = new ArrayList<Path>();
 	// TODO add all paths from the DirectoryScanner impl
 
 	final List<IScanResult> searchResultUnfiltered = new ArrayList<IScanResult>();
-	final FileScanner fileScanner = new FileScannerImpl();
-	for (final Path path : pathsWithExtention) {
-	    searchResultUnfiltered.addAll(fileScanner.scanFile(path, token));
+	// when there are no paths with the given extension only one ScanResult
+	// is added to the list to indicate that there are no paths.
+	if (pathsWithExtention.isEmpty()) {
+	    final ScanResultNoPath noPath = new ScanResultNoPath();
+	    noPath.fileExtention = fileExtention;
+	    noPath.token = token;
+	    searchResultUnfiltered.add(noPath);
+	} else {
+	    // the fileScanner searches every filePath for the token and adds
+	    // them to the list.
+	    final FileScanner fileScanner = new FileScannerImpl();
+	    for (final Path path : pathsWithExtention) {
+		searchResultUnfiltered
+			.addAll(fileScanner.scanFile(path, token));
+	    }
 	}
 
-	// TODO give the scanResults to the OutputFormatter impl
+	// the output of the results.
+	final OutputFormatter outputFormatter = new OutputFormatterImpl();
+	outputFormatter.show(resultPath, searchResultUnfiltered);
 
     }
 }
