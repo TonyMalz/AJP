@@ -5,10 +5,10 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.uniba.wiai.dsg.ajp.assignment1.search.impl.IScanResult;
 import de.uniba.wiai.dsg.ajp.assignment1.search.impl.OutputFormatterImpl;
-import de.uniba.wiai.dsg.ajp.assignment1.search.impl.ScanResultFound;
-import de.uniba.wiai.dsg.ajp.assignment1.search.impl.ScanResultNotFound;
+import de.uniba.wiai.dsg.ajp.assignment1.search.impl.result.IScanResult;
+import de.uniba.wiai.dsg.ajp.assignment1.search.impl.result.ScanResultFound;
+import de.uniba.wiai.dsg.ajp.assignment1.search.impl.result.ScanResultNotFound;
 
 /**
  * Class for testing OutputFormatter

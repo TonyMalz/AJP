@@ -1,4 +1,5 @@
-package de.uniba.wiai.dsg.ajp.assignment1.search.impl;
+package de.uniba.wiai.dsg.ajp.assignment1.search.impl.result;
+
 
 /**
  * Scan result when no path with a give file extention was found in the root

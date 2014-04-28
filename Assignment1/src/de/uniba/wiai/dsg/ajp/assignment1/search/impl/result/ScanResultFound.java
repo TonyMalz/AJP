@@ -1,4 +1,5 @@
-package de.uniba.wiai.dsg.ajp.assignment1.search.impl;
+package de.uniba.wiai.dsg.ajp.assignment1.search.impl.result;
+
 
 public class ScanResultFound implements IScanResult {
 

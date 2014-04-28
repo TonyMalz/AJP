@@ -7,6 +7,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
+import de.uniba.wiai.dsg.ajp.assignment1.search.impl.result.IScanResult;
+import de.uniba.wiai.dsg.ajp.assignment1.search.impl.result.ScanResultFound;
+import de.uniba.wiai.dsg.ajp.assignment1.search.impl.result.ScanResultNotFound;
+
 public class OutputFormatterImpl implements OutputFormatter {
 
     @Override

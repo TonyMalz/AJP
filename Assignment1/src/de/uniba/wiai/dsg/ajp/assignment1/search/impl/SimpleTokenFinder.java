@@ -15,6 +15,8 @@ import java.util.List;
 import de.uniba.wiai.dsg.ajp.assignment1.search.SearchTask;
 import de.uniba.wiai.dsg.ajp.assignment1.search.TokenFinder;
 import de.uniba.wiai.dsg.ajp.assignment1.search.TokenFinderException;
+import de.uniba.wiai.dsg.ajp.assignment1.search.impl.result.IScanResult;
+import de.uniba.wiai.dsg.ajp.assignment1.search.impl.result.ScanResultNoPath;
 
 /**
  * TODO: implement this
