@@ -24,5 +24,5 @@ public interface FileScanner {
      * @throws IOException
      *             in case an error occurs
      */
-    List<ScanResult> scanFile(Path path, String token) throws IOException;
+    List<IScanResult> scanFile(Path path, String token) throws IOException;
 }

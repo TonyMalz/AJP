@@ -195,7 +195,7 @@ public class SimpleTokenFinder implements TokenFinder {
 	final List<Path> pathsWithExtention = new ArrayList<Path>();
 	// TODO add all paths from the DirectoryScanner impl
 
-	final List<ScanResult> searchResultUnfiltered = new ArrayList<ScanResult>();
+	final List<IScanResult> searchResultUnfiltered = new ArrayList<IScanResult>();
 	final FileScanner fileScanner = new FileScannerImpl();
 	for (final Path path : pathsWithExtention) {
 	    searchResultUnfiltered.addAll(fileScanner.scanFile(path, token));

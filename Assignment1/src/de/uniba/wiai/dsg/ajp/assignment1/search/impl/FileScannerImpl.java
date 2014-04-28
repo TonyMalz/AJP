@@ -20,7 +20,7 @@ import java.util.List;
 public class FileScannerImpl implements FileScanner {
 
     @Override
-    public List<ScanResult> scanFile(final Path path, final String token)
+    public List<IScanResult> scanFile(final Path path, final String token)
 	    throws IOException {
 	// input validation:
 	// path== null
@@ -36,13 +36,13 @@ public class FileScannerImpl implements FileScanner {
 	    throw new IllegalArgumentException("path is not a file.");
 	}
 	// the result list where the ScanResults are added to
-	final List<ScanResult> result = new ArrayList<ScanResult>();
-
+	final List<IScanResult> result = new ArrayList<IScanResult>();
+	final String fileName = path.getFileName().toString();
 	// iterates through each line and searches each line for the token.
 	try (BufferedReader reader = Files.newBufferedReader(path,
 		StandardCharsets.UTF_8)) {
 	    String line = reader.readLine();
-	    final String fileName = path.getFileName().toString();
+
 	    int lineCounter = 0;
 	    while (line != null) {
 		lineCounter++;
@@ -52,6 +52,14 @@ public class FileScannerImpl implements FileScanner {
 		// next line
 		line = reader.readLine();
 	    }
+	}
+	// when no token is found in the file a ScanResultNotFound is added to
+	// the list to indicate that the file has no hits.
+	if (result.isEmpty()) {
+	    final ScanResultNotFound notFound = new ScanResultNotFound();
+	    notFound.fileName = fileName;
+	    notFound.token = token;
+	    result.add(notFound);
 	}
 	return result;
     }
@@ -69,10 +77,10 @@ public class FileScannerImpl implements FileScanner {
      *            the lineNumber of the line
      * @return
      */
-    private List<ScanResult> searchString(final String line,
+    private List<IScanResult> searchString(final String line,
 	    final String token, final String fileName, final int lineCounter) {
 	// the result list
-	final List<ScanResult> result = new ArrayList<ScanResult>();
+	final List<IScanResult> result = new ArrayList<IScanResult>();
 	// the lenth of the line and the token
 	final int lineLength = line.length();
 	final int tokenLength = token.length();
