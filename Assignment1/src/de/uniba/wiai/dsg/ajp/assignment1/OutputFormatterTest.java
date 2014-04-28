@@ -5,8 +5,10 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.uniba.wiai.dsg.ajp.assignment1.search.impl.IScanResult;
 import de.uniba.wiai.dsg.ajp.assignment1.search.impl.OutputFormatterImpl;
 import de.uniba.wiai.dsg.ajp.assignment1.search.impl.ScanResult;
+import de.uniba.wiai.dsg.ajp.assignment1.search.impl.ScanResultNotFound;
 
 /**
  * Class for testing OutputFormatter
@@ -39,8 +41,18 @@ public class OutputFormatterTest {
 	sr3.lineNumber = 2;
 	sr3.column = 26;
 
-	List<ScanResult> results = new ArrayList<ScanResult>();
+	ScanResultNotFound srnf1 = new ScanResultNotFound();
+	srnf1.fileName = "data/nothing.txt";
+	srnf1.token = "simple";
+
+	ScanResultNotFound srnf2 = new ScanResultNotFound();
+	srnf2.fileName = "data/not.txt";
+	srnf2.token = "simple";
+
+	List<IScanResult> results = new ArrayList<IScanResult>();
+	results.add(srnf2);
 	results.add(sr1);
+	results.add(srnf1);
 	results.add(sr2);
 	results.add(sr3);
 

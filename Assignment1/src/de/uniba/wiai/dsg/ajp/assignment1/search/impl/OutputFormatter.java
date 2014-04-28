@@ -23,5 +23,5 @@ public interface OutputFormatter {
      *            list of search results
      * @throws IOException
      */
-    void show(Path resultPath, List<ScanResult> results) throws IOException;
+    void show(Path resultPath, List<IScanResult> results) throws IOException;
 }

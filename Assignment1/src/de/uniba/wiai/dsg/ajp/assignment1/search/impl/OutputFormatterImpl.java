@@ -10,7 +10,7 @@ import java.util.List;
 public class OutputFormatterImpl implements OutputFormatter {
 
     @Override
-    public void show(Path resultPath, List<ScanResult> results)
+    public void show(Path resultPath, List<IScanResult> results)
 	    throws IOException {
 
 	// path must not be null
@@ -36,42 +36,69 @@ public class OutputFormatterImpl implements OutputFormatter {
 	    // got results
 	    else {
 		int counter = 0;
-		String token = results.get(0).token;
+		String currentFile;
+		String token;
+		if (results.get(0) instanceof ScanResult) {
+		    token = ((ScanResult) results.get(0)).token;
+		} else {
+		    token = ((ScanResultNotFound) results.get(0)).token;
+		}
+		int projectFound = 0;
 
 		while (counter < results.size()) {
-		    // save fileName as currentFile
-		    String currentFile = results.get(counter).fileName;
-		    int fileCounter = 0;
 
-		    // while fileNames equal currentFile and not all results are
-		    // processed, write result-line
-		    // -> means, write all lines for the whole file
-		    while (counter < results.size()
-			    && results.get(counter).fileName
-				    .equals(currentFile)) {
-			ScanResult scanElement = results.get(counter);
-			writer.write(scanElement.fileName + ":");
-			writer.write(scanElement.lineNumber + ",");
-			writer.write(scanElement.column + " > ");
-			writer.write(scanElement.lineContent.substring(0,
-				scanElement.column));
-			writer.write("**" + scanElement.token + "**");
-			writer.write(scanElement.lineContent
-				.substring((scanElement.column)
-					+ scanElement.token.length()));
+		    if (results.get(counter) instanceof ScanResultNotFound) {
+			writer.write(((ScanResultNotFound) results.get(counter)).fileName
+				+ " includes "
+				+ ((ScanResultNotFound) results.get(counter)).token
+				+ " " + " 0 time(s)");
+			writer.newLine();
 			writer.newLine();
 			counter++;
-			fileCounter++;
+		    } else {
+
+			// save fileName as currentFile
+
+			currentFile = ((ScanResult) results.get(counter)).fileName;
+			int fileFound = 0;
+
+			// while fileNames equal currentFile and not all results
+			// are
+			// processed, write result-line
+			// -> means, write all lines for the whole file
+			while (counter < results.size()
+				&& results.get(counter) instanceof ScanResult
+				&& ((ScanResult) results.get(counter)).fileName
+					.equals(currentFile)) {
+			    ScanResult scanElement = (ScanResult) results
+				    .get(counter);
+			    writer.write(scanElement.fileName + ":");
+			    writer.write(scanElement.lineNumber + ",");
+			    writer.write(scanElement.column + " > ");
+			    writer.write(scanElement.lineContent.substring(0,
+				    scanElement.column));
+			    writer.write("**" + scanElement.token + "**");
+			    writer.write(scanElement.lineContent
+				    .substring((scanElement.column)
+					    + scanElement.token.length()));
+			    writer.newLine();
+			    counter++;
+			    fileFound++;
+			}
+			// file finished -> file summary
+			writer.write(currentFile + " includes " + token + " "
+				+ fileFound + " time(s)");
+			writer.newLine();
+			writer.newLine();
+			projectFound = projectFound + fileFound;
 		    }
-		    // file finished -> file summary
-		    writer.write(currentFile + " includes " + token + " "
-			    + fileCounter + " time(s)");
-		    writer.newLine();
-		    writer.newLine();
+
 		}
+
 		// project finished -> project summary
 		writer.write("The project includes " + token + " "
-			+ results.size() + " time(s)");
+			+ projectFound + " time(s)");
+
 	    }
 
 	}
