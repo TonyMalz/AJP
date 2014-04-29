@@ -22,7 +22,8 @@ import de.uniba.wiai.dsg.ajp.assignment1.search.impl.result.ScanResultNotFound;
  * 
  */
 public class FileScannerImpl implements FileScanner {
-
+    // TODO EXCEPTION HANDLING
+    // TODO test
     @Override
     public List<IScanResult> scanFile(final Path path, final String token)
 	    throws IOException {
