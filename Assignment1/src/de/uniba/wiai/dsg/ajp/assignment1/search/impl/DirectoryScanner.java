@@ -14,16 +14,15 @@ import java.util.List;
  * 
  */
 public interface DirectoryScanner {
-    // TODO implement Tony
     /**
      * iterates through the file system. and returns all paths to files which
-     * have the given extention.
+     * have the given extension.
      * 
      * @param root
      *            the root path
      * @param fileExtention
-     *            the file extention to be filtered
-     * @return all paths to files which have the given file extention
+     *            the file extension to be filtered
+     * @return all paths to files which have the given file extension
      */
-    List<Path> scanFileSystem(Path root, String fileExtention);
+    List<Path> scanFileSystem(Path root, String fileExtension);
 }
