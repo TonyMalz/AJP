@@ -12,6 +12,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.uniba.wiai.dsg.ajp.assignment1.search.DirectoryScanner;
 import de.uniba.wiai.dsg.ajp.assignment1.search.FileScanner;
 import de.uniba.wiai.dsg.ajp.assignment1.search.OutputFormatter;
 import de.uniba.wiai.dsg.ajp.assignment1.search.SearchTask;
@@ -33,8 +34,7 @@ public class SimpleTokenFinder implements TokenFinder {
 	 */
     }
 
-    @Override
-    public void search(final SearchTask task) throws TokenFinderException,
+    public void searchOld(final SearchTask task) throws TokenFinderException,
 	    IOException {
 	if (task == null) {
 	    throw new TokenFinderException("task is null");
@@ -173,9 +173,10 @@ public class SimpleTokenFinder implements TokenFinder {
 	writer.close();
     }
 
-    public void searchImpl(final SearchTask task) throws TokenFinderException,
+    @Override
+    public void search(final SearchTask task) throws TokenFinderException,
 	    IOException {
-	// information from the search task
+	// input validation
 	if (task == null) {
 	    throw new IllegalArgumentException("task is null");
 	}
@@ -195,10 +196,14 @@ public class SimpleTokenFinder implements TokenFinder {
 	if (outputPath == null) {
 	    throw new IllegalArgumentException("outputpath is null");
 	}
-	final Path resultPath = Paths.get(outputPath);
 
+	final Path resultPath = Paths.get(outputPath);
+	final Path root = Paths.get(rootPath);
 	final List<Path> pathsWithExtention = new ArrayList<Path>();
-	// TODO add all paths from the DirectoryScanner impl
+
+	final DirectoryScanner directoryScanner = new DirectoryScannerImpl();
+	pathsWithExtention.addAll(directoryScanner.scanFileSystem(root,
+		fileExtention));
 
 	final List<IScanResult> searchResultUnfiltered = new ArrayList<IScanResult>();
 	// when there are no paths with the given extension only one ScanResult
