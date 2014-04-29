@@ -12,9 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.uniba.wiai.dsg.ajp.assignment1.search.FileScanner;
-import de.uniba.wiai.dsg.ajp.assignment1.search.impl.result.IScanResult;
-import de.uniba.wiai.dsg.ajp.assignment1.search.impl.result.ScanResultFound;
-import de.uniba.wiai.dsg.ajp.assignment1.search.impl.result.ScanResultNotFound;
+import de.uniba.wiai.dsg.ajp.assignment1.search.ScanResult;
+import de.uniba.wiai.dsg.ajp.assignment1.search.TokenFinderException;
 
 /**
  * Class to search a given file for a given token. *
@@ -26,8 +25,8 @@ public class FileScannerImpl implements FileScanner {
     // TODO EXCEPTION HANDLING
     // TODO test
     @Override
-    public List<IScanResult> scanFile(final Path path, final String token)
-	    throws IOException {
+    public List<ScanResult> scanFile(final Path path, final String token)
+	    throws TokenFinderException {
 	// input validation:
 	// path== null
 	// path does not exist
@@ -42,7 +41,7 @@ public class FileScannerImpl implements FileScanner {
 	    throw new IllegalArgumentException("path is not a file.");
 	}
 	// the result list where the ScanResults are added to
-	final List<IScanResult> result = new ArrayList<IScanResult>();
+	final List<ScanResult> result = new ArrayList<ScanResult>();
 	final String fileName = path.getFileName().toString();
 	// iterates through each line and searches each line for the token.
 	try (BufferedReader reader = Files.newBufferedReader(path,
@@ -58,13 +57,14 @@ public class FileScannerImpl implements FileScanner {
 		// next line
 		line = reader.readLine();
 	    }
+	} catch (final IOException e) {
+	    throw new TokenFinderException(e);
 	}
 	// when no token is found in the file a ScanResultNotFound is added to
 	// the list to indicate that the file has no hits.
 	if (result.isEmpty()) {
-	    final ScanResultNotFound notFound = new ScanResultNotFound();
-	    notFound.fileName = fileName;
-	    notFound.token = token;
+	    final ScanResult notFound = new ScanResult(fileName, token);
+
 	    result.add(notFound);
 	}
 	return result;
@@ -83,10 +83,10 @@ public class FileScannerImpl implements FileScanner {
      *            the lineNumber of the line
      * @return
      */
-    private List<IScanResult> searchString(final String line,
+    private List<ScanResult> searchString(final String line,
 	    final String token, final String fileName, final int lineCounter) {
 	// the result list
-	final List<IScanResult> result = new ArrayList<IScanResult>();
+	final List<ScanResult> result = new ArrayList<ScanResult>();
 	// the lenth of the line and the token
 	final int lineLength = line.length();
 	final int tokenLength = token.length();
@@ -95,13 +95,10 @@ public class FileScannerImpl implements FileScanner {
 	    // ScanResult is created.
 	    final String subString = line.substring(i, i + tokenLength);
 	    if (token.equals(subString)) {
-		final ScanResultFound tempResult = new ScanResultFound();
 		// configuration of the current ScanResult
-		tempResult.lineContent = line;
-		tempResult.token = token;
-		tempResult.column = i;
-		tempResult.column = lineCounter;
-		tempResult.fileName = fileName;
+		final ScanResult tempResult = new ScanResult(fileName, token,
+			line, lineCounter, i);
+
 		result.add(tempResult);
 		// the start of the next substring is the index after the
 		// substring ended.

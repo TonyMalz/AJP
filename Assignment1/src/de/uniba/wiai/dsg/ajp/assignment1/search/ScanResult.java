@@ -8,13 +8,22 @@ public class ScanResult {
     /** the token which is found. */
     public final String token;
 
-    /** the content of the line where the token is found. */
+    /**
+     * the content of the line where the token is found. Is null when there was
+     * no token found in the file.
+     */
     public final String lineContent;
 
-    /** the line number where the token was found. */
+    /**
+     * the line number where the token was found. Is 0 when there was no token
+     * found in the file.
+     */
     public final int lineNumber;
 
-    /** the index where the token starts in the line. */
+    /**
+     * the index where the token starts in the line. Is 0 when there was no
+     * token found in the file.
+     */
     public final int column;
 
     /**

@@ -15,10 +15,10 @@ import java.util.List;
 import de.uniba.wiai.dsg.ajp.assignment1.search.DirectoryScanner;
 import de.uniba.wiai.dsg.ajp.assignment1.search.FileScanner;
 import de.uniba.wiai.dsg.ajp.assignment1.search.OutputFormatter;
+import de.uniba.wiai.dsg.ajp.assignment1.search.ScanResult;
 import de.uniba.wiai.dsg.ajp.assignment1.search.SearchTask;
 import de.uniba.wiai.dsg.ajp.assignment1.search.TokenFinder;
 import de.uniba.wiai.dsg.ajp.assignment1.search.TokenFinderException;
-import de.uniba.wiai.dsg.ajp.assignment1.search.impl.result.IScanResult;
 import de.uniba.wiai.dsg.ajp.assignment1.search.impl.result.ScanResultNoPath;
 
 /**
@@ -205,10 +205,11 @@ public class SimpleTokenFinder implements TokenFinder {
 	pathsWithExtention.addAll(directoryScanner.scanFileSystem(root,
 		fileExtention));
 
-	final List<IScanResult> searchResultUnfiltered = new ArrayList<IScanResult>();
+	final List<ScanResult> searchResultUnfiltered = new ArrayList<ScanResult>();
 	// when there are no paths with the given extension only one ScanResult
 	// is added to the list to indicate that there are no paths.
 	if (pathsWithExtention.isEmpty()) {
+	    // TODO come up with a solution for this problem and fix it
 	    final ScanResultNoPath noPath = new ScanResultNoPath();
 	    noPath.fileExtention = fileExtention;
 	    noPath.token = token;
