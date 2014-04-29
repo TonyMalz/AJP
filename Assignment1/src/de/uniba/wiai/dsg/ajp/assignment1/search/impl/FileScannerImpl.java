@@ -11,6 +11,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.uniba.wiai.dsg.ajp.assignment1.search.FileScanner;
 import de.uniba.wiai.dsg.ajp.assignment1.search.impl.result.IScanResult;
 import de.uniba.wiai.dsg.ajp.assignment1.search.impl.result.ScanResultFound;
 import de.uniba.wiai.dsg.ajp.assignment1.search.impl.result.ScanResultNotFound;

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package de.uniba.wiai.dsg.ajp.assignment1.search.impl;
+package de.uniba.wiai.dsg.ajp.assignment1.search;
 
 import java.nio.file.Path;
 import java.util.List;

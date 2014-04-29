@@ -9,6 +9,8 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.uniba.wiai.dsg.ajp.assignment1.search.DirectoryScanner;
+
 /**
  * Search recursively in given folder and optionally filter by file extension
  * 
