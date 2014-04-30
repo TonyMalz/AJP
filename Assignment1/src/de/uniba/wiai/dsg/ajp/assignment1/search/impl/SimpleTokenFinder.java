@@ -19,7 +19,6 @@ import de.uniba.wiai.dsg.ajp.assignment1.search.ScanResult;
 import de.uniba.wiai.dsg.ajp.assignment1.search.SearchTask;
 import de.uniba.wiai.dsg.ajp.assignment1.search.TokenFinder;
 import de.uniba.wiai.dsg.ajp.assignment1.search.TokenFinderException;
-import de.uniba.wiai.dsg.ajp.assignment1.search.impl.result.ScanResultNoPath;
 
 /**
  * TODO: implement this
@@ -210,10 +209,10 @@ public class SimpleTokenFinder implements TokenFinder {
 	// is added to the list to indicate that there are no paths.
 	if (pathsWithExtention.isEmpty()) {
 	    // TODO come up with a solution for this problem and fix it
-	    final ScanResultNoPath noPath = new ScanResultNoPath();
-	    noPath.fileExtention = fileExtention;
-	    noPath.token = token;
-	    searchResultUnfiltered.add(noPath);
+	    // final ScanResultNoPath noPath = new ScanResultNoPath();
+	    // noPath.fileExtention = fileExtention;
+	    // noPath.token = token;
+	    // searchResultUnfiltered.add(noPath);
 	} else {
 	    // the fileScanner searches every filePath for the token and adds
 	    // them to the list.
