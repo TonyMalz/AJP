@@ -22,7 +22,6 @@ import de.uniba.wiai.dsg.ajp.assignment1.search.TokenFinderException;
  * 
  */
 public class FileScannerImpl implements FileScanner {
-    // TODO EXCEPTION HANDLING
     // TODO test
     @Override
     public List<ScanResult> scanFile(final Path path, final String token)
@@ -42,7 +41,7 @@ public class FileScannerImpl implements FileScanner {
 	}
 	// the result list where the ScanResults are added to
 	final List<ScanResult> result = new ArrayList<ScanResult>();
-	final String fileName = path.getFileName().toString();
+
 	// iterates through each line and searches each line for the token.
 	try (BufferedReader reader = Files.newBufferedReader(path,
 		StandardCharsets.UTF_8)) {
@@ -53,7 +52,7 @@ public class FileScannerImpl implements FileScanner {
 		lineCounter++;
 		// searches the line for the token and add the results to the
 		// result list
-		result.addAll(searchString(line, token, fileName, lineCounter));
+		result.addAll(searchString(line, token, path, lineCounter));
 		// next line
 		line = reader.readLine();
 	    }
@@ -63,7 +62,7 @@ public class FileScannerImpl implements FileScanner {
 	// when no token is found in the file a ScanResultNotFound is added to
 	// the list to indicate that the file has no hits.
 	if (result.isEmpty()) {
-	    final ScanResult notFound = new ScanResult(fileName, token);
+	    final ScanResult notFound = new ScanResult(path, token);
 
 	    result.add(notFound);
 	}
@@ -84,7 +83,7 @@ public class FileScannerImpl implements FileScanner {
      * @return
      */
     private List<ScanResult> searchString(final String line,
-	    final String token, final String fileName, final int lineCounter) {
+	    final String token, final Path file, final int lineCounter) {
 	// the result list
 	final List<ScanResult> result = new ArrayList<ScanResult>();
 	// the lenth of the line and the token
@@ -96,8 +95,8 @@ public class FileScannerImpl implements FileScanner {
 	    final String subString = line.substring(i, i + tokenLength);
 	    if (token.equals(subString)) {
 		// configuration of the current ScanResult
-		final ScanResult tempResult = new ScanResult(fileName, token,
-			line, lineCounter, i);
+		final ScanResult tempResult = new ScanResult(file, token, line,
+			lineCounter, i);
 
 		result.add(tempResult);
 		// the start of the next substring is the index after the

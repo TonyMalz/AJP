@@ -1,9 +1,11 @@
 package de.uniba.wiai.dsg.ajp.assignment1.search;
 
+import java.nio.file.Path;
+
 public class ScanResult {
 
     /** the name of the file where the token was found. */
-    public final String fileName;
+    public final Path fileName;
 
     /** the token which is found. */
     public final String token;
@@ -41,7 +43,7 @@ public class ScanResult {
      *            the index of the beginning of the token in the line where it
      *            was found.
      */
-    public ScanResult(final String fileName, final String token,
+    public ScanResult(final Path fileName, final String token,
 	    final String lineContent, final int lineNumber, final int column) {
 	super();
 	this.fileName = fileName;
@@ -59,7 +61,7 @@ public class ScanResult {
      * @param token
      *            the token that was searched for
      */
-    public ScanResult(final String fileName, final String token) {
+    public ScanResult(final Path fileName, final String token) {
 	super();
 	this.fileName = fileName;
 	this.token = token;
@@ -71,7 +73,7 @@ public class ScanResult {
     /**
      * @return the fileName
      */
-    public final String getFileName() {
+    public final Path getFileName() {
 	return fileName;
     }
 
