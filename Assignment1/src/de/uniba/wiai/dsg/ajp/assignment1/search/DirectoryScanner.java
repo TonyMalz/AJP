@@ -24,5 +24,6 @@ public interface DirectoryScanner {
      *            the file extension to be filtered
      * @return all paths to files which have the given file extension
      */
-    List<Path> scanFileSystem(Path root, String fileExtension);
+    List<Path> scanFileSystem(Path root, String fileExtension)
+	    throws TokenFinderException;
 }

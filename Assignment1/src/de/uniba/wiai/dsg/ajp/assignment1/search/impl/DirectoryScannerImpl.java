@@ -8,8 +8,10 @@ import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import de.uniba.wiai.dsg.ajp.assignment1.search.DirectoryScanner;
+import de.uniba.wiai.dsg.ajp.assignment1.search.TokenFinderException;
 
 /**
  * Search recursively in given folder and optionally filter by file extension
@@ -20,19 +22,20 @@ import de.uniba.wiai.dsg.ajp.assignment1.search.DirectoryScanner;
 public class DirectoryScannerImpl implements DirectoryScanner {
 
     @Override
-    public List<Path> scanFileSystem(Path root, String fileExtension) {
-	// sanity checks
-	if (root == null) {
-	    throw new IllegalArgumentException("root path must not be null");
-	}
-	if (!Files.isReadable(root)) {
-	    throw new IllegalArgumentException(
-		    "root directory is not readable or does not exist");
-	}
+    public List<Path> scanFileSystem(Path startDir, String fileExtension)
+	    throws TokenFinderException {
 
-	if (!Files.isDirectory(root)) {
-	    throw new IllegalArgumentException(
-		    "root directory is not a directory");
+	// sanity checks
+	Objects.requireNonNull(startDir, "starting path is null");
+
+	if (!Files.isReadable(startDir)) {
+	    throw new TokenFinderException(
+		    "starting directory is not readable or does not exist: "
+			    + startDir);
+	}
+	if (!Files.isDirectory(startDir)) {
+	    throw new TokenFinderException(
+		    "starting directory is not a directory: " + startDir);
 	}
 
 	// default to match all if fileExtension is null
@@ -71,9 +74,12 @@ public class DirectoryScannerImpl implements DirectoryScanner {
 	};
 
 	try {
-	    Files.walkFileTree(root, fileTreeVisitor);
+	    Files.walkFileTree(startDir, fileTreeVisitor);
+	} catch (SecurityException e) {
+	    throw new TokenFinderException("Access denied to starting folder: "
+		    + startDir);
 	} catch (IOException e) {
-	    e.printStackTrace();
+	    throw new TokenFinderException(e.getMessage());
 	}
 
 	return fileList;
