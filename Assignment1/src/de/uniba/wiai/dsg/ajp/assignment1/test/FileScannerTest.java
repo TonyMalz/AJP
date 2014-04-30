@@ -30,6 +30,14 @@ import de.uniba.wiai.dsg.ajp.assignment1.search.impl.FileScannerImpl;
  * 
  */
 public class FileScannerTest {
+    // TODO remove annotation
+    // TODO create Methods
+    // assertNull
+    // assertTrue
+    // assertEquals(String, String)
+    // assertEquals(int, int,double)
+    // assertEquals(Object, Object)
+
     /** the path where the test files are lying. */
     private final static Path testPath = Paths.get("testPath.txt");
 
