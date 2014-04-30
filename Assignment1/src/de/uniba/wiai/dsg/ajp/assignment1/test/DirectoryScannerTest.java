@@ -21,8 +21,7 @@ public class DirectoryScannerTest {
 		}
 	    }
 	} catch (TokenFinderException e) {
-	    // TODO Auto-generated catch block
-	    e.printStackTrace();
+	    System.out.println("Error: " + e.getMessage());
 	    glError = true;
 	}
 	if (error) {
@@ -40,7 +39,6 @@ public class DirectoryScannerTest {
 		}
 	    }
 	} catch (TokenFinderException e) {
-	    // TODO Auto-generated catch block
 	    System.out.println("Error: " + e.getMessage());
 	    glError = true;
 	}
@@ -58,7 +56,6 @@ public class DirectoryScannerTest {
 		}
 	    }
 	} catch (TokenFinderException e) {
-	    // TODO Auto-generated catch block
 	    System.out.println("Error: " + e.getMessage());
 	    glError = true;
 	}
