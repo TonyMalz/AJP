@@ -3,7 +3,6 @@
  */
 package de.uniba.wiai.dsg.ajp.assignment1.search;
 
-import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
 
@@ -21,9 +20,10 @@ public interface OutputFormatter {
      *            path for output-file
      * @param results
      *            list of search results
-     * @throws IOException
+     * @throws TokenFinderException
      */
-    void show(Path resultPath, List<ScanResult> results) throws IOException;
+    void show(Path resultPath, List<ScanResult> results)
+	    throws TokenFinderException;
     // TODO wrap exception that only an IllegalArgumentException or a
     // TokenFinderException is thrown
     // TODO change input of result list to ScanResult

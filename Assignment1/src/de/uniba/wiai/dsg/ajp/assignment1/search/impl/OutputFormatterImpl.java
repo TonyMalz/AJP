@@ -9,12 +9,13 @@ import java.util.List;
 
 import de.uniba.wiai.dsg.ajp.assignment1.search.OutputFormatter;
 import de.uniba.wiai.dsg.ajp.assignment1.search.ScanResult;
+import de.uniba.wiai.dsg.ajp.assignment1.search.TokenFinderException;
 
 public class OutputFormatterImpl implements OutputFormatter {
 
     @Override
     public void show(Path resultPath, List<ScanResult> results)
-	    throws IOException {
+	    throws TokenFinderException {
 
 	// path must not be null
 	if (resultPath == null) {
@@ -32,14 +33,9 @@ public class OutputFormatterImpl implements OutputFormatter {
 
 	try (BufferedWriter writer = Files.newBufferedWriter(resultPath,
 	        StandardCharsets.UTF_8)) {
-	    // if list "results" has no results, just "ScanResultNoPath"
-	    // if (results.get(0) instanceof ScanResultNoPath) {
-	    // writer.write("The project includes "
-	    // + ((ScanResultNoPath) results.get(0)).token
-	    // + " 0 time(s)");
-	    // }
-	    // else "results" isn't empty
-	    // else {
+
+	    // TODO empty list/ no files found
+
 	    // counter for iterating list "results"
 	    // projectFound for counting results
 	    int counter = 0;
@@ -102,6 +98,8 @@ public class OutputFormatterImpl implements OutputFormatter {
 	    writer.write("The project includes " + token + " " + projectFound
 		    + " time(s)");
 
+	} catch (IOException e) {
+	    throw new TokenFinderException(e);
 	}
 
     }
