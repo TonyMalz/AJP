@@ -1,4 +1,4 @@
-package de.uniba.wiai.dsg.ajp.assignment1;
+package de.uniba.wiai.dsg.ajp.assignment1.test;
 
 import java.io.IOException;
 import java.nio.file.Paths;
