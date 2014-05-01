@@ -49,17 +49,9 @@ public class OutputFormatterImpl implements OutputFormatter {
 		Path currentFile;
 
 		while (counter < results.size()) {
-		    // if entry is instance of "ScanResultNotFound" there is no
-		    // searchResult in this file, so print file summary
-		    
-		    /**
-		     * TODO hier dann die neue (noch zu wählende) Methode ScanResult.tokenNotFound()
-		     *  / .hasNoToken() / .isEmpty()
-		     *  dann verwenden
-		     */
-		    if (results.get(counter).lineContent == null
-			    && results.get(counter).column == 0
-			    && results.get(counter).lineNumber == 0) {
+		    // if ScanResult isEmpty (has no result),
+		    // print project summary
+		    if (results.get(counter).isEmpty()) {
 			writer.write(results.get(counter).fileName
 				+ " includes " + token + " " + " 0 time(s)");
 			writer.newLine();

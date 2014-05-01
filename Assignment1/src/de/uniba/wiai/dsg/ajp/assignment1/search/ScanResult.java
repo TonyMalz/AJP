@@ -2,21 +2,19 @@ package de.uniba.wiai.dsg.ajp.assignment1.search;
 
 import java.nio.file.Path;
 
-
 /**
- * TODO implizite Logik in Methode auslagern
- * relativ unschön, dass man die Kommentare der Felder lesen muss, 
- * um zu verstehen, wann das Objekt denn den Token nicht gefunde hat
+ * TODO implizite Logik in Methode auslagern relativ unschön, dass man die
+ * Kommentare der Felder lesen muss, um zu verstehen, wann das Objekt denn den
+ * Token nicht gefunde hat
  * 
  * Das ist zu viel Magie mE
  * 
- * besser ne Methode mit sprechenden Namen wie zb
- * tokenNotFound(), hasNoToken() oder isEmpty(),etc
- * die man dann einfach aufruft und nen boolean zurückgibt,
- * wenn entsprehcend auch nix gefunden wurde, ohne dass der Aufrufer
- * die internen Details kennen muss
+ * besser ne Methode mit sprechenden Namen wie zb tokenNotFound(), hasNoToken()
+ * oder isEmpty(),etc die man dann einfach aufruft und nen boolean zurückgibt,
+ * wenn entsprehcend auch nix gefunden wurde, ohne dass der Aufrufer die
+ * internen Details kennen muss
  * 
-  */
+ */
 public class ScanResult {
 
     /** the name of the file where the token was found. */
@@ -118,6 +116,16 @@ public class ScanResult {
      */
     public final int getColumn() {
 	return column;
+    }
+
+    /**
+     * @return whether this is a result
+     */
+    public final boolean isEmpty() {
+	if (lineContent == null && column == 0 && lineNumber == 0) {
+	    return true;
+	}
+	return false;
     }
 
 }
