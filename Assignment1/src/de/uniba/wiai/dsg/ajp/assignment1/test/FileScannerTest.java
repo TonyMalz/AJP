@@ -12,12 +12,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-
 import de.uniba.wiai.dsg.ajp.assignment1.search.FileScanner;
 import de.uniba.wiai.dsg.ajp.assignment1.search.ScanResult;
 import de.uniba.wiai.dsg.ajp.assignment1.search.TokenFinderException;
@@ -30,38 +24,72 @@ import de.uniba.wiai.dsg.ajp.assignment1.search.impl.FileScannerImpl;
  * 
  */
 public class FileScannerTest {
-    // TODO remove annotation
-    // TODO create Methods
-    // assertNull
-    // assertTrue
-    // assertEquals(String, String)
-    // assertEquals(int, int,double)
-    // assertEquals(Object, Object)
 
+    private static boolean testSuccessfull;
     /** the path where the test files are lying. */
-    private final static Path testPath = Paths.get("testPath.txt");
+    private static final Path testPath = Paths.get("testPath.txt");
 
-    @BeforeClass
-    public static void setUpBeforeClass() throws Exception {
+    public static void main(final String[] args) throws IOException,
+	    TokenFinderException {
+	setUpBeforeClass();
+	setUp();
+	testScanFileEmptyFile();
+	if (!testSuccessfull) {
+	    System.out.println("TEST WITH EMPTY FILE WAS NOT SUCCEESSFULL");
+	} else {
+	    System.out.println("TEST WITH EMPTY FILE WAS SUCCEESSFULL.");
+	}
+	setUp();
+	testScanFileNoToken();
+	if (!testSuccessfull) {
+	    System.out
+		    .println("TEST WITH FILE WITH NO TOKEN WAS NOT SUCCEESSFULL");
+	} else {
+	    System.out.println("TEST WITH FILE WITH NO TOKEN WAS SUCCEESSFULL");
+	}
+	setUp();
+	testScanFileOneToken();
+	if (!testSuccessfull) {
+	    System.out
+		    .println("TEST WITH FILE WITH ONE TOKEN WAS NOT SUCCEESSFULL");
+	} else {
+	    System.out
+		    .println("TEST WITH FILE WITH ONE TOKEN WAS SUCCEESSFULL");
+	}
+	setUp();
+	testScanFileMultipleToken();
+	;
+	if (!testSuccessfull) {
+	    System.out
+		    .println("TEST WITH FILE WITH MULTIPLE TOKEN WAS NOT SUCCEESSFULL");
+	} else {
+	    System.out
+		    .println("TEST WITH FILE WITH MULTIPLE TOKEN WAS SUCCEESSFULL");
+	}
+
+    }
+
+    public static void setUpBeforeClass() throws IOException {
 	Files.deleteIfExists(testPath);
 	Files.createFile(testPath);
     }
 
     /**
+     * @throws IOException
      * @throws java.lang.Exception
      */
-    @AfterClass
-    public static void tearDownAfterClass() throws Exception {
+    public static void tearDownAfterClass() throws IOException {
 	Files.delete(testPath);
     }
 
     /**
+     * @throws IOException
      * @throws java.lang.Exception
      */
-    @Before
-    public void setUp() throws Exception {
+    public static void setUp() throws IOException {
 	Files.delete(testPath);
 	Files.createFile(testPath);
+	testSuccessfull = true;
     }
 
     /**
@@ -71,18 +99,19 @@ public class FileScannerTest {
      * 
      * @throws TokenFinderException
      */
-    @Test
-    public final void testScanFileEmptyFile() throws TokenFinderException {
+
+    public static final void testScanFileEmptyFile()
+	    throws TokenFinderException {
 	final FileScanner scanner = new FileScannerImpl();
 	final List<ScanResult> results = scanner.scanFile(testPath, "test");
-	Assert.assertEquals(results.size(), 1, 0);
+	assertEquals(results.size(), 1);
 	final ScanResult result = results.get(0);
 	// no results found
-	Assert.assertNull(result.lineContent);
-	Assert.assertEquals(result.column, 0, 0);
-	Assert.assertEquals(result.lineNumber, 0, 0);
-	Assert.assertEquals(result.getFileName(), testPath);
-	Assert.assertTrue(result.getToken().equals("test"));
+	assertNull(result.lineContent);
+	assertEquals(result.column, 0);
+	assertEquals(result.lineNumber, 0);
+	assertEquals(result.getFileName(), testPath);
+	assertTrue(result.getToken().equals("test"));
     }
 
     /**
@@ -92,8 +121,8 @@ public class FileScannerTest {
      * 
      * @throws TokenFinderException
      */
-    @Test
-    public final void testScanFileNoToken() throws TokenFinderException,
+
+    public static final void testScanFileNoToken() throws TokenFinderException,
 	    IOException {
 	try (BufferedWriter writer = Files.newBufferedWriter(testPath,
 		StandardCharsets.UTF_8)) {
@@ -101,14 +130,14 @@ public class FileScannerTest {
 	}
 	final FileScanner scanner = new FileScannerImpl();
 	final List<ScanResult> results = scanner.scanFile(testPath, "test");
-	Assert.assertEquals(results.size(), 1, 0);
+	assertEquals(results.size(), 1);
 	final ScanResult result = results.get(0);
 	// no results found
-	Assert.assertNull(result.lineContent);
-	Assert.assertEquals(result.column, 0, 0);
-	Assert.assertEquals(result.lineNumber, 0, 0);
-	Assert.assertEquals(result.getFileName(), testPath);
-	Assert.assertTrue(result.getToken().equals("test"));
+	assertNull(result.lineContent);
+	assertEquals(result.column, 0);
+	assertEquals(result.lineNumber, 0);
+	assertEquals(result.getFileName(), testPath);
+	assertTrue(result.getToken().equals("test"));
     }
 
     /**
@@ -119,23 +148,23 @@ public class FileScannerTest {
      * @throws TokenFinderException
      * @throws IOException
      */
-    @Test
-    public final void testScanFileOneToken() throws TokenFinderException,
-	    IOException {
+
+    public static final void testScanFileOneToken()
+	    throws TokenFinderException, IOException {
 	try (BufferedWriter writer = Files.newBufferedWriter(testPath,
 		StandardCharsets.UTF_8)) {
 	    writer.write("test");
 	}
 	final FileScanner scanner = new FileScannerImpl();
 	final List<ScanResult> results = scanner.scanFile(testPath, "test");
-	Assert.assertEquals(results.size(), 1, 0);
+	assertEquals(results.size(), 1);
 	final ScanResult result = results.get(0);
 	// no results found
-	Assert.assertTrue(result.lineContent.equals("test"));
-	Assert.assertEquals(result.column, 0, 0);
-	Assert.assertEquals(result.lineNumber, 1, 0);
-	Assert.assertEquals(result.getFileName(), testPath);
-	Assert.assertTrue(result.getToken().equals("test"));
+	assertTrue(result.lineContent.equals("test"));
+	assertEquals(result.column, 0);
+	assertEquals(result.lineNumber, 1);
+	assertEquals(result.getFileName(), testPath);
+	assertTrue(result.getToken().equals("test"));
     }
 
     /**
@@ -146,9 +175,9 @@ public class FileScannerTest {
      * @throws TokenFinderException
      * @throws IOException
      */
-    @Test
-    public final void testScanFileMultipleToken() throws TokenFinderException,
-	    IOException {
+
+    public static final void testScanFileMultipleToken()
+	    throws TokenFinderException, IOException {
 	final List<String> lines = new ArrayList<String>();
 	try (BufferedWriter writer = Files.newBufferedWriter(testPath,
 		StandardCharsets.UTF_8)) {
@@ -160,40 +189,95 @@ public class FileScannerTest {
 	    writer.newLine();
 	    lines.add("testtest");
 	    writer.write("testtest");
+
+	    writer.newLine();
+	    lines.add("for test: this is no real testing!");
+	    writer.write("for test: this is no real testing!");
+
 	}
 	final FileScanner scanner = new FileScannerImpl();
 	final List<ScanResult> results = scanner.scanFile(testPath, "test");
-	Assert.assertEquals(results.size(), 4, 0);
+	assertEquals(results.size(), 6);
 	ScanResult result = results.get(0);
 
-	Assert.assertTrue(result.lineContent.equals(lines.get(0)));
-	Assert.assertEquals(result.column, 0, 0);
-	Assert.assertEquals(result.lineNumber, 1, 0);
-	Assert.assertEquals(result.getFileName(), testPath);
-	Assert.assertTrue(result.getToken().equals("test"));
+	assertTrue(result.lineContent.equals(lines.get(0)));
+	assertEquals(result.column, 0);
+	assertEquals(result.lineNumber, 1);
+	assertEquals(result.getFileName(), testPath);
+	assertTrue(result.getToken().equals("test"));
 
 	result = results.get(1);
 
-	Assert.assertTrue(result.lineContent.equals(lines.get(0)));
-	Assert.assertEquals(result.column, 5, 0);
-	Assert.assertEquals(result.lineNumber, 1, 0);
-	Assert.assertEquals(result.getFileName(), testPath);
-	Assert.assertTrue(result.getToken().equals("test"));
+	assertTrue(result.lineContent.equals(lines.get(0)));
+	assertEquals(result.column, 5);
+	assertEquals(result.lineNumber, 1);
+	assertEquals(result.getFileName(), testPath);
+	assertTrue(result.getToken().equals("test"));
 
 	result = results.get(2);
 
-	Assert.assertTrue(result.lineContent.equals(lines.get(2)));
-	Assert.assertEquals(result.column, 0, 0);
-	Assert.assertEquals(result.lineNumber, 3, 0);
-	Assert.assertEquals(result.getFileName(), testPath);
-	Assert.assertTrue(result.getToken().equals("test"));
+	assertTrue(result.lineContent.equals(lines.get(2)));
+	assertEquals(result.column, 0);
+	assertEquals(result.lineNumber, 3);
+	assertEquals(result.getFileName(), testPath);
+	assertTrue(result.getToken().equals("test"));
 
 	result = results.get(3);
 
-	Assert.assertTrue(result.lineContent.equals(lines.get(2)));
-	Assert.assertEquals(result.column, 4, 0);
-	Assert.assertEquals(result.lineNumber, 3, 0);
-	Assert.assertEquals(result.getFileName(), testPath);
-	Assert.assertTrue(result.getToken().equals("test"));
+	assertTrue(result.lineContent.equals(lines.get(2)));
+	assertEquals(result.column, 4);
+	assertEquals(result.lineNumber, 3);
+	assertEquals(result.getFileName(), testPath);
+	assertTrue(result.getToken().equals("test"));
+
+	result = results.get(4);
+
+	assertTrue(result.lineContent.equals(lines.get(3)));
+	assertEquals(result.column, 4);
+	assertEquals(result.lineNumber, 4);
+	assertEquals(result.getFileName(), testPath);
+	assertTrue(result.getToken().equals("test"));
+
+	result = results.get(5);
+
+	assertTrue(result.lineContent.equals(lines.get(3)));
+	assertEquals(result.column, 26);
+	assertEquals(result.lineNumber, 4);
+	assertEquals(result.getFileName(), testPath);
+	assertTrue(result.getToken().equals("test"));
+    }
+
+    private static void assertEquals(final int a, final int b) {
+	if (a != b) {
+	    System.out.println("Assertion failed! Expected: " + a
+		    + ", Actual: " + b);
+	    testSuccessfull = false;
+	}
+
+    }
+
+    private static void assertTrue(final boolean bool) {
+	if (!bool) {
+	    System.out.println("Asserrtion failed! Was false.");
+	    testSuccessfull = false;
+	}
+
+    }
+
+    private static void assertNull(final String string) {
+	if (string != null) {
+	    System.out.println(" Assertion failed: '" + string
+		    + "' was not null.");
+	    testSuccessfull = false;
+	}
+    }
+
+    private static void assertEquals(final Object obj1, final Object obj2) {
+	if (obj1 != obj2) {
+	    System.out.println("Assertion failed! Expected: " + obj1
+		    + ", Actual: " + obj2);
+	    testSuccessfull = false;
+	}
+
     }
 }
