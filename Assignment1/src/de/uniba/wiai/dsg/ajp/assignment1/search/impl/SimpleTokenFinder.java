@@ -78,7 +78,7 @@ public class SimpleTokenFinder implements TokenFinder {
 
 	// the output of the results.
 	final OutputFormatter outputFormatter = new OutputFormatterImpl();
-	outputFormatter.show(resultPath, searchResultUnfiltered);
+	outputFormatter.show(resultPath, searchResultUnfiltered, task);
 
     }
 }
