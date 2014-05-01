@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.uniba.wiai.dsg.ajp.assignment1.search.ScanResult;
+import de.uniba.wiai.dsg.ajp.assignment1.search.TokenFinderException;
 import de.uniba.wiai.dsg.ajp.assignment1.search.impl.OutputFormatterImpl;
 
 /**
@@ -17,7 +18,8 @@ import de.uniba.wiai.dsg.ajp.assignment1.search.impl.OutputFormatterImpl;
 
 public class OutputFormatterTest {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException,
+	    TokenFinderException {
 	ScanResult sr1 = new ScanResult(Paths.get("data/other.txt"), "simple",
 	        "simple", 2, 0);
 
