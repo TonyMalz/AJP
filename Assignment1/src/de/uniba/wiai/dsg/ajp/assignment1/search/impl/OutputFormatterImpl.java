@@ -51,6 +51,12 @@ public class OutputFormatterImpl implements OutputFormatter {
 		while (counter < results.size()) {
 		    // if entry is instance of "ScanResultNotFound" there is no
 		    // searchResult in this file, so print file summary
+		    
+		    /**
+		     * TODO hier dann die neue (noch zu wählende) Methode ScanResult.tokenNotFound()
+		     *  / .hasNoToken() / .isEmpty()
+		     *  dann verwenden
+		     */
 		    if (results.get(counter).lineContent == null
 			    && results.get(counter).column == 0
 			    && results.get(counter).lineNumber == 0) {
