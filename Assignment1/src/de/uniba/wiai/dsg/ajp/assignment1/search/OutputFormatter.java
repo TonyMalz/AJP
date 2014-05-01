@@ -20,9 +20,10 @@ public interface OutputFormatter {
      *            path for output-file
      * @param results
      *            list of search results
+     * @param task
      * @throws TokenFinderException
      */
-    void show(Path resultPath, List<ScanResult> results)
+    void show(Path resultPath, List<ScanResult> results, SearchTask task)
 	    throws TokenFinderException;
     // TODO wrap exception that only an IllegalArgumentException or a
     // TokenFinderException is thrown

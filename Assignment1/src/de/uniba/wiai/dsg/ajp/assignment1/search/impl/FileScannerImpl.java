@@ -22,7 +22,7 @@ import de.uniba.wiai.dsg.ajp.assignment1.search.TokenFinderException;
  * 
  */
 public class FileScannerImpl implements FileScanner {
-    // TODO test
+
     @Override
     public List<ScanResult> scanFile(final Path path, final String token)
 	    throws TokenFinderException {
