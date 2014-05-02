@@ -3,16 +3,9 @@ package de.uniba.wiai.dsg.ajp.assignment1.search;
 import java.nio.file.Path;
 
 /**
- * TODO implizite Logik in Methode auslagern relativ unschön, dass man die
- * Kommentare der Felder lesen muss, um zu verstehen, wann das Objekt denn den
- * Token nicht gefunde hat
+ * Result class for the search for the token in a specific file.
  * 
- * Das ist zu viel Magie mE
- * 
- * besser ne Methode mit sprechenden Namen wie zb tokenNotFound(), hasNoToken()
- * oder isEmpty(),etc die man dann einfach aufruft und nen boolean zurückgibt,
- * wenn entsprehcend auch nix gefunden wurde, ohne dass der Aufrufer die
- * internen Details kennen muss
+ * @author Mathias
  * 
  */
 public class ScanResult {
