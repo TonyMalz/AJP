@@ -11,7 +11,6 @@ import java.util.List;
  * 
  */
 public interface OutputFormatter {
-    // TODO implment Christian
 
     /**
      * writes all search results in specified output-file
@@ -25,11 +24,5 @@ public interface OutputFormatter {
      */
     void show(Path resultPath, List<ScanResult> results, SearchTask task)
 	    throws TokenFinderException;
-    // TODO wrap exception that only an IllegalArgumentException or a
-    // TokenFinderException is thrown
-    // TODO change input of result list to ScanResult
-    // when lineContent == null and the lineNumber == column == 0 -> no token
-    // found.
-    // TODO how state that there was no path with the extension found?
-    // idea: second method only in case none was found?
+
 }

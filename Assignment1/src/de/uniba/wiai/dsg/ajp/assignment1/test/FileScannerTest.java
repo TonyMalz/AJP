@@ -10,10 +10,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import de.uniba.wiai.dsg.ajp.assignment1.search.FileScanner;
 import de.uniba.wiai.dsg.ajp.assignment1.search.ScanResult;
+import de.uniba.wiai.dsg.ajp.assignment1.search.SearchTask;
 import de.uniba.wiai.dsg.ajp.assignment1.search.TokenFinderException;
 import de.uniba.wiai.dsg.ajp.assignment1.search.impl.FileScannerImpl;
 
@@ -28,6 +30,9 @@ public class FileScannerTest {
     private static boolean testSuccessfull;
     /** the path where the test files are lying. */
     private static final Path testPath = Paths.get("testPath.txt");
+
+    private static final List<Path> testPathList = Arrays
+	    .asList(new Path[] { testPath });
 
     public static void main(final String[] args) throws IOException,
 	    TokenFinderException {
@@ -102,8 +107,11 @@ public class FileScannerTest {
 
     public static final void testScanFileEmptyFile()
 	    throws TokenFinderException {
-	final FileScanner scanner = new FileScannerImpl();
-	final List<ScanResult> results = scanner.scanFile(testPath, "test");
+	final SearchTask task = new SearchTask();
+	task.setToken("test");
+	final FileScanner scanner = new FileScannerImpl(task);
+	final List<ScanResult> results = scanner.getScanResults(testPathList,
+		"test");
 	assertEquals(results.size(), 1);
 	final ScanResult result = results.get(0);
 	// no results found
@@ -128,8 +136,11 @@ public class FileScannerTest {
 		StandardCharsets.UTF_8)) {
 	    writer.write("scenner will find nothing");
 	}
-	final FileScanner scanner = new FileScannerImpl();
-	final List<ScanResult> results = scanner.scanFile(testPath, "test");
+	final SearchTask task = new SearchTask();
+	task.setToken("test");
+	final FileScanner scanner = new FileScannerImpl(task);
+	final List<ScanResult> results = scanner.getScanResults(testPathList,
+		"test");
 	assertEquals(results.size(), 1);
 	final ScanResult result = results.get(0);
 	// no results found
@@ -155,8 +166,11 @@ public class FileScannerTest {
 		StandardCharsets.UTF_8)) {
 	    writer.write("test");
 	}
-	final FileScanner scanner = new FileScannerImpl();
-	final List<ScanResult> results = scanner.scanFile(testPath, "test");
+	final SearchTask task = new SearchTask();
+	task.setToken("test");
+	final FileScanner scanner = new FileScannerImpl(task);
+	final List<ScanResult> results = scanner.getScanResults(testPathList,
+		"test");
 	assertEquals(results.size(), 1);
 	final ScanResult result = results.get(0);
 	// no results found
@@ -195,8 +209,11 @@ public class FileScannerTest {
 	    writer.write("for test: this is no real testing!");
 
 	}
-	final FileScanner scanner = new FileScannerImpl();
-	final List<ScanResult> results = scanner.scanFile(testPath, "test");
+	final SearchTask task = new SearchTask();
+	task.setToken("test");
+	final FileScanner scanner = new FileScannerImpl(task);
+	final List<ScanResult> results = scanner.getScanResults(testPathList,
+		"test");
 	assertEquals(results.size(), 6);
 	ScanResult result = results.get(0);
 

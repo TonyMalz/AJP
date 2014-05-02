@@ -13,6 +13,7 @@ import java.util.List;
 
 import de.uniba.wiai.dsg.ajp.assignment1.search.FileScanner;
 import de.uniba.wiai.dsg.ajp.assignment1.search.ScanResult;
+import de.uniba.wiai.dsg.ajp.assignment1.search.SearchTask;
 import de.uniba.wiai.dsg.ajp.assignment1.search.TokenFinderException;
 
 /**
@@ -22,23 +23,64 @@ import de.uniba.wiai.dsg.ajp.assignment1.search.TokenFinderException;
  * 
  */
 public class FileScannerImpl implements FileScanner {
+    /** the search task for the search. */
+    private final SearchTask task;
+
+    public FileScannerImpl(final SearchTask task) {
+	if (task == null) {
+	    throw new IllegalArgumentException("Search task is null.");
+	}
+	this.task = task;
+    }
 
     @Override
-    public List<ScanResult> scanFile(final Path path, final String token)
-	    throws TokenFinderException {
+    public List<ScanResult> getScanResults(final List<Path> paths,
+	    final String token) throws TokenFinderException {
 	// input validation:
-	// path== null
-	// path does not exist
-	// path is not a file
-	if (path == null) {
-	    throw new IllegalArgumentException("path is null");
+	if (paths == null) {
+	    throw new IllegalArgumentException("Paths is null.");
 	}
-	if (!Files.exists(path)) {
-	    throw new IllegalArgumentException("path does not exist");
+	if (token == null) {
+	    throw new IllegalArgumentException("Token is null.");
 	}
-	if (!Files.isRegularFile(path)) {
-	    throw new IllegalArgumentException("path is not a file.");
+	if (!task.getToken().equals(token)) {
+	    throw new IllegalArgumentException(
+		    "the token of the search task and the parameter token do not match");
 	}
+	// for each path it is tested if the path exists and if it is a file.
+	for (final Path path : paths) {
+	    if (path == null) {
+		throw new IllegalArgumentException("path is null");
+	    }
+	    if (Files.notExists(path)) {
+		throw new IllegalArgumentException("path does not exist");
+	    }
+	    if (!Files.isRegularFile(path)) {
+		throw new IllegalArgumentException("path is not a file.");
+	    }
+	}
+
+	final List<ScanResult> result = new ArrayList<ScanResult>();
+	for (final Path path : paths) {
+	    result.addAll(scanFile(path, token));
+	}
+	return result;
+    }
+
+    /**
+     * searches through a paricular path which must be a file for a specific
+     * token. returns a list of the results.
+     * 
+     * @param path
+     *            to be searched
+     * @param token
+     *            to be searched for
+     * @return the resulting list
+     * @throws TokenFinderException
+     *             in case an error occurs while trying to access the file
+     */
+    private List<ScanResult> scanFile(final Path path, final String token)
+	    throws TokenFinderException {
 	// the result list where the ScanResults are added to
 	final List<ScanResult> result = new ArrayList<ScanResult>();
 

@@ -14,8 +14,8 @@ public interface FileScanner {
      * scans the given file of the path for the token. Returns the result as
      * ScanResults.
      * 
-     * @param path
-     *            of the file
+     * @param paths
+     *            of the files to be searched
      * @param token
      *            to searched for.
      * @return the results of the search
@@ -24,6 +24,6 @@ public interface FileScanner {
      * @throws TokenFinderexception
      *             in case an error occurs while trying to find the token
      */
-    List<ScanResult> scanFile(Path path, String token)
+    List<ScanResult> getScanResults(List<Path> paths, String token)
 	    throws TokenFinderException;
 }
