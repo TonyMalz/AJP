@@ -1,20 +1,27 @@
 package de.uniba.wiai.dsg.ajp.assignment1.test;
 
 import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.util.List;
 
+import de.uniba.wiai.dsg.ajp.assignment1.search.SearchTask;
 import de.uniba.wiai.dsg.ajp.assignment1.search.TokenFinderException;
 import de.uniba.wiai.dsg.ajp.assignment1.search.impl.DirectoryScannerImpl;
 
+/**
+ * poor man's test ;)
+ * 
+ * @author Tony
+ * 
+ */
 public class DirectoryScannerTest {
 
     public static void main(String[] args) {
+
 	boolean error = true;
 	boolean glError = false;
 
 	try {
-	    for (Path file : new DirectoryScannerImpl().scanFileSystem(
-		    Paths.get(""), "")) {
+	    for (Path file : getScannerPaths("", "")) {
 		if (file.getFileName().toString()
 			.equals("DirectoryScannerTest.java")) {
 		    error = false;
@@ -32,8 +39,7 @@ public class DirectoryScannerTest {
 
 	error = false;
 	try {
-	    for (Path file : new DirectoryScannerImpl().scanFileSystem(
-		    Paths.get("../data"), ".txt")) {
+	    for (Path file : getScannerPaths("../data", ".txt")) {
 		if (file.getFileName().toString().equals("muh.xml")) {
 		    error = true;
 		}
@@ -49,8 +55,7 @@ public class DirectoryScannerTest {
 
 	error = true;
 	try {
-	    for (Path file : new DirectoryScannerImpl().scanFileSystem(
-		    Paths.get("../data"), ".txt")) {
+	    for (Path file : getScannerPaths("../data", ".txt")) {
 		if (file.getFileName().toString().equals("other.txt")) {
 		    error = false;
 		}
@@ -67,6 +72,15 @@ public class DirectoryScannerTest {
 	if (!glError) {
 	    System.out.println("Apperently there ain't no errors, yippie :)");
 	}
+    }
+
+    private static List<Path> getScannerPaths(String rootFolder,
+	    String fileExtension) throws TokenFinderException {
+	SearchTask task = new SearchTask();
+	task.setFileExtension(fileExtension);
+	task.setRootFolder(rootFolder);
+
+	return new DirectoryScannerImpl(task).getFilePaths();
     }
 
 }

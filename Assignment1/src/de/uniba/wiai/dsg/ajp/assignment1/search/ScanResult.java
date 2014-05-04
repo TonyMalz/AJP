@@ -3,7 +3,7 @@ package de.uniba.wiai.dsg.ajp.assignment1.search;
 import java.nio.file.Path;
 
 /**
- * Result class for the search for the token in a specific file.
+ * Container object for token search results
  * 
  * @author Mathias
  * 
@@ -13,11 +13,11 @@ public class ScanResult {
     /** the name of the file where the token was found. */
     public final Path fileName;
 
-    /** the token which is found. */
+    /** the token to be found. */
     public final String token;
 
     /**
-     * the content of the line where the token is found. Is null when there was
+     * the content of the line where the token was found. Is null when there was
      * no token found in the file.
      */
     public final String lineContent;
@@ -112,7 +112,7 @@ public class ScanResult {
     }
 
     /**
-     * @return whether this is a result
+     * @return whether the token was found
      */
     public final boolean isEmpty() {
 	if (lineContent == null && column == 0 && lineNumber == 0) {

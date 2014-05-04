@@ -20,7 +20,6 @@ import de.uniba.wiai.dsg.ajp.assignment1.search.TokenFinderException;
 import de.uniba.wiai.dsg.ajp.assignment1.search.impl.FileScannerImpl;
 
 /**
- * JUnit test for {@link FileScannerImpl}
  * 
  * @author Mathias
  * 
@@ -110,8 +109,7 @@ public class FileScannerTest {
 	final SearchTask task = new SearchTask();
 	task.setToken("test");
 	final FileScanner scanner = new FileScannerImpl(task);
-	final List<ScanResult> results = scanner.getScanResults(testPathList,
-		"test");
+	final List<ScanResult> results = scanner.getScanResults(testPathList);
 	assertEquals(results.size(), 1);
 	final ScanResult result = results.get(0);
 	// no results found
@@ -139,8 +137,7 @@ public class FileScannerTest {
 	final SearchTask task = new SearchTask();
 	task.setToken("test");
 	final FileScanner scanner = new FileScannerImpl(task);
-	final List<ScanResult> results = scanner.getScanResults(testPathList,
-		"test");
+	final List<ScanResult> results = scanner.getScanResults(testPathList);
 	assertEquals(results.size(), 1);
 	final ScanResult result = results.get(0);
 	// no results found
@@ -169,8 +166,7 @@ public class FileScannerTest {
 	final SearchTask task = new SearchTask();
 	task.setToken("test");
 	final FileScanner scanner = new FileScannerImpl(task);
-	final List<ScanResult> results = scanner.getScanResults(testPathList,
-		"test");
+	final List<ScanResult> results = scanner.getScanResults(testPathList);
 	assertEquals(results.size(), 1);
 	final ScanResult result = results.get(0);
 	// no results found
@@ -212,8 +208,7 @@ public class FileScannerTest {
 	final SearchTask task = new SearchTask();
 	task.setToken("test");
 	final FileScanner scanner = new FileScannerImpl(task);
-	final List<ScanResult> results = scanner.getScanResults(testPathList,
-		"test");
+	final List<ScanResult> results = scanner.getScanResults(testPathList);
 	assertEquals(results.size(), 6);
 	ScanResult result = results.get(0);
 

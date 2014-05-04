@@ -2,10 +2,14 @@ package de.uniba.wiai.dsg.ajp.assignment1.search.impl;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
+import java.util.Objects;
 
 import de.uniba.wiai.dsg.ajp.assignment1.search.OutputFormatter;
 import de.uniba.wiai.dsg.ajp.assignment1.search.ScanResult;
@@ -14,14 +18,22 @@ import de.uniba.wiai.dsg.ajp.assignment1.search.TokenFinderException;
 
 public class OutputFormatterImpl implements OutputFormatter {
 
+    private SearchTask task;
+
+    public OutputFormatterImpl(SearchTask task) {
+	Objects.requireNonNull(task, "task is null");
+	this.task = task;
+    }
+
     @Override
-    public void show(Path resultPath, List<ScanResult> results, SearchTask task)
+    public void showAndWriteToFile(final List<ScanResult> scanResults)
 	    throws TokenFinderException {
 
-	// path must not be null
-	if (resultPath == null) {
-	    throw new IllegalArgumentException("result path must not be null");
-	}
+	Objects.requireNonNull(scanResults, "scanResults is null");
+	Objects.requireNonNull(task.getResultFile(), "result file is null");
+
+	final Path resultPath = Paths.get(task.getResultFile());
+
 	// if file exists already -> file has to be a file and overwritable
 	if (Files.exists(resultPath)) {
 	    if (!Files.isRegularFile(resultPath)) {
@@ -33,12 +45,11 @@ public class OutputFormatterImpl implements OutputFormatter {
 	    }
 	}
 
-	try (BufferedWriter writer = Files.newBufferedWriter(resultPath,
-		StandardCharsets.UTF_8)) {
+	try (BufferedWriter writer = getWriter(resultPath)) {
 
 	    final String token = task.getToken();
 
-	    if (results.isEmpty()) {
+	    if (scanResults.isEmpty()) {
 		// no file was found
 		writer.write("The project includes " + token + " 0 time(s)");
 	    } else {
@@ -48,11 +59,11 @@ public class OutputFormatterImpl implements OutputFormatter {
 		int projectFound = 0;
 		Path currentFile;
 
-		while (counter < results.size()) {
+		while (counter < scanResults.size()) {
 		    // if ScanResult isEmpty (has no result),
 		    // print project summary
-		    if (results.get(counter).isEmpty()) {
-			writer.write(results.get(counter).fileName
+		    if (scanResults.get(counter).isEmpty()) {
+			writer.write(scanResults.get(counter).fileName
 				+ " includes " + token + " " + " 0 time(s)");
 			writer.newLine();
 			writer.newLine();
@@ -60,17 +71,18 @@ public class OutputFormatterImpl implements OutputFormatter {
 		    } else {
 
 			// save fileName as currentFile
-			currentFile = results.get(counter).fileName;
+			currentFile = scanResults.get(counter).fileName;
 			int fileFound = 0;
 
 			// while not all results are processed and entry is a
 			// real found result and fileNames equal currentFile,
 			// write result-line
 			// -> means, write all lines for the whole file
-			while (counter < results.size()
+			while (counter < scanResults.size()
 
-			&& results.get(counter).fileName.equals(currentFile)) {
-			    ScanResult scanElement = results.get(counter);
+				&& scanResults.get(counter).fileName
+					.equals(currentFile)) {
+			    ScanResult scanElement = scanResults.get(counter);
 			    writer.write(scanElement.fileName + ":");
 			    writer.write(scanElement.lineNumber + ",");
 			    writer.write(scanElement.column + " > ");
@@ -97,10 +109,41 @@ public class OutputFormatterImpl implements OutputFormatter {
 		// project finished -> project summary
 		writer.write("The project includes " + token + " "
 			+ projectFound + " time(s)");
+		writer.newLine();
 	    }
 	} catch (IOException e) {
 	    throw new TokenFinderException(e);
 	}
 
     }
+
+    /**
+     * @param resultPath
+     *            path to output file
+     * 
+     * @return custom writer to both, System.out and file system
+     */
+    private BufferedWriter getWriter(final Path resultPath) throws IOException {
+
+	return new FileAndSystemOutWriter(new OutputStreamWriter(
+		Files.newOutputStream(resultPath), StandardCharsets.UTF_8));
+    }
+
+    /**
+     * Custom BufferedWriter object, which outputs to both, System.out and file
+     * system
+     */
+    private class FileAndSystemOutWriter extends BufferedWriter {
+
+	public FileAndSystemOutWriter(Writer out) {
+	    super(out);
+	}
+
+	@Override
+	public void write(String str) throws IOException {
+	    System.out.print(str);
+	    super.write(str);
+	}
+    }
+
 }

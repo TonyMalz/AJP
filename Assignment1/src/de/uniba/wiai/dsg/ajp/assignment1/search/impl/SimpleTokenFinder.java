@@ -1,12 +1,8 @@
 package de.uniba.wiai.dsg.ajp.assignment1.search.impl;
 
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 
-import de.uniba.wiai.dsg.ajp.assignment1.search.DirectoryScanner;
-import de.uniba.wiai.dsg.ajp.assignment1.search.FileScanner;
-import de.uniba.wiai.dsg.ajp.assignment1.search.OutputFormatter;
 import de.uniba.wiai.dsg.ajp.assignment1.search.ScanResult;
 import de.uniba.wiai.dsg.ajp.assignment1.search.SearchTask;
 import de.uniba.wiai.dsg.ajp.assignment1.search.TokenFinder;
@@ -31,29 +27,13 @@ public class SimpleTokenFinder implements TokenFinder {
 	// input validation
 	validateSearchTask(task);
 
-	final String rootPath = task.getRootFolder();
-	final String outputPath = task.getResultFile();
-	final String token = task.getToken();
-	final String fileExtension = task.getFileExtension();
+	final List<Path> filePaths = new DirectoryScannerImpl(task)
+		.getFilePaths();
 
-	/**
-	 * TODO Entrümpeln Brauchts das wirklich; steht doch alles im SearchTask
-	 * obj? Bin mittlerweile ja eher dafür, das teil im KOnstruktor einfach
-	 * an die einzelnen Module weiter zu reichen
-	 */
-	final Path resultPath = Paths.get(outputPath);
-	final Path root = Paths.get(rootPath);
-	// TODO change constructor for task
-	final DirectoryScanner directoryScanner = new DirectoryScannerImpl();
-	final List<Path> pathsWithExtention = directoryScanner.scanFileSystem(
-		root, fileExtension);
+	final List<ScanResult> scanResults = new FileScannerImpl(task)
+		.getScanResults(filePaths);
 
-	final FileScanner fileScanner = new FileScannerImpl(task);
-	final List<ScanResult> searchResultUnfiltered = fileScanner
-		.getScanResults(pathsWithExtention, token);
-	// TODO change onstructor for task
-	final OutputFormatter outputFormatter = new OutputFormatterImpl();
-	outputFormatter.show(resultPath, searchResultUnfiltered, task);
+	new OutputFormatterImpl(task).showAndWriteToFile(scanResults);
 
     }
 

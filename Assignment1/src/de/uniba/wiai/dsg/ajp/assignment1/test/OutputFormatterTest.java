@@ -5,6 +5,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.uniba.wiai.dsg.ajp.assignment1.search.OutputFormatter;
 import de.uniba.wiai.dsg.ajp.assignment1.search.ScanResult;
 import de.uniba.wiai.dsg.ajp.assignment1.search.SearchTask;
 import de.uniba.wiai.dsg.ajp.assignment1.search.TokenFinderException;
@@ -43,11 +44,17 @@ public class OutputFormatterTest {
 
 	SearchTask task = new SearchTask();
 	task.setToken("simple");
+	task.setResultFile("../test.txt");
+	try {
+	    OutputFormatter formatter = new OutputFormatterImpl(task);
+	    formatter.showAndWriteToFile(results);
+	    System.out.println("program ran successfully");
 
-	OutputFormatterImpl o = new OutputFormatterImpl();
-	o.show(Paths.get("../test.txt"), results, task);
-
-	System.out.println("program ran successfully");
+	} catch (TokenFinderException e) {
+	    System.out.println("Ok, caught token finder exception");
+	} catch (Exception e) {
+	    System.out.println("uupsie ");
+	}
 
     }
 

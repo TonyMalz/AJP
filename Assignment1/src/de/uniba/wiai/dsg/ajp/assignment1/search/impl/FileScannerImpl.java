@@ -34,18 +34,14 @@ public class FileScannerImpl implements FileScanner {
     }
 
     @Override
-    public List<ScanResult> getScanResults(final List<Path> paths,
-	    final String token) throws TokenFinderException {
+    public List<ScanResult> getScanResults(final List<Path> paths)
+	    throws TokenFinderException {
 	// input validation:
 	if (paths == null) {
 	    throw new IllegalArgumentException("Paths is null.");
 	}
-	if (token == null) {
+	if (task.getToken() == null) {
 	    throw new IllegalArgumentException("Token is null.");
-	}
-	if (!task.getToken().equals(token)) {
-	    throw new IllegalArgumentException(
-		    "the token of the search task and the parameter token do not match");
 	}
 	// for each path it is tested if the path exists and if it is a file.
 	for (final Path path : paths) {
@@ -62,24 +58,22 @@ public class FileScannerImpl implements FileScanner {
 
 	final List<ScanResult> result = new ArrayList<ScanResult>();
 	for (final Path path : paths) {
-	    result.addAll(scanFile(path, token));
+	    result.addAll(scanFile(path));
 	}
 	return result;
     }
 
     /**
-     * searches through a paricular path which must be a file for a specific
+     * searches through a particular path which must be a file for a specific
      * token. returns a list of the results.
      * 
      * @param path
      *            to be searched
-     * @param token
-     *            to be searched for
      * @return the resulting list
      * @throws TokenFinderException
      *             in case an error occurs while trying to access the file
      */
-    private List<ScanResult> scanFile(final Path path, final String token)
+    private List<ScanResult> scanFile(final Path path)
 	    throws TokenFinderException {
 	// the result list where the ScanResults are added to
 	final List<ScanResult> result = new ArrayList<ScanResult>();
@@ -94,7 +88,8 @@ public class FileScannerImpl implements FileScanner {
 		lineCounter++;
 		// searches the line for the token and add the results to the
 		// result list
-		result.addAll(searchString(line, token, path, lineCounter));
+		result.addAll(searchString(line, task.getToken(), path,
+			lineCounter));
 		// next line
 		line = reader.readLine();
 	    }
@@ -104,7 +99,7 @@ public class FileScannerImpl implements FileScanner {
 	// when no token is found in the file a ScanResultNotFound is added to
 	// the list to indicate that the file has no hits.
 	if (result.isEmpty()) {
-	    final ScanResult notFound = new ScanResult(path, token);
+	    final ScanResult notFound = new ScanResult(path, task.getToken());
 
 	    result.add(notFound);
 	}
@@ -128,7 +123,7 @@ public class FileScannerImpl implements FileScanner {
 	    final String token, final Path file, final int lineCounter) {
 	// the result list
 	final List<ScanResult> result = new ArrayList<ScanResult>();
-	// the lenth of the line and the token
+	// the length of the line and the token
 	final int lineLength = line.length();
 	final int tokenLength = token.length();
 	for (int i = 0; i <= lineLength - tokenLength; i++) {
