@@ -30,15 +30,6 @@ public class DirectoryScannerImpl implements DirectoryScanner {
 	this.task = task;
     }
 
-    /**
-     * Returns list of file paths within the given root folder. Optionally
-     * confines results by a given file extension.
-     * 
-     * @return the list of matching file paths
-     * @throws TokenFinderException
-     *             in case an error occurs while trying to traverse the file
-     *             tree
-     */
     @Override
     public List<Path> getFilePaths() throws TokenFinderException {
 
@@ -64,18 +55,21 @@ public class DirectoryScannerImpl implements DirectoryScanner {
 				+ startDirectory);
 	    }
 
+	    // create fileVisitor helper object to automatically traverse a
+	    // given file tree and add matching files to the file list
 	    FileVisitor<Path> fileTreeVisitor = new FileVisitor<Path>() {
 
 		@Override
 		public FileVisitResult preVisitDirectory(Path dir,
 			BasicFileAttributes attrs) throws IOException {
+		    // nothing to do before visiting a directory
 		    return FileVisitResult.CONTINUE;
 		}
 
 		@Override
 		public FileVisitResult visitFile(Path file,
 			BasicFileAttributes attrs) throws IOException {
-
+		    // add file with matching extension to file list
 		    if (file.toString().endsWith(searchForExtension)) {
 			fileList.add(file);
 		    }
@@ -85,12 +79,14 @@ public class DirectoryScannerImpl implements DirectoryScanner {
 		@Override
 		public FileVisitResult visitFileFailed(Path file,
 			IOException exc) throws IOException {
+		    // nothing to do when file read failed
 		    return FileVisitResult.CONTINUE;
 		}
 
 		@Override
 		public FileVisitResult postVisitDirectory(Path dir,
 			IOException exc) throws IOException {
+		    // nothing to do after leaving directory
 		    return FileVisitResult.CONTINUE;
 		}
 	    };

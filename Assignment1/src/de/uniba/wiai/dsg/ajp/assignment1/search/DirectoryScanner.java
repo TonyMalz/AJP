@@ -15,10 +15,13 @@ import java.util.List;
  */
 public interface DirectoryScanner {
     /**
-     * Iterates through the file system. and returns all paths to files which
-     * have the given extension.
+     * Returns list of file paths within the given root folder. Optionally
+     * confines results by a given file extension.
      * 
-     * @return all paths to files which have the given file extension
+     * @return the list of matching file paths
+     * @throws TokenFinderException
+     *             in case an error occurs while trying to traverse the file
+     *             tree
      */
     List<Path> getFilePaths() throws TokenFinderException;
 }
