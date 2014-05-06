@@ -46,60 +46,61 @@ public class DirectoryScannerImpl implements DirectoryScanner {
 
 	final Path startDirectory = Paths.get(task.getRootFolder());
 
-	// sanity checks
-	if (!Files.isReadable(startDirectory)) {
-	    throw new TokenFinderException(
-		    "starting directory is not readable or does not exist: "
-			    + startDirectory);
-	}
-	if (!Files.isDirectory(startDirectory)) {
-	    throw new TokenFinderException(
-		    "starting directory is not a directory: " + startDirectory);
-	}
-
 	// default to 'match all' if fileExtension is null
 	final String searchForExtension = (task.getFileExtension() == null) ? ""
 		: task.getFileExtension();
 
 	final List<Path> fileList = new ArrayList<>();
-	FileVisitor<Path> fileTreeVisitor = new FileVisitor<Path>() {
-
-	    @Override
-	    public FileVisitResult preVisitDirectory(Path dir,
-		    BasicFileAttributes attrs) throws IOException {
-		return FileVisitResult.CONTINUE;
-	    }
-
-	    @Override
-	    public FileVisitResult visitFile(Path file,
-		    BasicFileAttributes attrs) throws IOException {
-
-		if (file.toString().endsWith(searchForExtension)) {
-		    fileList.add(file);
-		}
-		return FileVisitResult.CONTINUE;
-	    }
-
-	    @Override
-	    public FileVisitResult visitFileFailed(Path file, IOException exc)
-		    throws IOException {
-		return FileVisitResult.CONTINUE;
-	    }
-
-	    @Override
-	    public FileVisitResult postVisitDirectory(Path dir, IOException exc)
-		    throws IOException {
-		return FileVisitResult.CONTINUE;
-	    }
-	};
-
 	try {
+	    // sanity checks
+	    if (!Files.isReadable(startDirectory)) {
+		throw new TokenFinderException(
+			"starting directory is not readable or does not exist: "
+				+ startDirectory);
+	    }
+	    if (!Files.isDirectory(startDirectory)) {
+		throw new TokenFinderException(
+			"starting directory is not a directory: "
+				+ startDirectory);
+	    }
+
+	    FileVisitor<Path> fileTreeVisitor = new FileVisitor<Path>() {
+
+		@Override
+		public FileVisitResult preVisitDirectory(Path dir,
+			BasicFileAttributes attrs) throws IOException {
+		    return FileVisitResult.CONTINUE;
+		}
+
+		@Override
+		public FileVisitResult visitFile(Path file,
+			BasicFileAttributes attrs) throws IOException {
+
+		    if (file.toString().endsWith(searchForExtension)) {
+			fileList.add(file);
+		    }
+		    return FileVisitResult.CONTINUE;
+		}
+
+		@Override
+		public FileVisitResult visitFileFailed(Path file,
+			IOException exc) throws IOException {
+		    return FileVisitResult.CONTINUE;
+		}
+
+		@Override
+		public FileVisitResult postVisitDirectory(Path dir,
+			IOException exc) throws IOException {
+		    return FileVisitResult.CONTINUE;
+		}
+	    };
+
 	    Files.walkFileTree(startDirectory, fileTreeVisitor);
 	} catch (SecurityException e) {
 	    throw new TokenFinderException("Access denied to starting folder: "
-		    + startDirectory);
+		    + startDirectory, e);
 	} catch (IOException e) {
-	    throw new TokenFinderException(e.getMessage());
+	    throw new TokenFinderException(e.getMessage(), e);
 	}
 
 	return fileList;
