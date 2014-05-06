@@ -26,6 +26,12 @@ public class FileScannerImpl implements FileScanner {
     /** the search task for the search. */
     private final SearchTask task;
 
+    /**
+     * costructor.
+     * 
+     * @param task
+     *            the task to searched for.
+     */
     public FileScannerImpl(final SearchTask task) {
 	if (task == null) {
 	    throw new IllegalArgumentException("Search task is null.");
@@ -99,7 +105,7 @@ public class FileScannerImpl implements FileScanner {
 		line = reader.readLine();
 	    }
 	} catch (final IOException e) {
-	    throw new TokenFinderException(e);
+	    throw new TokenFinderException("an I/O error occured.", e);
 	} catch (final SecurityException e) {
 	    throw new TokenFinderException("Access denied to the path: "
 		    + path.toString(), e);

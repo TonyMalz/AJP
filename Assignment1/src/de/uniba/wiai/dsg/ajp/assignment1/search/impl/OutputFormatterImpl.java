@@ -20,6 +20,12 @@ public class OutputFormatterImpl implements OutputFormatter {
 
     private final SearchTask task;
 
+    /**
+     * Constructor.
+     * 
+     * @param task
+     *            the task to be printed to console and file.
+     */
     public OutputFormatterImpl(final SearchTask task) {
 	Objects.requireNonNull(task, "task is null");
 	this.task = task;
