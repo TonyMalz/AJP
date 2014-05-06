@@ -48,11 +48,16 @@ public class FileScannerImpl implements FileScanner {
 	    if (path == null) {
 		throw new IllegalArgumentException("path is null");
 	    }
-	    if (Files.notExists(path)) {
-		throw new IllegalArgumentException("path does not exist");
-	    }
-	    if (!Files.isRegularFile(path)) {
-		throw new IllegalArgumentException("path is not a file.");
+	    try {
+		if (Files.notExists(path)) {
+		    throw new IllegalArgumentException("path does not exist");
+		}
+		if (!Files.isRegularFile(path)) {
+		    throw new IllegalArgumentException("path is not a file.");
+		}
+	    } catch (final SecurityException e) {
+		throw new TokenFinderException("Access denied to the path: "
+			+ path.toString(), e);
 	    }
 	}
 
@@ -95,6 +100,9 @@ public class FileScannerImpl implements FileScanner {
 	    }
 	} catch (final IOException e) {
 	    throw new TokenFinderException(e);
+	} catch (final SecurityException e) {
+	    throw new TokenFinderException("Access denied to the path: "
+		    + path.toString(), e);
 	}
 	// when no token is found in the file a ScanResultNotFound is added to
 	// the list to indicate that the file has no hits.
