@@ -24,7 +24,13 @@ import de.uniba.wiai.dsg.ajp.assignment1.search.TokenFinderException;
 public class DirectoryScannerImpl implements DirectoryScanner {
 
     private SearchTask task;
-
+    
+    /**
+     * Constructor
+     * 
+     * @param task
+     *            the task to searched for.
+     */
     public DirectoryScannerImpl(final SearchTask task) {
 	Objects.requireNonNull(task, "search task is null");
 	this.task = task;
@@ -96,7 +102,7 @@ public class DirectoryScannerImpl implements DirectoryScanner {
 	    throw new TokenFinderException("Access denied to starting folder: "
 		    + startDirectory, e);
 	} catch (IOException e) {
-	    throw new TokenFinderException(e.getMessage(), e);
+	    throw new TokenFinderException("An I/O error occured.", e);
 	}
 
 	return fileList;

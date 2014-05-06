@@ -5,6 +5,7 @@ package de.uniba.wiai.dsg.ajp.assignment1.search.impl;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.nio.charset.MalformedInputException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -27,7 +28,7 @@ public class FileScannerImpl implements FileScanner {
     private final SearchTask task;
 
     /**
-     * costructor.
+     * Constructor.
      * 
      * @param task
      *            the task to searched for.
@@ -104,19 +105,25 @@ public class FileScannerImpl implements FileScanner {
 		// next line
 		line = reader.readLine();
 	    }
-	} catch (final IOException e) {
+	    
+	    // if no token was found in the file an empty ScanResult is added to
+	    // the list to indicate that the file has no hits.
+	    if (result.isEmpty()) {
+		final ScanResult notFound = new ScanResult(path, task.getToken());
+
+		result.add(notFound);
+	    }
+	} 
+	catch(MalformedInputException e){
+	    //ignore unsupported charsets
+	}
+	catch (final IOException e) {
 	    throw new TokenFinderException("an I/O error occured.", e);
 	} catch (final SecurityException e) {
 	    throw new TokenFinderException("Access denied to the path: "
 		    + path.toString(), e);
 	}
-	// when no token is found in the file a ScanResultNotFound is added to
-	// the list to indicate that the file has no hits.
-	if (result.isEmpty()) {
-	    final ScanResult notFound = new ScanResult(path, task.getToken());
-
-	    result.add(notFound);
-	}
+	
 	return result;
     }
 
