@@ -125,7 +125,7 @@ public class OutputFormatterImpl implements OutputFormatter {
 		writer.newLine();
 	    }
 	} catch (final IOException e) {
-	    throw new TokenFinderException(e);
+	    throw new TokenFinderException("An I/O error occured.", e);
 	} catch (final SecurityException e) {
 	    throw new TokenFinderException("access denied to the path:"
 		    + resultPath.toString(), e);
