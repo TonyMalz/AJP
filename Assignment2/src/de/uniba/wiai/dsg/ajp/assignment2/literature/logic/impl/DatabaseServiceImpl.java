@@ -1,70 +1,137 @@
 package de.uniba.wiai.dsg.ajp.assignment2.literature.logic.impl;
 
+import java.io.File;
+import java.util.Arrays;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.MarshalException;
+import javax.xml.bind.Marshaller;
+
 import de.uniba.wiai.dsg.ajp.assignment2.literature.logic.DatabaseService;
 import de.uniba.wiai.dsg.ajp.assignment2.literature.logic.LiteratureDatabaseException;
 import de.uniba.wiai.dsg.ajp.assignment2.literature.logic.model.Author;
+import de.uniba.wiai.dsg.ajp.assignment2.literature.logic.model.Database;
 import de.uniba.wiai.dsg.ajp.assignment2.literature.logic.model.Publication;
 import de.uniba.wiai.dsg.ajp.assignment2.literature.logic.model.PublicationType;
 
 public class DatabaseServiceImpl implements DatabaseService {
 
-	@Override
-	public void addPublication(String title, int yearPublished,
-			PublicationType type, Author[] authors, String id)
-			throws LiteratureDatabaseException {
-		// TODO Auto-generated method stub
+    private Database dataBase;
 
+    @Override
+    public void addPublication(final String title, final int yearPublished,
+	    final PublicationType type, final Author[] authors, final String id)
+	    throws LiteratureDatabaseException {
+	final Publication publication = new Publication();
+	publication.setYearPublished(yearPublished);
+	publication.setType(type);
+	publication.setAuthors(Arrays.asList(authors));
+	publication.setId(id);
+	dataBase.getPublications().add(publication);
+	// when any author is not yet in the list he/she is added
+	for (final Author author : authors) {
+	    // TODO this might not be implemented right
+	    if (!dataBase.getAuthors().contains(author)) {
+		dataBase.getAuthors().add(author);
+	    }
 	}
 
-	@Override
-	public void removePublicationByID(String id)
-			throws LiteratureDatabaseException {
-		// TODO Auto-generated method stub
+    }
 
+    @Override
+    public void removePublicationByID(final String id)
+	    throws LiteratureDatabaseException {
+	Publication publicationToRemove = null;
+	for (final Publication publication : dataBase.getPublications()) {
+	    if (publication.getId().equals(id)) {
+		publicationToRemove = publication;
+		break;
+	    }
+	}
+	if (publicationToRemove == null) {
+	    // not found
+	    return;
+	}
+	for (final Author author : dataBase.getAuthors()) {
+	    for (final Publication publication : author.getPublications()) {
+		if (publication.getId().equals(id)) {
+		    author.getPublications().remove(publication);
+		    break;
+		}
+	    }
+	}
+    }
+
+    @Override
+    public void removeAuthorByID(final String id)
+	    throws LiteratureDatabaseException {
+	// TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void addAuthor(final String name, final String email, final String id)
+	    throws LiteratureDatabaseException {
+	// TODO validation esp. ID
+	final Author authorToAdd = new Author();
+	authorToAdd.setName(name);
+	authorToAdd.setEmail(email);
+	authorToAdd.setId(id);
+	dataBase.getAuthors().add(authorToAdd);
+
+    }
+
+    @Override
+    public Publication[] getPublications() {
+	return dataBase.getPublications().toArray(
+		new Publication[dataBase.getPublications().size()]);
+    }
+
+    @Override
+    public Author[] getAuthors() {
+	return dataBase.getAuthors().toArray(
+		new Author[dataBase.getAuthors().size()]);
+    }
+
+    @Override
+    public void clear() {
+	dataBase.getAuthors().clear();
+	dataBase.getPublications().clear();
+
+    }
+
+    @Override
+    public void printXMLToConsole() throws LiteratureDatabaseException {
+
+	try {
+	    final JAXBContext context = JAXBContext.newInstance(Database.class);
+	    final Marshaller ms = context.createMarshaller();
+	    ms.marshal(dataBase, System.out);
+	} catch (final MarshalException e) {
+	    // TODO add message
+	    throw new LiteratureDatabaseException(e);
+	} catch (final JAXBException e) {
+	    // TODO add message
+	    throw new LiteratureDatabaseException(e);
 	}
 
-	@Override
-	public void removeAuthorByID(String id)
-			throws LiteratureDatabaseException {
-		// TODO Auto-generated method stub
+    }
 
+    @Override
+    public void saveXMLToFile(final String path)
+	    throws LiteratureDatabaseException {
+	try {
+	    final JAXBContext context = JAXBContext.newInstance(Database.class);
+	    final Marshaller ms = context.createMarshaller();
+	    ms.marshal(dataBase, new File(path));
+	} catch (final MarshalException e) {
+	    // TODO add message
+	    throw new LiteratureDatabaseException(e);
+	} catch (final JAXBException e) {
+	    // TODO add message
+	    throw new LiteratureDatabaseException(e);
 	}
-
-	@Override
-	public void addAuthor(String name, String email, String id)
-			throws LiteratureDatabaseException {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public Publication[] getPublications() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Author[] getAuthors() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void clear() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void printXMLToConsole() throws LiteratureDatabaseException {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void saveXMLToFile(String path) throws LiteratureDatabaseException {
-		// TODO Auto-generated method stub
-
-	}
+    }
 
 }
