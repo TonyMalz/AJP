@@ -17,7 +17,27 @@ import de.uniba.wiai.dsg.ajp.assignment2.literature.logic.model.PublicationType;
 
 public class DatabaseServiceImpl implements DatabaseService {
 
-    private Database dataBase;
+    private final Database dataBase;
+
+    /**
+     * Constructor.
+     * 
+     * @param dataBase
+     *            the database to be serviced.
+     */
+    public DatabaseServiceImpl(final Database dataBase) {
+	if (dataBase == null) {
+	    throw new IllegalArgumentException("database is null.");
+	}
+	this.dataBase = dataBase;
+    }
+
+    /**
+     * Constructors sets up a new empty database.
+     */
+    public DatabaseServiceImpl() {
+	dataBase = new Database();
+    }
 
     @Override
     public void addPublication(final String title, final int yearPublished,
@@ -73,7 +93,6 @@ public class DatabaseServiceImpl implements DatabaseService {
     @Override
     public void addAuthor(final String name, final String email, final String id)
 	    throws LiteratureDatabaseException {
-	// TODO validation esp. ID
 	final Author authorToAdd = new Author();
 	authorToAdd.setName(name);
 	authorToAdd.setEmail(email);
