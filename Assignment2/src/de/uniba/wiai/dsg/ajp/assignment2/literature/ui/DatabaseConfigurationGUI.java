@@ -1,168 +1,388 @@
 package de.uniba.wiai.dsg.ajp.assignment2.literature.ui;
 
 import java.io.IOException;
+import java.util.List;
 
 import de.uniba.wiai.dsg.ajp.assignment2.literature.logic.DatabaseService;
 import de.uniba.wiai.dsg.ajp.assignment2.literature.logic.LiteratureDatabaseException;
 import de.uniba.wiai.dsg.ajp.assignment2.literature.logic.MainService;
+import de.uniba.wiai.dsg.ajp.assignment2.literature.logic.ValidationHelper;
 import de.uniba.wiai.dsg.ajp.assignment2.literature.logic.impl.MainServiceImpl;
 import de.uniba.wiai.dsg.ajp.assignment2.literature.logic.model.Author;
 import de.uniba.wiai.dsg.ajp.assignment2.literature.logic.model.Publication;
+import de.uniba.wiai.dsg.ajp.assignment2.literature.logic.model.PublicationType;
 
 public class DatabaseConfigurationGUI {
+	/**
+	 * Helper to ask the user for inputs.
+	 */
+	private final ConsoleHelper consoleHelper = ConsoleHelper.build();
 
-    private final ConsoleHelper consoleHelper = ConsoleHelper.build();
-    private DatabaseService dataBaseService;
-    private final MainService mainService = new MainServiceImpl();
+	/**
+	 * Helper to load and create a new DataBase.
+	 */
+	private final MainService mainService = new MainServiceImpl();
 
-    public DatabaseConfigurationGUI() throws LiteratureDatabaseException {
-	try {
-	    boolean run = true;
-	    while (run) {
-		printMainMenu();
-		final int choice = consoleHelper.askIntegerInRange("", 0, 2);
+	/**
+	 * the database to be modified. By default, an empty dataBase is created.
+	 */
+	private DatabaseService dataBaseService = mainService.create();
+
+	/**
+	 * Constructor. <br>
+	 * the main menu is displayed and the user is asked for a action.
+	 * 
+	 * @throws LiteratureDatabaseException
+	 */
+	public DatabaseConfigurationGUI() throws LiteratureDatabaseException {
+		try {
+			boolean run = true;
+			while (run) {
+				printMainMenu();
+				final int choice = consoleHelper.askIntegerInRange("", 0, 2);
+				switch (choice) {
+				case 1:
+					subMenu();
+					break;
+				case 2:
+					dataBaseService = mainService.create();
+					break;
+				case 0:
+				default:
+					run = false;
+
+				}
+
+			}
+		} catch (final IOException e) {
+			throw new LiteratureDatabaseException(e);
+		}
+	}
+
+	/**
+	 * Prints the main menu to the console.
+	 */
+	private static void printMainMenu() {
+		System.out.println("\t MAIN MENU:");
+		System.out.println("( 1 ) Validate and Load Literature Database");
+		System.out.println("( 2 ) Create New Literature Database");
+		System.out.println("( 0 ) Exit System");
+	}
+
+	/**
+	 * Prints the submenu. and asks the author for a input.
+	 * 
+	 * @throws IOException
+	 * @throws LiteratureDatabaseException
+	 */
+	private void subMenu() throws IOException, LiteratureDatabaseException {
+		printSubMenu();
+		final int choice = consoleHelper.askIntegerInRange("", 0, 8);
 		switch (choice) {
 		case 1:
-		    subMenu();
-		    break;
+			addAuthor();
+			break;
 		case 2:
-		    dataBaseService = mainService.create();
-		    break;
+			removeAuthor();
+			break;
+		case 3:
+			addPublication();
+			break;
+		case 4:
+			removePublication();
+			break;
+		case 5:
+			ListPublication();
+			break;
+		case 6:
+			ListAuthors();
+			break;
+		case 7:
+			printXMLConsole();
+			break;
+		case 8:
+			printXMLFile();
+			break;
+
 		case 0:
 		default:
-		    run = false;
+			// do nothing and go back to the main menu
+			break;
+		}
+	}
 
+	/**
+	 * Prints the sub menu to the console.
+	 */
+	private static void printSubMenu() {
+		System.out.println("( 1 ) Add Author");
+		System.out.println("( 2 ) Remove Author");
+		System.out.println("( 3 ) Add Publication");
+		System.out.println("( 4 ) Remove Publication");
+		System.out.println("( 5 ) List Publications");
+		System.out.println("( 6 ) List Authors");
+		System.out.println("( 7 ) Print XML on Console");
+		System.out.println("( 8 ) Save XML to File");
+		System.out.println("( 0 ) Back to main menu / close without saving");
+	}
+
+	/**
+	 * Prints the dataBase to a file. The user is asked for the path to be stred
+	 * to.
+	 * 
+	 * @throws IOException
+	 * @throws LiteratureDatabaseException
+	 */
+	private void printXMLFile() throws IOException, LiteratureDatabaseException {
+
+		final String path = consoleHelper
+				.askNonEmptyString("input a a valid path for the xml file.");
+		dataBaseService.saveXMLToFile(path);
+	}
+
+	/**
+	 * Prints the dataBase to the console.
+	 * 
+	 * @throws LiteratureDatabaseException
+	 */
+	private void printXMLConsole() throws LiteratureDatabaseException {
+		dataBaseService.printXMLToConsole();
+
+	}
+
+	/**
+	 * Lists all Authors that are in the database.
+	 */
+	private void ListAuthors() {
+		for (final Author author : dataBaseService.getAuthors()) {
+			System.out.println(author.toString());
+		}
+	}
+
+	/**
+	 * Lists all publications that are in the database.
+	 */
+	private void ListPublication() {
+		for (final Publication publication : dataBaseService.getPublications()) {
+			System.out.println(publication.toString());
 		}
 
-	    }
-	} catch (final IOException e) {
-	    throw new LiteratureDatabaseException(e);
-	}
-    }
-
-    /**
-     * Prints the main menu to the console.
-     */
-    private static void printMainMenu() {
-	System.out.println("\t MAIN MENU:");
-	System.out.println("( 1 ) Validate and Load Literature Database");
-	System.out.println("( 2 ) Create New Literature Database");
-	System.out.println("( 0 ) Exit System");
-    }
-
-    private void subMenu() throws IOException, LiteratureDatabaseException {
-	printSubMenu();
-	final int choice = consoleHelper.askIntegerInRange("", 0, 8);
-	switch (choice) {
-	case 1:
-	    addAuthor();
-	    break;
-	case 2:
-	    removeAuthor();
-	    break;
-	case 3:
-	    addPublication();
-	    break;
-	case 4:
-	    removePublication();
-	    break;
-	case 5:
-	    ListPublication();
-	    break;
-	case 6:
-	    ListAuthors();
-	    break;
-	case 7:
-	    printXMLConsole();
-	    break;
-	case 8:
-	    printXMLFile();
-	    break;
-
-	case 0:
-	default:
-	    // do nothing and go back to the main menu
-	    break;
-	}
-    }
-
-    /**
-     * Prits the sub menu to the console.
-     */
-    private static void printSubMenu() {
-	System.out.println("( 1 ) Add Author");
-	System.out.println("( 2 ) Remove Author");
-	System.out.println("( 3 ) Add Publication");
-	System.out.println("( 4 ) Remove Publication");
-	System.out.println("( 5 ) List Publications");
-	System.out.println("( 6 ) List Authors");
-	System.out.println("( 7 ) Print XML on Console");
-	System.out.println("( 8 ) Save XML to File");
-	System.out.println("( 0 ) Back to main menu / close without saving");
-    }
-
-    private void printXMLFile() throws IOException, LiteratureDatabaseException {
-
-	final String path = consoleHelper
-		.askNonEmptyString("input a a valid path for the xml file.");
-	dataBaseService.saveXMLToFile(path);
-    }
-
-    private void printXMLConsole() throws LiteratureDatabaseException {
-	dataBaseService.printXMLToConsole();
-
-    }
-
-    private void ListAuthors() {
-	for (final Author author : dataBaseService.getAuthors()) {
-	    System.out.println(author.toString());
-	}
-    }
-
-    private void ListPublication() {
-	for (final Publication publication : dataBaseService.getPublications()) {
-	    System.out.println(publication.toString());
 	}
 
-    }
+	/**
+	 * Removes a Publication from the DataBase. The user is asked for the id of
+	 * the publication to be removed.
+	 * 
+	 * @throws IOException
+	 * @throws LiteratureDatabaseException
+	 */
+	private void removePublication() throws IOException,
+			LiteratureDatabaseException {
+		final String id = consoleHelper
+				.askNonEmptyString("Enter the ID of the Publication to be removed.");
+		dataBaseService.removePublicationByID(id);
 
-    private void removePublication() {
-	// TODO Auto-generated method stub
+	}
 
-    }
+	/**
+	 * Adds a publication to the database. The user is asked one after another
+	 * for the title, the published year, the type and the authors.
+	 * 
+	 * @throws LiteratureDatabaseException
+	 * @throws IOException
+	 */
+	private void addPublication() throws LiteratureDatabaseException,
+			IOException {
+		final Publication pubToAdd = getNewPublication();
+		dataBaseService.addPublication(pubToAdd.getTitle(), pubToAdd
+				.getYearPublished(), pubToAdd.getType(), pubToAdd.getAuthors()
+				.toArray(new Author[0]), pubToAdd.getId());
 
-    private void addPublication() throws LiteratureDatabaseException {
-	final Publication pubToAdd = getNewPublication();
-	dataBaseService.addPublication(pubToAdd.getTitle(), pubToAdd
-		.getYearPublished(), pubToAdd.getType(), pubToAdd.getAuthors()
-		.toArray(new Author[0]), pubToAdd.getId());
+	}
 
-    }
+	/**
+	 * Removes a author from the database. The user is asked for the id of the
+	 * author to be removed.
+	 * 
+	 * @throws LiteratureDatabaseException
+	 * @throws IOException
+	 */
+	private void removeAuthor() throws LiteratureDatabaseException, IOException {
+		final String id = consoleHelper
+				.askNonEmptyString("Enter the ID of the Author to be removed.");
+		dataBaseService.removeAuthorByID(id);
 
-    private void removeAuthor() {
-	// TODO Auto-generated method stub
+	}
 
-    }
+	/**
+	 * Adds a author to the database. The user is asked one after another for a
+	 * name a email and an ID.
+	 * 
+	 * @throws LiteratureDatabaseException
+	 * @throws IOException
+	 */
+	private void addAuthor() throws LiteratureDatabaseException, IOException {
+		final Author authortoAdd = getNewAuthor();
+		dataBaseService.addAuthor(authortoAdd.getName(),
+				authortoAdd.getEmail(), authortoAdd.getId());
 
-    private void addAuthor() throws LiteratureDatabaseException {
-	final Author authortoAdd = getNewAuthor();
-	dataBaseService.addAuthor(authortoAdd.getName(),
-		authortoAdd.getEmail(), authortoAdd.getId());
+	}
 
-    }
+	/**
+	 * Asks the user for a new Publication.<br>
+	 * (1) the title <br>
+	 * (2) the year it was published <br>
+	 * (3) the type<br>
+	 * (4) the authors <br>
+	 * Note that the user can chose whether he wants to add a new author or use
+	 * an existing one.
+	 * 
+	 * @return the new publication
+	 * @throws IOException
+	 */
+	private Publication getNewPublication() throws IOException {
+		final String title = consoleHelper
+				.askNonEmptyString("Enter the title of the Publication:");
+		final int year = consoleHelper.askIntegerInRange(
+				"Enter published year:", 0, 2014);
+		final PublicationType type = getPublicationType();
+		final List<Author> authors = getAuthors();
 
-    private Publication getNewPublication() {
-	// TODO Auto-generated method stub
-	return null;
-    }
+		final Publication publication = new Publication();
+		publication.setTitle(title);
+		publication.setYearPublished(year);
+		publication.setType(type);
+		publication.setAuthors(authors);
 
-    private Author getNewAuthor() {
-	// TODO Auto-generated method stub
-	return null;
-    }
+		return publication;
+	}
 
-    public static void main(final String[] args) {
+	/**
+	 * Asks the user for a list of authors. He can: <br>
+	 * (1) use an exiting one. Than he is asked for the id of that author. <br>
+	 * (2) create a new Author. The user is than asked for the n name his email
+	 * and a valid id. <br>
+	 * (3) not add a new one
+	 * 
+	 * @return the list of authors
+	 */
+	private List<Author> getAuthors() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
-    }
+	private PublicationType getPublicationType() throws IOException {
+		while (true) {
+			final String type = consoleHelper
+					.askNonEmptyString("Enter the type of the publication (ARTICLE, TECHREP, BOOK, MASTERSTHESIS, PHDTHESIS, INPROCEEDINGS)");
+			switch (type) {
+			case "ARTICLE":
+				return PublicationType.ARTICLE;
+			case "TECHREP":
+				return PublicationType.TECHREP;
+			case "BOOK":
+				return PublicationType.BOOK;
+			case "MASTERSTHESIS":
+				return PublicationType.MASTERSTHESIS;
+			case "PHDTHESIS":
+				return PublicationType.PHDTHESIS;
+			case "INPROCEEDINGS":
+				return PublicationType.INPROCEEDINGS;
+			default:
+				System.out
+						.println("Invalid Publication type. Enter a new one.");
+			}
+		}
+
+	}
+
+	/**
+	 * Asks the user for a new Author. <br>
+	 * (1) the name (2) the email. must ba valid email <br>
+	 * (3) ID. this must be a String that is not yet sed for another Author
+	 * 
+	 * @return
+	 * @throws IOException
+	 */
+	private Author getNewAuthor() throws IOException {
+		final String name = consoleHelper
+				.askNonEmptyString("Enter the name of the Author:");
+		final String id = getAuthorID();
+		final String email = getEmail();
+
+		final Author author = new Author();
+		author.setName(name);
+		author.setId(id);
+		author.setEmail(email);
+		return author;
+	}
+
+	/**
+	 * Asks the user for a email address. if it is not valid he is asked again.
+	 * 
+	 * @return
+	 * @throws IOException
+	 */
+	private String getEmail() throws IOException {
+		while (true) {
+			final String email = consoleHelper
+					.askNonEmptyString("Enter a valid email:");
+			if (!ValidationHelper.isEmail(email)) {
+				// input is not a id
+				System.out
+						.println("The id entered is not a valid email please enter another one.");
+			} else {
+				return email;
+			}
+		}
+	}
+
+	/**
+	 * asks the user for a new Id for an author. IF the id is already used in
+	 * the dataBase than he is asked for another one.
+	 * 
+	 * @return the ID for the new Author
+	 * @throws IOException
+	 */
+	private String getAuthorID() throws IOException {
+		while (true) {
+			final String id = consoleHelper
+					.askNonEmptyString("Enter a ID that is not yet used:");
+			if (!ValidationHelper.isId(id)) {
+				// input is not a id
+				System.out
+						.println("The id entered is not a valid ID please enter another one.");
+			} else if (!isAuthorIDUsed(id, dataBaseService.getAuthors())) {
+				// id is not already in use
+				return id;
+			} else {
+				// id is already in use
+				System.out
+						.println("The ID is already used. Please chose another one.");
+			}
+		}
+	}
+
+	/**
+	 * looks if the ID is already used in the database
+	 * 
+	 * @param id
+	 *            to be checked
+	 * @param authors
+	 *            the author that are checked for
+	 * @return true when Id is already used, false otherwise
+	 */
+	private boolean isAuthorIDUsed(final String id, final Author[] authors) {
+		for (final Author author : authors) {
+			if (author.getId().equals(id)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public static void main(final String[] args) {
+
+	}
 
 }
