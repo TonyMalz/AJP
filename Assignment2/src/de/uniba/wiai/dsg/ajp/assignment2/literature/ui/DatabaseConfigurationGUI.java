@@ -1,6 +1,7 @@
 package de.uniba.wiai.dsg.ajp.assignment2.literature.ui;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import de.uniba.wiai.dsg.ajp.assignment2.literature.logic.DatabaseService;
@@ -35,9 +36,10 @@ public class DatabaseConfigurationGUI {
 	 * @throws LiteratureDatabaseException
 	 */
 	public DatabaseConfigurationGUI() throws LiteratureDatabaseException {
-		try {
-			boolean run = true;
-			while (run) {
+		boolean run = true;
+		while (run) {
+			try {
+
 				printMainMenu();
 				final int choice = consoleHelper.askIntegerInRange("", 0, 2);
 				switch (choice) {
@@ -53,9 +55,11 @@ public class DatabaseConfigurationGUI {
 
 				}
 
+			} catch (final IOException | LiteratureDatabaseException e) {
+				System.out.println(e.getMessage()
+						+ " Try again from the main menu.");
+
 			}
-		} catch (final IOException e) {
-			throw new LiteratureDatabaseException(e);
 		}
 	}
 
@@ -225,6 +229,7 @@ public class DatabaseConfigurationGUI {
 		final Author authortoAdd = getNewAuthor();
 		dataBaseService.addAuthor(authortoAdd.getName(),
 				authortoAdd.getEmail(), authortoAdd.getId());
+		// TODO publications????
 
 	}
 
@@ -265,16 +270,60 @@ public class DatabaseConfigurationGUI {
 	 * (3) not add a new one
 	 * 
 	 * @return the list of authors
+	 * @throws IOException
 	 */
-	private List<Author> getAuthors() {
-		// TODO Auto-generated method stub
-		return null;
+	private List<Author> getAuthors() throws IOException {
+		System.out.println("(1) add a exiting author by ID");
+		System.out.println("(2) Add a new author");
+		final List<Author> authors = new ArrayList<Author>();
+		int choice = consoleHelper.askIntegerInRange("", 1, 2);
+		Author authorToAdd = null;
+		if (choice == 1) {
+			final String idTOAdd = getAuthorIDUsed();
+			for (final Author author : dataBaseService.getAuthors()) {
+				if (author.getId().equals(idTOAdd)) {
+					authorToAdd = author;
+					break;
+				}
+			}
+
+		} else {
+			authorToAdd = getNewAuthor();
+		}
+		authors.add(authorToAdd);
+
+		while (true) {
+			System.out.println("(1) add a exiting author by ID");
+			System.out.println("(2) Add a new author");
+			System.out.println("(0) No more authors");
+
+			choice = consoleHelper.askIntegerInRange("", 0, 2);
+			authorToAdd = null;
+			if (choice == 1) {
+				final String idTOAdd = getAuthorIDUsed();
+				for (final Author author : dataBaseService.getAuthors()) {
+					if (author.getId().equals(idTOAdd)) {
+						authorToAdd = author;
+						break;
+					}
+				}
+
+			} else if (choice == 2) {
+				authorToAdd = getNewAuthor();
+			} else {
+				break;
+			}
+			authors.add(authorToAdd);
+		}
+
+		return authors;
 	}
 
 	private PublicationType getPublicationType() throws IOException {
 		while (true) {
 			final String type = consoleHelper
-					.askNonEmptyString("Enter the type of the publication (ARTICLE, TECHREP, BOOK, MASTERSTHESIS, PHDTHESIS, INPROCEEDINGS)");
+					.askNonEmptyString("Enter the type of the publication "
+							+ "(ARTICLE, TECHREP, BOOK, MASTERSTHESIS, PHDTHESIS, INPROCEEDINGS)");
 			switch (type) {
 			case "ARTICLE":
 				return PublicationType.ARTICLE;
@@ -307,7 +356,7 @@ public class DatabaseConfigurationGUI {
 	private Author getNewAuthor() throws IOException {
 		final String name = consoleHelper
 				.askNonEmptyString("Enter the name of the Author:");
-		final String id = getAuthorID();
+		final String id = getAuthorIDUnused();
 		final String email = getEmail();
 
 		final Author author = new Author();
@@ -344,7 +393,26 @@ public class DatabaseConfigurationGUI {
 	 * @return the ID for the new Author
 	 * @throws IOException
 	 */
-	private String getAuthorID() throws IOException {
+	private String getAuthorIDUnused() throws IOException {
+		while (true) {
+			final String id = consoleHelper
+					.askNonEmptyString("Enter a ID that is not yet used:");
+			if (!ValidationHelper.isId(id)) {
+				// input is not a id
+				System.out
+						.println("The id entered is not a valid ID please enter another one.");
+			} else if (isAuthorIDUsed(id, dataBaseService.getAuthors())) {
+				// id is not already in use
+				return id;
+			} else {
+				// id is already in use
+				System.out
+						.println("The ID is already used. Please chose another one.");
+			}
+		}
+	}
+
+	private String getAuthorIDUsed() throws IOException {
 		while (true) {
 			final String id = consoleHelper
 					.askNonEmptyString("Enter a ID that is not yet used:");
@@ -358,7 +426,7 @@ public class DatabaseConfigurationGUI {
 			} else {
 				// id is already in use
 				System.out
-						.println("The ID is already used. Please chose another one.");
+						.println("The ID is not already used. Please chose another one.");
 			}
 		}
 	}
@@ -377,12 +445,14 @@ public class DatabaseConfigurationGUI {
 			if (author.getId().equals(id)) {
 				return false;
 			}
+
 		}
 		return true;
 	}
 
-	public static void main(final String[] args) {
-
+	public static void main(final String[] args)
+			throws LiteratureDatabaseException {
+		new DatabaseConfigurationGUI();
 	}
 
 }
