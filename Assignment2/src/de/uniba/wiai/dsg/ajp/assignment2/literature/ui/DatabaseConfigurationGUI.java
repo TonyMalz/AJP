@@ -36,6 +36,7 @@ public class DatabaseConfigurationGUI {
 	 * @throws LiteratureDatabaseException
 	 */
 	public DatabaseConfigurationGUI() throws LiteratureDatabaseException {
+		// TODO Feedback auch bei erfolgreichen Aktionen
 		boolean run = true;
 		while (run) {
 			try {
@@ -117,22 +118,8 @@ public class DatabaseConfigurationGUI {
 				runSubMenu = false;
 				break;
 			}
-		}
-	}
 
-	/**
-	 * Prints the sub menu to the console.
-	 */
-	private static void printSubMenu() {
-		System.out.println("\n( 1 ) Add Author");
-		System.out.println("( 2 ) Remove Author");
-		System.out.println("( 3 ) Add Publication");
-		System.out.println("( 4 ) Remove Publication");
-		System.out.println("( 5 ) List Publications");
-		System.out.println("( 6 ) List Authors");
-		System.out.println("( 7 ) Print XML on Console");
-		System.out.println("( 8 ) Save XML to File");
-		System.out.println("( 0 ) Back to main menu / close without saving");
+		}
 	}
 
 	/**
@@ -173,6 +160,22 @@ public class DatabaseConfigurationGUI {
 		for (final Publication publication : dataBaseService.getPublications()) {
 			System.out.println(publication.toString());
 		}
+
+	}
+
+	/**
+	 * Prints the sub menu to the console.
+	 */
+	private static void printSubMenu() {
+		System.out.println("\n( 1 ) Add Author");
+		System.out.println("( 2 ) Remove Author");
+		System.out.println("( 3 ) Add Publication");
+		System.out.println("( 4 ) Remove Publication");
+		System.out.println("( 5 ) List Publications");
+		System.out.println("( 6 ) List Authors");
+		System.out.println("( 7 ) Print XML on Console");
+		System.out.println("( 8 ) Save XML to File");
+		System.out.println("( 0 ) Back to main menu / close without saving");
 
 	}
 
@@ -292,6 +295,7 @@ public class DatabaseConfigurationGUI {
 
 		} else {
 			authorToAdd = getNewAuthor();
+
 		}
 		authors.add(authorToAdd);
 

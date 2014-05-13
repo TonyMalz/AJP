@@ -6,7 +6,7 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
-@XmlType(propOrder = { "id", "name", "email", "publications" })
+@XmlType(propOrder = { "email", "id", "name", "publications" })
 public class Author {
 
 	private String id;
