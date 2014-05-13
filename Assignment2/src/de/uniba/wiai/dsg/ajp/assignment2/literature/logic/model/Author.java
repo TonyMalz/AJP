@@ -3,6 +3,10 @@ package de.uniba.wiai.dsg.ajp.assignment2.literature.logic.model;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
+
+@XmlType(propOrder = { "id", "name", "email", "publications" })
 public class Author {
 
 	private String id;
@@ -17,6 +21,7 @@ public class Author {
 		super();
 	}
 
+	@XmlElement
 	public String getName() {
 		return name;
 	}
@@ -25,6 +30,7 @@ public class Author {
 		this.name = name;
 	}
 
+	@XmlElement
 	public String getEmail() {
 		return email;
 	}
@@ -33,6 +39,7 @@ public class Author {
 		this.email = email;
 	}
 
+	@XmlElement
 	public String getId() {
 		return id;
 	}
@@ -41,6 +48,7 @@ public class Author {
 		this.id = id;
 	}
 
+	@XmlElement(name = "publication")
 	public List<Publication> getPublications() {
 		return publications;
 	}

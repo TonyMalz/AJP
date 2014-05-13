@@ -3,6 +3,12 @@ package de.uniba.wiai.dsg.ajp.assignment2.literature.logic.model;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+
+@XmlRootElement
+@XmlType(propOrder = { "authors", "publications" })
 public class Database {
 
 	private List<Author> authors = new LinkedList<>();
@@ -12,6 +18,7 @@ public class Database {
 		super();
 	}
 
+	@XmlElement(name = "author")
 	public List<Author> getAuthors() {
 		return authors;
 	}
@@ -20,6 +27,7 @@ public class Database {
 		this.authors = authors;
 	}
 
+	@XmlElement(name = "publication")
 	public List<Publication> getPublications() {
 		return publications;
 	}

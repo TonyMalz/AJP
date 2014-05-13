@@ -43,8 +43,8 @@ public interface DatabaseService {
 	 * Removes an existing author by email
 	 * 
 	 * @param id
-	 *            the ID of the author to be removed. Must not be empty or
-	 *            null. Must be a valid ID.
+	 *            the ID of the author to be removed. Must not be empty or null.
+	 *            Must be a valid ID.
 	 * @throws LiteratureDatabaseException
 	 *             if any of the above preconditions are not met
 	 */
@@ -97,12 +97,12 @@ public interface DatabaseService {
 	/**
 	 * Saves the current database to the given file by marshalling it to XML
 	 * 
-	 * @param path
-	 *            the path of the file. Must not be null or empty.
 	 * @throws LiteratureDatabaseException
 	 *             if path is null or empty or there are errors during
 	 *             marshalling the current database
 	 */
-	void saveXMLToFile(String path) throws LiteratureDatabaseException;
+	void saveXMLToFile() throws LiteratureDatabaseException;
+
+	void setSavePath(String path);
 
 }
