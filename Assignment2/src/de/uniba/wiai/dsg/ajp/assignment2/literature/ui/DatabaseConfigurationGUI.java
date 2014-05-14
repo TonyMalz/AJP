@@ -132,6 +132,15 @@ public class DatabaseConfigurationGUI {
 	private void saveXMLFile() throws IOException, LiteratureDatabaseException {
 		if (dataBaseService.getSavePath() == null) {
 			setSavePath();
+		} else {
+			System.out.println("(1) Save to current file.");
+			System.out.println("(0) Save to new Location.");
+			final int choice = consoleHelper.askIntegerInRange("", 0, 1);
+			if (choice == 0) {
+				setSavePath();
+			} else {
+				System.out.println("Using the curent location.");
+			}
 		}
 		dataBaseService.saveXMLToFile();
 	}
@@ -139,6 +148,13 @@ public class DatabaseConfigurationGUI {
 	private String setSavePath() throws IOException {
 		final String path = consoleHelper
 				.askNonEmptyString("Enter a path where to save to:");
+		dataBaseService.setSavePath(path);
+		return path;
+	}
+
+	private String setLoadPath() throws IOException {
+		final String path = consoleHelper
+				.askNonEmptyString("Enter a path where to load from:");
 		dataBaseService.setSavePath(path);
 		return path;
 	}
@@ -485,7 +501,7 @@ public class DatabaseConfigurationGUI {
 	 * @throws IOException
 	 */
 	private void loadDatabase() throws LiteratureDatabaseException, IOException {
-		final String path = setSavePath();
+		final String path = setLoadPath();
 		mainService.validate(path);
 		dataBaseService = mainService.load(path);
 
