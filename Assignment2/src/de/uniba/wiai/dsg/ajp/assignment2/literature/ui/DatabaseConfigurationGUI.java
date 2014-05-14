@@ -523,4 +523,41 @@ public class DatabaseConfigurationGUI {
 		new DatabaseConfigurationGUI();
 	}
 
+	/**
+	 * Prints the given authors to the console. If the list is empty than
+	 * "No authors were deleted." is displayed.
+	 * 
+	 * @param authors
+	 *            to be printed
+	 */
+	public static void printdeletedAuthorsToConsole(final List<Author> authors) {
+		if (authors.isEmpty()) {
+			System.out.println("No authors were deleted.");
+		} else {
+			System.out.println("These author(s) were deleted:");
+			for (final Author author : authors) {
+				System.out.println(author.toString());
+			}
+		}
+	}
+
+	/**
+	 * Prints the given publications to the console. If the list is empty than
+	 * "No publications were deleted." is displayed.
+	 * 
+	 * @param publications
+	 *            to be printed
+	 */
+	public static void printdeletedPublicationsToConsole(
+			final List<Publication> publications) {
+		if (publications.isEmpty()) {
+			System.out.println("No publications were deleted.");
+		} else {
+			System.out.println("These publication(s) were deleted:");
+			for (final Publication author : publications) {
+				System.out.println(author.toString());
+			}
+		}
+	}
+
 }
