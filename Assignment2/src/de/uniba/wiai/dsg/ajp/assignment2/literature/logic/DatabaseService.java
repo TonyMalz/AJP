@@ -105,4 +105,6 @@ public interface DatabaseService {
 
 	void setSavePath(String path);
 
+	String getSavePath();
+
 }

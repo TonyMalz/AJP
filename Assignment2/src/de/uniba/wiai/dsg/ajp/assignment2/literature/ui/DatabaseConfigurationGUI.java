@@ -50,6 +50,7 @@ public class DatabaseConfigurationGUI {
 					break;
 				case 2:
 					createDatabase();
+					subMenu();
 					break;
 				case 0:
 				default:
@@ -109,7 +110,7 @@ public class DatabaseConfigurationGUI {
 				printXMLConsole();
 				break;
 			case 8:
-				printXMLFile();
+				saveXMLFile();
 				break;
 
 			case 0:
@@ -128,9 +129,18 @@ public class DatabaseConfigurationGUI {
 	 * @throws IOException
 	 * @throws LiteratureDatabaseException
 	 */
-	private void printXMLFile() throws IOException, LiteratureDatabaseException {
-		// TODO what ????
+	private void saveXMLFile() throws IOException, LiteratureDatabaseException {
+		if (dataBaseService.getSavePath() == null) {
+			setSavePath();
+		}
 		dataBaseService.saveXMLToFile();
+	}
+
+	private String setSavePath() throws IOException {
+		final String path = consoleHelper
+				.askNonEmptyString("Enter a path where to save to:");
+		dataBaseService.setSavePath(path);
+		return path;
 	}
 
 	/**
@@ -432,7 +442,7 @@ public class DatabaseConfigurationGUI {
 	private String getAuthorIDUsed() throws IOException {
 		while (true) {
 			final String id = consoleHelper
-					.askNonEmptyString("Enter a ID that is not yet used:");
+					.askNonEmptyString("Enter a ID that is already in use:");
 			if (!ValidationHelper.isId(id)) {
 				// input is not a id
 				System.out
@@ -475,11 +485,9 @@ public class DatabaseConfigurationGUI {
 	 * @throws IOException
 	 */
 	private void loadDatabase() throws LiteratureDatabaseException, IOException {
-		final String path = consoleHelper
-				.askNonEmptyString("Enter a valid path to the database you want to load!");
+		final String path = setSavePath();
 		mainService.validate(path);
 		dataBaseService = mainService.load(path);
-		dataBaseService.setSavePath(path);
 
 	}
 
@@ -490,14 +498,8 @@ public class DatabaseConfigurationGUI {
 	 * @throws LiteratureDatabaseException
 	 * @throws IOException
 	 */
-	private void createDatabase() throws LiteratureDatabaseException,
-			IOException {
-		final String path = consoleHelper
-				.askNonEmptyString("Enter a valid path to the database you want to load!");
+	private void createDatabase() throws LiteratureDatabaseException {
 		dataBaseService = mainService.create();
-		dataBaseService.setSavePath(path);
-		printXMLFile();
-
 	}
 
 	public static void main(final String[] args)

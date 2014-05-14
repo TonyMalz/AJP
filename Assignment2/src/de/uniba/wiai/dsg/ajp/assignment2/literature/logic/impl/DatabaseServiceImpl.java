@@ -143,6 +143,7 @@ public class DatabaseServiceImpl implements DatabaseService {
 
 	}
 
+	@Override
 	public void saveXMLToFile() throws LiteratureDatabaseException {
 		try {
 			final JAXBContext context = JAXBContext.newInstance(Database.class);
@@ -158,8 +159,14 @@ public class DatabaseServiceImpl implements DatabaseService {
 		}
 	}
 
-	public void setSavePath(String path) {
-		this.savePath = path;
+	@Override
+	public void setSavePath(final String path) {
+		savePath = path;
+	}
+
+	@Override
+	public String getSavePath() {
+		return savePath;
 	}
 
 }
