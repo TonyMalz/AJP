@@ -50,7 +50,6 @@ public class DatabaseConfigurationGUI {
 					break;
 				case 2:
 					createDatabase();
-					subMenu();
 					break;
 				case 0:
 				default:
@@ -130,7 +129,7 @@ public class DatabaseConfigurationGUI {
 	 * @throws LiteratureDatabaseException
 	 */
 	private void printXMLFile() throws IOException, LiteratureDatabaseException {
-
+		// TODO what ????
 		dataBaseService.saveXMLToFile();
 	}
 
@@ -191,6 +190,8 @@ public class DatabaseConfigurationGUI {
 		final String id = consoleHelper
 				.askNonEmptyString("Enter the ID of the Publication to be removed.");
 		dataBaseService.removePublicationByID(id);
+		System.out.println("Removed the publication with the ID " + id
+				+ " from the database.");
 
 	}
 
@@ -207,6 +208,10 @@ public class DatabaseConfigurationGUI {
 		dataBaseService.addPublication(pubToAdd.getTitle(), pubToAdd
 				.getYearPublished(), pubToAdd.getType(), pubToAdd.getAuthors()
 				.toArray(new Author[0]), pubToAdd.getId());
+		System.out.println("Addded the " + pubToAdd.getType() + " "
+				+ pubToAdd.getTitle() + " published in "
+				+ pubToAdd.getYearPublished() + " from the authors "
+				+ pubToAdd.getAuthors().toString() + "to the database.");
 
 	}
 
@@ -221,6 +226,8 @@ public class DatabaseConfigurationGUI {
 		final String id = consoleHelper
 				.askNonEmptyString("Enter the ID of the Author to be removed.");
 		dataBaseService.removeAuthorByID(id);
+		System.out.println("removed the author with the ID " + id
+				+ " from the database.");
 
 	}
 
@@ -236,6 +243,9 @@ public class DatabaseConfigurationGUI {
 		dataBaseService.addAuthor(authortoAdd.getName(),
 				authortoAdd.getEmail(), authortoAdd.getId());
 		// TODO publications????
+		System.out.println("Added the author " + authortoAdd.getName()
+				+ " with the ID " + authortoAdd.getId() + " and the email "
+				+ authortoAdd.getEmail() + " to the database.");
 
 	}
 
@@ -465,7 +475,7 @@ public class DatabaseConfigurationGUI {
 	 * @throws IOException
 	 */
 	private void loadDatabase() throws LiteratureDatabaseException, IOException {
-		String path = consoleHelper
+		final String path = consoleHelper
 				.askNonEmptyString("Enter a valid path to the database you want to load!");
 		mainService.validate(path);
 		dataBaseService = mainService.load(path);
@@ -482,7 +492,7 @@ public class DatabaseConfigurationGUI {
 	 */
 	private void createDatabase() throws LiteratureDatabaseException,
 			IOException {
-		String path = consoleHelper
+		final String path = consoleHelper
 				.askNonEmptyString("Enter a valid path to the database you want to load!");
 		dataBaseService = mainService.create();
 		dataBaseService.setSavePath(path);
