@@ -4,6 +4,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlID;
+import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlType;
 
 @XmlType(propOrder = { "email", "id", "name", "publications" })
@@ -40,6 +42,7 @@ public class Author {
 	}
 
 	@XmlElement
+	@XmlID
 	public String getId() {
 		return id;
 	}
@@ -49,8 +52,10 @@ public class Author {
 	}
 
 	@XmlElement(name = "publication")
+	@XmlIDREF
 	public List<Publication> getPublications() {
 		return publications;
+
 	}
 
 	public void setPublications(List<Publication> publications) {
@@ -69,7 +74,7 @@ public class Author {
 			Publication publication = publications.get(i);
 			publicationIds += publication.getId();
 
-			if (i + 1 == publications.size()) {
+			if (i + 1 != publications.size()) {
 				publicationIds += ", ";
 			}
 

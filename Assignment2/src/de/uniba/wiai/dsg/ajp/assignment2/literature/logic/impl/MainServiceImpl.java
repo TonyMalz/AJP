@@ -38,13 +38,11 @@ public class MainServiceImpl implements MainService {
 		try {
 			final SchemaFactory sf = SchemaFactory
 					.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-			final Schema schema = sf.newSchema(new File("./schema.xsd"));
+			final Schema schema = sf.newSchema(new File("./schema2.xsd"));
 			final Validator validator = schema.newValidator();
 			validator.validate(new StreamSource(new File(path)));
 		} catch (final SAXException e) {
-			throw new LiteratureDatabaseException(
-					"An internal error occured, while trying to validate the database.",
-					e);
+			throw new LiteratureDatabaseException(e);
 		} catch (final IOException e) {
 			throw new LiteratureDatabaseException(
 					"An internal error occured, while trying to validate the database.",
@@ -59,7 +57,6 @@ public class MainServiceImpl implements MainService {
 		try {
 			final JAXBContext context = JAXBContext.newInstance(Database.class);
 			final Unmarshaller ms = context.createUnmarshaller();
-			// return (DatabaseService) ms.unmarshal(new File(path));//�NDERUNG
 			return new DatabaseServiceImpl((Database) ms.unmarshal(new File(
 					path)));
 		} catch (final MarshalException e) {

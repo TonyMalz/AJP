@@ -2,6 +2,7 @@ package de.uniba.wiai.dsg.ajp.assignment2.literature.logic.impl;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.List;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -53,6 +54,7 @@ public class DatabaseServiceImpl implements DatabaseService {
 		publication.setType(type);
 		publication.setAuthors(Arrays.asList(authors));
 		publication.setId(id);
+		publication.setTitle(title);
 		dataBase.getPublications().add(publication);
 		// when any author is not yet in the list he/she is added
 		for (final Author author : authors) {
@@ -61,7 +63,19 @@ public class DatabaseServiceImpl implements DatabaseService {
 				dataBase.getAuthors().add(author);
 			}
 		}
+		addPublicationToAuthor(authors, publication);
+	}
 
+	public void addPublicationToAuthor(Author[] authorsToAdd,
+			Publication publication) {
+		List<Author> authors = dataBase.getAuthors();
+		for (int i = 0; i < authorsToAdd.length; i++) {
+			for (Author next : authors) {
+				if (next.getId().equals(authorsToAdd[i].getId())) {
+					next.getPublications().add(publication);
+				}
+			}
+		}
 	}
 
 	@Override

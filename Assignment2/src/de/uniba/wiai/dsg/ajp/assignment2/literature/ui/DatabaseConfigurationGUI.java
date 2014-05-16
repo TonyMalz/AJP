@@ -146,7 +146,7 @@ public class DatabaseConfigurationGUI {
 				if (choice == 0) {
 					setSavePath();
 				} else {
-					System.out.println("Using the curent location.");
+					System.out.println("Using the current location.");
 				}
 			} catch (final IOException e) {
 				throw new LiteratureDatabaseException(
@@ -280,7 +280,7 @@ public class DatabaseConfigurationGUI {
 		dataBaseService.addPublication(pubToAdd.getTitle(), pubToAdd
 				.getYearPublished(), pubToAdd.getType(), pubToAdd.getAuthors()
 				.toArray(new Author[0]), pubToAdd.getId());
-		System.out.println("Addded the " + pubToAdd.getType() + " "
+		System.out.println("Added the " + pubToAdd.getType() + " "
 				+ pubToAdd.getTitle() + " published in "
 				+ pubToAdd.getYearPublished() + " from the authors "
 				+ pubToAdd.getAuthors().toString() + "to the database.");
@@ -351,12 +351,14 @@ public class DatabaseConfigurationGUI {
 					"Enter published year:", 0, 2014);
 			final PublicationType type = getPublicationType();
 			final List<Author> authors = getAuthors();
+			final String id = getAuthorIDUnused();
 
 			final Publication publication = new Publication();
 			publication.setTitle(title);
 			publication.setYearPublished(year);
 			publication.setType(type);
 			publication.setAuthors(authors);
+			publication.setId(id);
 
 			return publication;
 		} catch (final IOException e) {
@@ -574,7 +576,7 @@ public class DatabaseConfigurationGUI {
 		while (true) {
 			try {
 				final String id = consoleHelper
-						.askNonEmptyString("Enter a ID that is already in use:");
+						.askNonEmptyString("Enter a author ID that is already in use:");
 				if (!ValidationHelper.isId(id)) {
 					// input is not a id
 					System.out
@@ -614,6 +616,49 @@ public class DatabaseConfigurationGUI {
 	}
 
 	/**
+	 * asks the user for a new Id for an author. IF the id is already used in
+	 * the dataBase than he is asked for another one.
+	 * 
+	 * @return the ID for the new Author
+	 * @throws LiteratureDatabaseException
+	 *             in case an error occurs while trying to read the console.
+	 */
+	private String getPublicationIDUnused() throws LiteratureDatabaseException {
+		while (true) {
+			try {
+				final String id = consoleHelper
+						.askNonEmptyString("Enter a publication ID that is not yet used:");
+				if (!ValidationHelper.isId(id)) {
+					// input is not a id
+					System.out
+							.println("The id entered is not a valid ID please enter another one.");
+				} else if (isPublicationIDUsed(id,
+						dataBaseService.getPublications())) {
+					// id is not already in use
+					return id;
+				} else {
+					// id is already in use
+					System.out
+							.println("The ID is already used. Please chose another one.");
+				}
+			} catch (final IOException e) {
+				throw new LiteratureDatabaseException(
+						"An error occured while trying to read the console.", e);
+			}
+		}
+	}
+
+	private boolean isPublicationIDUsed(String id, Publication[] publications) {
+		for (final Publication publication : publications) {
+			if (publication.getId().equals(id)) {
+				return false;
+			}
+
+		}
+		return true;
+	}
+
+	/**
 	 * loads and validates database by asking for path setSavePath to remember
 	 * where to save this database
 	 * 
@@ -625,6 +670,7 @@ public class DatabaseConfigurationGUI {
 		final String path = setLoadPath();
 		mainService.validate(path);
 		dataBaseService = mainService.load(path);
+		dataBaseService.setSavePath(path);
 
 	}
 

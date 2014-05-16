@@ -5,9 +5,11 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlID;
+import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlType;
 
-@XmlType(propOrder = { "title", "id", "authors" })
+@XmlType(propOrder = { "authors", "id", "title" })
 public class Publication {
 
 	private String title;
@@ -49,6 +51,7 @@ public class Publication {
 	}
 
 	@XmlElement
+	@XmlID
 	public String getId() {
 		return id;
 	}
@@ -58,6 +61,7 @@ public class Publication {
 	}
 
 	@XmlElement(name = "author")
+	@XmlIDREF
 	public List<Author> getAuthors() {
 		return authors;
 	}
@@ -79,7 +83,7 @@ public class Publication {
 			Author author = authors.get(i);
 			authorNames += author.getName();
 
-			if (i + 1 == authors.size()) {
+			if (i + 1 != authors.size()) {
 				authorNames += ", ";
 			}
 
