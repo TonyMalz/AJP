@@ -32,10 +32,8 @@ public class DatabaseConfigurationGUI {
 	/**
 	 * Constructor. <br>
 	 * the main menu is displayed and the user is asked for a action.
-	 * 
-	 * @throws LiteratureDatabaseException
 	 */
-	public DatabaseConfigurationGUI() throws LiteratureDatabaseException {
+	public DatabaseConfigurationGUI() {
 		// TODO Feedback auch bei erfolgreichen Aktionen
 		boolean run = true;
 		while (run) {
@@ -57,7 +55,7 @@ public class DatabaseConfigurationGUI {
 					run = false;
 
 				}
-
+				// TODO catch in main menu or subenu???
 			} catch (final IOException | LiteratureDatabaseException e) {
 				System.out.println(e.getMessage()
 						+ " Try again from the main menu.");
@@ -79,90 +77,130 @@ public class DatabaseConfigurationGUI {
 	/**
 	 * Prints the submenu. and asks the author for a input.
 	 * 
-	 * @throws IOException
+	 * 
 	 * @throws LiteratureDatabaseException
 	 */
-	private void subMenu() throws IOException, LiteratureDatabaseException {
+	private void subMenu() throws LiteratureDatabaseException {
 		boolean runSubMenu = true;
 		while (runSubMenu) {
 			printSubMenu();
-			final int choice = consoleHelper.askIntegerInRange("", 0, 8);
-			switch (choice) {
-			case 1:
-				addAuthor();
-				break;
-			case 2:
-				removeAuthor();
-				break;
-			case 3:
-				addPublication();
-				break;
-			case 4:
-				removePublication();
-				break;
-			case 5:
-				ListPublication();
-				break;
-			case 6:
-				ListAuthors();
-				break;
-			case 7:
-				printXMLConsole();
-				break;
-			case 8:
-				saveXMLFile();
-				break;
+			try {
+				final int choice = consoleHelper.askIntegerInRange("", 0, 8);
+				switch (choice) {
+				case 1:
+					addAuthor();
+					break;
+				case 2:
+					removeAuthor();
+					break;
+				case 3:
+					addPublication();
+					break;
+				case 4:
+					removePublication();
+					break;
+				case 5:
+					ListPublication();
+					break;
+				case 6:
+					ListAuthors();
+					break;
+				case 7:
+					printXMLConsole();
+					break;
+				case 8:
+					saveXMLFile();
+					break;
 
-			case 0:
-			default:
+				case 0:
+				default:
+					runSubMenu = false;
+					break;
+				}
+			} catch (final IOException e) {
+				System.out
+						.println("An error occured while trying to read the console. Try again from the main menu.");
 				runSubMenu = false;
-				break;
 			}
 
 		}
 	}
 
 	/**
-	 * Prints the dataBase to a file. The user is asked for the path to be stred
-	 * to.
+	 * Prints the dataBase to a file. The user is asked for the path to be
+	 * stored to.
 	 * 
-	 * @throws IOException
 	 * @throws LiteratureDatabaseException
+	 *             when the input/output stream to the console is closed <br>
+	 *             when the output stream to the file is closed / flawed. <br>
+	 *             when an error occurs while trying to marshal the database
 	 */
-	private void saveXMLFile() throws IOException, LiteratureDatabaseException {
+	private void saveXMLFile() throws LiteratureDatabaseException {
 		if (dataBaseService.getSavePath() == null) {
 			setSavePath();
 		} else {
 			System.out.println("(1) Save to current file.");
 			System.out.println("(0) Save to new Location.");
-			final int choice = consoleHelper.askIntegerInRange("", 0, 1);
-			if (choice == 0) {
-				setSavePath();
-			} else {
-				System.out.println("Using the curent location.");
+			try {
+				final int choice = consoleHelper.askIntegerInRange("", 0, 1);
+				if (choice == 0) {
+					setSavePath();
+				} else {
+					System.out.println("Using the curent location.");
+				}
+			} catch (final IOException e) {
+				throw new LiteratureDatabaseException(
+						"An error occured while trying to read the console.", e);
 			}
 		}
 		dataBaseService.saveXMLToFile();
 	}
 
-	private String setSavePath() throws IOException {
-		final String path = consoleHelper
-				.askNonEmptyString("Enter a path where to save to:");
-		dataBaseService.setSavePath(path);
-		return path;
+	/**
+	 * sets the save path of the mainService.
+	 * 
+	 * @return the path as a String
+	 * @throws LiteratureDatabaseException
+	 *             in case an error occurs while trying to read the console.
+	 */
+	private String setSavePath() throws LiteratureDatabaseException {
+		try {
+			final String path = consoleHelper
+					.askNonEmptyString("Enter a path where to save to:");
+			dataBaseService.setSavePath(path);
+			return path;
+		} catch (final IOException e) {
+			throw new LiteratureDatabaseException(
+					"An error occured while trying to read the console.", e);
+		}
 	}
 
-	private String setLoadPath() throws IOException {
-		final String path = consoleHelper
-				.askNonEmptyString("Enter a path where to load from:");
-		dataBaseService.setSavePath(path);
-		return path;
+	/**
+	 * Sets the load path of the mainService.
+	 * 
+	 * @return the path as a String
+	 * @throws LiteratureDatabaseException
+	 *             in case an error occurs while trying to read the console.
+	 */
+	private String setLoadPath() throws LiteratureDatabaseException {
+		String path;
+		try {
+			path = consoleHelper
+					.askNonEmptyString("Enter a path where to load from:");
+
+			dataBaseService.setSavePath(path);
+			return path;
+		} catch (final IOException e) {
+			throw new LiteratureDatabaseException(
+					"An error occured while trying to read the console.", e);
+		}
 	}
 
 	/**
 	 * Prints the dataBase to the console.
 	 * 
 	 * @throws LiteratureDatabaseException
+	 *             when the marshaling fails.
 	 */
 	private void printXMLConsole() throws LiteratureDatabaseException {
 		dataBaseService.printXMLToConsole();
@@ -208,16 +246,23 @@ public class DatabaseConfigurationGUI {
 	 * Removes a Publication from the DataBase. The user is asked for the id of
 	 * the publication to be removed.
 	 * 
-	 * @throws IOException
+	 * 
 	 * @throws LiteratureDatabaseException
+	 *             in case an error occurs while trying to read the console.<br>
+	 *             in case an error occurs while trying to remove the
+	 *             publication
 	 */
-	private void removePublication() throws IOException,
-			LiteratureDatabaseException {
-		final String id = consoleHelper
-				.askNonEmptyString("Enter the ID of the Publication to be removed.");
-		dataBaseService.removePublicationByID(id);
-		System.out.println("Removed the publication with the ID " + id
-				+ " from the database.");
+	private void removePublication() throws LiteratureDatabaseException {
+		try {
+			final String id = consoleHelper
+					.askNonEmptyString("Enter the ID of the Publication to be removed.");
+			dataBaseService.removePublicationByID(id);
+			System.out.println("Removed the publication with the ID " + id
+					+ " from the database.");
+		} catch (final IOException e) {
+			throw new LiteratureDatabaseException(
+					"An error occure while trying to read the console.", e);
+		}
 
 	}
 
@@ -226,10 +271,11 @@ public class DatabaseConfigurationGUI {
 	 * for the title, the published year, the type and the authors.
 	 * 
 	 * @throws LiteratureDatabaseException
-	 * @throws IOException
+	 *             in case an error occurs while trying to read the console.<br>
+	 *             in case an error occurs while trying to add the publication
+	 *             to the database
 	 */
-	private void addPublication() throws LiteratureDatabaseException,
-			IOException {
+	private void addPublication() throws LiteratureDatabaseException {
 		final Publication pubToAdd = getNewPublication();
 		dataBaseService.addPublication(pubToAdd.getTitle(), pubToAdd
 				.getYearPublished(), pubToAdd.getType(), pubToAdd.getAuthors()
@@ -246,15 +292,22 @@ public class DatabaseConfigurationGUI {
 	 * author to be removed.
 	 * 
 	 * @throws LiteratureDatabaseException
-	 * @throws IOException
+	 *             in case an error occurs while trying to read the console.<br>
+	 *             in case an error occurs while trying to remove the author
+	 *             from the database
 	 */
-	private void removeAuthor() throws LiteratureDatabaseException, IOException {
-		final String id = consoleHelper
-				.askNonEmptyString("Enter the ID of the Author to be removed.");
-		dataBaseService.removeAuthorByID(id);
-		System.out.println("removed the author with the ID " + id
-				+ " from the database.");
+	private void removeAuthor() throws LiteratureDatabaseException {
+		try {
+			final String id = consoleHelper
 
+			.askNonEmptyString("Enter the ID of the Author to be removed.");
+			dataBaseService.removeAuthorByID(id);
+			System.out.println("removed the author with the ID " + id
+					+ " from the database.");
+		} catch (final IOException e) {
+			throw new LiteratureDatabaseException(
+					"An error occured while trying to read the console.", e);
+		}
 	}
 
 	/**
@@ -262,9 +315,11 @@ public class DatabaseConfigurationGUI {
 	 * name a email and an ID.
 	 * 
 	 * @throws LiteratureDatabaseException
-	 * @throws IOException
+	 *             in case an error occurs while trying to read the console.<br>
+	 *             in case an error occurs while trying to add the publication
+	 *             to the database
 	 */
-	private void addAuthor() throws LiteratureDatabaseException, IOException {
+	private void addAuthor() throws LiteratureDatabaseException {
 		final Author authortoAdd = getNewAuthor();
 		dataBaseService.addAuthor(authortoAdd.getName(),
 				authortoAdd.getEmail(), authortoAdd.getId());
@@ -285,23 +340,29 @@ public class DatabaseConfigurationGUI {
 	 * an existing one.
 	 * 
 	 * @return the new publication
-	 * @throws IOException
+	 * @throws LiteratureDatabaseException
+	 *             in case an error occurs while trying to read the console.
 	 */
-	private Publication getNewPublication() throws IOException {
-		final String title = consoleHelper
-				.askNonEmptyString("Enter the title of the Publication:");
-		final int year = consoleHelper.askIntegerInRange(
-				"Enter published year:", 0, 2014);
-		final PublicationType type = getPublicationType();
-		final List<Author> authors = getAuthors();
+	private Publication getNewPublication() throws LiteratureDatabaseException {
+		try {
+			final String title = consoleHelper
+					.askNonEmptyString("Enter the title of the Publication:");
+			final int year = consoleHelper.askIntegerInRange(
+					"Enter published year:", 0, 2014);
+			final PublicationType type = getPublicationType();
+			final List<Author> authors = getAuthors();
 
-		final Publication publication = new Publication();
-		publication.setTitle(title);
-		publication.setYearPublished(year);
-		publication.setType(type);
-		publication.setAuthors(authors);
+			final Publication publication = new Publication();
+			publication.setTitle(title);
+			publication.setYearPublished(year);
+			publication.setType(type);
+			publication.setAuthors(authors);
 
-		return publication;
+			return publication;
+		} catch (final IOException e) {
+			throw new LiteratureDatabaseException(
+					"An error occured while trying to read the console.", e);
+		}
 	}
 
 	/**
@@ -312,35 +373,17 @@ public class DatabaseConfigurationGUI {
 	 * (3) not add a new one
 	 * 
 	 * @return the list of authors
-	 * @throws IOException
+	 * @throws LiteratureDatabaseException
+	 *             in case an error occurs while trying to read the console.
 	 */
-	private List<Author> getAuthors() throws IOException {
+	private List<Author> getAuthors() throws LiteratureDatabaseException {
 		System.out.println("(1) add a exiting author by ID");
 		System.out.println("(2) Add a new author");
 		final List<Author> authors = new ArrayList<Author>();
-		int choice = consoleHelper.askIntegerInRange("", 1, 2);
-		Author authorToAdd = null;
-		if (choice == 1) {
-			final String idTOAdd = getAuthorIDUsed();
-			for (final Author author : dataBaseService.getAuthors()) {
-				if (author.getId().equals(idTOAdd)) {
-					authorToAdd = author;
-					break;
-				}
-			}
-
-		} else {
-			authorToAdd = getNewAuthor();
-
-		}
-		authors.add(authorToAdd);
-
-		while (true) {
-			System.out.println("(1) add a exiting author by ID");
-			System.out.println("(2) Add a new author");
-			System.out.println("(0) No more authors");
-
-			choice = consoleHelper.askIntegerInRange("", 0, 2);
+		int choice;
+		Author authorToAdd;
+		try {
+			choice = consoleHelper.askIntegerInRange("", 1, 2);
 			authorToAdd = null;
 			if (choice == 1) {
 				final String idTOAdd = getAuthorIDUsed();
@@ -351,38 +394,84 @@ public class DatabaseConfigurationGUI {
 					}
 				}
 
-			} else if (choice == 2) {
-				authorToAdd = getNewAuthor();
 			} else {
-				break;
+				authorToAdd = getNewAuthor();
+
 			}
 			authors.add(authorToAdd);
+		} catch (final IOException e) {
+			throw new LiteratureDatabaseException(
+					"An error occured while trying to read the console.", e);
+		}
+
+		while (true) {
+			System.out.println("(1) add a exiting author by ID");
+			System.out.println("(2) Add a new author");
+			System.out.println("(0) No more authors");
+
+			try {
+				choice = consoleHelper.askIntegerInRange("", 0, 2);
+				authorToAdd = null;
+				if (choice == 1) {
+					final String idTOAdd = getAuthorIDUsed();
+					for (final Author author : dataBaseService.getAuthors()) {
+						if (author.getId().equals(idTOAdd)) {
+							authorToAdd = author;
+							break;
+						}
+					}
+
+				} else if (choice == 2) {
+					authorToAdd = getNewAuthor();
+				} else {
+					break;
+				}
+				authors.add(authorToAdd);
+			} catch (final IOException e) {
+				throw new LiteratureDatabaseException(
+						"An error occured while trying to read the console.", e);
+			}
 		}
 
 		return authors;
 	}
 
-	private PublicationType getPublicationType() throws IOException {
+	/**
+	 * Asks the user for a publication type. <br>
+	 * It can be one of the following: <br>
+	 * ARTICLE, TECHREP, BOOK, MASTERSTHESIS, PHDTHESIS, INPROCEEDINGS
+	 * 
+	 * @return the inserted publication type
+	 * @throws LiteratureDatabaseException
+	 *             in case an error occurs while trying to read the console.
+	 */
+	private PublicationType getPublicationType()
+			throws LiteratureDatabaseException {
 		while (true) {
-			final String type = consoleHelper
-					.askNonEmptyString("Enter the type of the publication "
-							+ "(ARTICLE, TECHREP, BOOK, MASTERSTHESIS, PHDTHESIS, INPROCEEDINGS)");
-			switch (type) {
-			case "ARTICLE":
-				return PublicationType.ARTICLE;
-			case "TECHREP":
-				return PublicationType.TECHREP;
-			case "BOOK":
-				return PublicationType.BOOK;
-			case "MASTERSTHESIS":
-				return PublicationType.MASTERSTHESIS;
-			case "PHDTHESIS":
-				return PublicationType.PHDTHESIS;
-			case "INPROCEEDINGS":
-				return PublicationType.INPROCEEDINGS;
-			default:
-				System.out
-						.println("Invalid Publication type. Enter a new one.");
+			try {
+				final String type = consoleHelper
+						.askNonEmptyString("Enter the type of the publication "
+								+ "(ARTICLE, TECHREP, BOOK, MASTERSTHESIS, PHDTHESIS, INPROCEEDINGS)");
+				switch (type) {
+				case "ARTICLE":
+					return PublicationType.ARTICLE;
+				case "TECHREP":
+					return PublicationType.TECHREP;
+				case "BOOK":
+					return PublicationType.BOOK;
+				case "MASTERSTHESIS":
+					return PublicationType.MASTERSTHESIS;
+				case "PHDTHESIS":
+					return PublicationType.PHDTHESIS;
+				case "INPROCEEDINGS":
+					return PublicationType.INPROCEEDINGS;
+				default:
+					System.out
+							.println("Invalid Publication type. Enter a new one.");
+				}
+			} catch (final IOException e) {
+				throw new LiteratureDatabaseException(
+						"An error occured while trying to read the console.", e);
 			}
 		}
 
@@ -390,41 +479,53 @@ public class DatabaseConfigurationGUI {
 
 	/**
 	 * Asks the user for a new Author. <br>
-	 * (1) the name (2) the email. must ba valid email <br>
+	 * (1) the name <br>
+	 * (2) the email. must ba valid email <br>
 	 * (3) ID. this must be a String that is not yet sed for another Author
 	 * 
-	 * @return
-	 * @throws IOException
+	 * @throws LiteratureDatabaseException
+	 *             in case an error occurs while trying to read the console.
 	 */
-	private Author getNewAuthor() throws IOException {
-		final String name = consoleHelper
-				.askNonEmptyString("Enter the name of the Author:");
-		final String id = getAuthorIDUnused();
-		final String email = getEmail();
+	private Author getNewAuthor() throws LiteratureDatabaseException {
+		try {
+			final String name = consoleHelper
+					.askNonEmptyString("Enter the name of the Author:");
+			final String id = getAuthorIDUnused();
+			final String email = getEmail();
 
-		final Author author = new Author();
-		author.setName(name);
-		author.setId(id);
-		author.setEmail(email);
-		return author;
+			final Author author = new Author();
+			author.setName(name);
+			author.setId(id);
+			author.setEmail(email);
+			return author;
+		} catch (final IOException e) {
+			throw new LiteratureDatabaseException(
+					"An error occured while trying to read the console.", e);
+		}
 	}
 
 	/**
 	 * Asks the user for a email address. if it is not valid he is asked again.
 	 * 
-	 * @return
-	 * @throws IOException
+	 * @return the inserted email
+	 * @throws LiteratureDatabaseException
+	 *             in case an error occurs while trying to read the console.
 	 */
-	private String getEmail() throws IOException {
+	private String getEmail() throws LiteratureDatabaseException {
 		while (true) {
-			final String email = consoleHelper
-					.askNonEmptyString("Enter a valid email:");
-			if (!ValidationHelper.isEmail(email)) {
-				// input is not a id
-				System.out
-						.println("The id entered is not a valid email please enter another one.");
-			} else {
-				return email;
+			try {
+				final String email = consoleHelper
+						.askNonEmptyString("Enter a valid email:");
+				if (!ValidationHelper.isEmail(email)) {
+					// input is not a id
+					System.out
+							.println("The id entered is not a valid email please enter another one.");
+				} else {
+					return email;
+				}
+			} catch (final IOException e) {
+				throw new LiteratureDatabaseException(
+						"An error occured while trying to read the console.", e);
 			}
 		}
 	}
@@ -434,42 +535,61 @@ public class DatabaseConfigurationGUI {
 	 * the dataBase than he is asked for another one.
 	 * 
 	 * @return the ID for the new Author
-	 * @throws IOException
+	 * @throws LiteratureDatabaseException
+	 *             in case an error occurs while trying to read the console.
 	 */
-	private String getAuthorIDUnused() throws IOException {
+	private String getAuthorIDUnused() throws LiteratureDatabaseException {
 		while (true) {
-			final String id = consoleHelper
-					.askNonEmptyString("Enter a ID that is not yet used:");
-			if (!ValidationHelper.isId(id)) {
-				// input is not a id
-				System.out
-						.println("The id entered is not a valid ID please enter another one.");
-			} else if (isAuthorIDUsed(id, dataBaseService.getAuthors())) {
-				// id is not already in use
-				return id;
-			} else {
-				// id is already in use
-				System.out
-						.println("The ID is already used. Please chose another one.");
+			try {
+				final String id = consoleHelper
+						.askNonEmptyString("Enter a ID that is not yet used:");
+				if (!ValidationHelper.isId(id)) {
+					// input is not a id
+					System.out
+							.println("The id entered is not a valid ID please enter another one.");
+				} else if (isAuthorIDUsed(id, dataBaseService.getAuthors())) {
+					// id is not already in use
+					return id;
+				} else {
+					// id is already in use
+					System.out
+							.println("The ID is already used. Please chose another one.");
+				}
+			} catch (final IOException e) {
+				throw new LiteratureDatabaseException(
+						"An error occured while trying to read the console.", e);
 			}
 		}
 	}
 
-	private String getAuthorIDUsed() throws IOException {
+	/**
+	 * asks the user for a new Id for an author. IF the id is not already used
+	 * in the dataBase than he is asked for another one.
+	 * 
+	 * @return the ID of the author
+	 * @throws LiteratureDatabaseException
+	 *             in case an error occurs while trying to read the console.
+	 */
+	private String getAuthorIDUsed() throws LiteratureDatabaseException {
 		while (true) {
-			final String id = consoleHelper
-					.askNonEmptyString("Enter a ID that is already in use:");
-			if (!ValidationHelper.isId(id)) {
-				// input is not a id
-				System.out
-						.println("The id entered is not a valid ID please enter another one.");
-			} else if (!isAuthorIDUsed(id, dataBaseService.getAuthors())) {
-				// id is not already in use
-				return id;
-			} else {
-				// id is already in use
-				System.out
-						.println("The ID is not already used. Please chose another one.");
+			try {
+				final String id = consoleHelper
+						.askNonEmptyString("Enter a ID that is already in use:");
+				if (!ValidationHelper.isId(id)) {
+					// input is not a id
+					System.out
+							.println("The id entered is not a valid ID please enter another one.");
+				} else if (!isAuthorIDUsed(id, dataBaseService.getAuthors())) {
+					// id is not already in use
+					return id;
+				} else {
+					// id is already in use
+					System.out
+							.println("The ID is not already used. Please chose another one.");
+				}
+			} catch (final IOException e) {
+				throw new LiteratureDatabaseException(
+						"An error occured while trying to read the console.", e);
 			}
 		}
 	}
@@ -498,9 +618,10 @@ public class DatabaseConfigurationGUI {
 	 * where to save this database
 	 * 
 	 * @throws LiteratureDatabaseException
-	 * @throws IOException
+	 *             in case an error occurs while trying to set the path in case
+	 *             an error occurs while trying to load/validate the database
 	 */
-	private void loadDatabase() throws LiteratureDatabaseException, IOException {
+	private void loadDatabase() throws LiteratureDatabaseException {
 		final String path = setLoadPath();
 		mainService.validate(path);
 		dataBaseService = mainService.load(path);
@@ -512,15 +633,10 @@ public class DatabaseConfigurationGUI {
 	 * save this database
 	 * 
 	 * @throws LiteratureDatabaseException
-	 * @throws IOException
+	 *             when an error occurs while trying to load the database
 	 */
 	private void createDatabase() throws LiteratureDatabaseException {
 		dataBaseService = mainService.create();
-	}
-
-	public static void main(final String[] args)
-			throws LiteratureDatabaseException {
-		new DatabaseConfigurationGUI();
 	}
 
 	/**
@@ -560,4 +676,8 @@ public class DatabaseConfigurationGUI {
 		}
 	}
 
+	public static void main(final String[] args) {
+		// TODO delete
+		new DatabaseConfigurationGUI();
+	}
 }

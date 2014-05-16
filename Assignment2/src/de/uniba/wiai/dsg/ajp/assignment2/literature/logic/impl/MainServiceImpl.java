@@ -36,15 +36,19 @@ public class MainServiceImpl implements MainService {
 	@Override
 	public void validate(final String path) throws LiteratureDatabaseException {
 		try {
-			SchemaFactory sf = SchemaFactory
+			final SchemaFactory sf = SchemaFactory
 					.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-			Schema schema = sf.newSchema(new File("./schema.xsd"));
-			Validator validator = schema.newValidator();
+			final Schema schema = sf.newSchema(new File("./schema.xsd"));
+			final Validator validator = schema.newValidator();
 			validator.validate(new StreamSource(new File(path)));
-		} catch (SAXException e) {
-			throw new LiteratureDatabaseException(e);
-		} catch (IOException e) {
-			throw new LiteratureDatabaseException(e);
+		} catch (final SAXException e) {
+			throw new LiteratureDatabaseException(
+					"An internal error occured, while trying to validate the database.",
+					e);
+		} catch (final IOException e) {
+			throw new LiteratureDatabaseException(
+					"An internal error occured, while trying to validate the database.",
+					e);
 		}
 
 	}
@@ -55,7 +59,7 @@ public class MainServiceImpl implements MainService {
 		try {
 			final JAXBContext context = JAXBContext.newInstance(Database.class);
 			final Unmarshaller ms = context.createUnmarshaller();
-			// return (DatabaseService) ms.unmarshal(new File(path));//ÄNDERUNG
+			// return (DatabaseService) ms.unmarshal(new File(path));//ï¿½NDERUNG
 			return new DatabaseServiceImpl((Database) ms.unmarshal(new File(
 					path)));
 		} catch (final MarshalException e) {
@@ -65,10 +69,14 @@ public class MainServiceImpl implements MainService {
 			// TODO add message
 			throw new LiteratureDatabaseException(e);
 		}
+		// TODO ms.unmarshal throws this exception see javadoc
+		// catch (final UnmarshalException e) {
+		// throw new LiteratureDatabaseException(e);
+		// }
 	}
 
 	@Override
-	public DatabaseService create() throws LiteratureDatabaseException {
+	public DatabaseService create() {
 		return new DatabaseServiceImpl();
 	}
 

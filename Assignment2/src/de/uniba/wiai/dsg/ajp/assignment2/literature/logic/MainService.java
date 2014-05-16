@@ -3,7 +3,8 @@ package de.uniba.wiai.dsg.ajp.assignment2.literature.logic;
 public interface MainService {
 
 	/**
-	 * Validates the XML file identified by <code>path</code> with an XML Schema file
+	 * Validates the XML file identified by <code>path</code> with an XML Schema
+	 * file
 	 * 
 	 * @param path
 	 *            the path to the XML file to be validated
@@ -17,17 +18,19 @@ public interface MainService {
 	 * 
 	 * @param path
 	 *            the path of the XML file to be unmarshalled
-	 * @return a service handle (<code>DatabasService</code>) for manipulating the literature database
+	 * @return a service handle (<code>DatabasService</code>) for manipulating
+	 *         the literature database
 	 * @throws LiteratureDatabaseException
+	 *             when an error occurs while tying to load the database
 	 */
 	DatabaseService load(String path) throws LiteratureDatabaseException;
 
 	/**
 	 * Creates a new and empty literature database
 	 * 
-	 * @return a service handle (<code>DatabasService</code>) for manipulating the literature database
-	 * @throws LiteratureDatabaseException
+	 * @return a service handle (<code>DatabasService</code>) for manipulating
+	 *         the literature database
 	 */
-	DatabaseService create() throws LiteratureDatabaseException;
+	DatabaseService create();
 
 }

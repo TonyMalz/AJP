@@ -135,10 +135,14 @@ public class DatabaseServiceImpl implements DatabaseService {
 			ms.marshal(dataBase, System.out);
 		} catch (final MarshalException e) {
 			// TODO add message
-			throw new LiteratureDatabaseException(e);
+			throw new LiteratureDatabaseException(
+					"An internal error occured, while trying to convert database to XML. ",
+					e);
 		} catch (final JAXBException e) {
 			// TODO add message
-			throw new LiteratureDatabaseException(e);
+			throw new LiteratureDatabaseException(
+					"An internal error occured, while trying to convert database to XML. ",
+					e);
 		}
 
 	}
@@ -152,10 +156,14 @@ public class DatabaseServiceImpl implements DatabaseService {
 			ms.marshal(dataBase, new File(savePath));
 		} catch (final MarshalException e) {
 			// TODO add message
-			throw new LiteratureDatabaseException(e);
+			throw new LiteratureDatabaseException(
+					"An internal error occured, while trying to convert database to XML. ",
+					e);
 		} catch (final JAXBException e) {
 			// TODO add message
-			throw new LiteratureDatabaseException(e);
+			throw new LiteratureDatabaseException(
+					"An internal error occured, while trying to convert database to XML. ",
+					e);
 		}
 	}
 
