@@ -2,7 +2,6 @@ package de.uniba.wiai.dsg.ajp.assignment2.literature.logic.impl;
 
 import java.io.File;
 import java.util.Arrays;
-import java.util.List;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -68,9 +67,8 @@ public class DatabaseServiceImpl implements DatabaseService {
 
 	public void addPublicationToAuthor(Author[] authorsToAdd,
 			Publication publication) {
-		List<Author> authors = dataBase.getAuthors();
 		for (int i = 0; i < authorsToAdd.length; i++) {
-			for (Author next : authors) {
+			for (Author next : dataBase.getAuthors()) {
 				if (next.getId().equals(authorsToAdd[i].getId())) {
 					next.getPublications().add(publication);
 				}
@@ -100,12 +98,32 @@ public class DatabaseServiceImpl implements DatabaseService {
 				}
 			}
 		}
+		dataBase.getPublications().remove(publicationToRemove);
 	}
 
 	@Override
 	public void removeAuthorByID(final String id)
 			throws LiteratureDatabaseException {
-		// TODO Auto-generated method stub
+		Author authorToRemove = null;
+		for (final Author author : dataBase.getAuthors()) {
+			if (author.getId().equals(id)) {
+				authorToRemove = author;
+				break;
+			}
+		}
+		if (authorToRemove == null) {
+			// not found
+			return;
+		}
+		// for (final Publication publication : dataBase.getPublications()) {
+		// for (final Author author : publication.getAuthors()) {
+		// if (author.getId().equals(id)) {
+		// publication.getAuthors().remove(author);
+		// break;
+		// }
+		// }
+		// }
+		dataBase.getAuthors().remove(authorToRemove);
 
 	}
 

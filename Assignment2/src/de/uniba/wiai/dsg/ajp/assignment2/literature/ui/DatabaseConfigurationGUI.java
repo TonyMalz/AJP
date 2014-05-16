@@ -347,18 +347,18 @@ public class DatabaseConfigurationGUI {
 		try {
 			final String title = consoleHelper
 					.askNonEmptyString("Enter the title of the Publication:");
+			final String id = getPublicationIDUnused();
 			final int year = consoleHelper.askIntegerInRange(
 					"Enter published year:", 0, 2014);
 			final PublicationType type = getPublicationType();
 			final List<Author> authors = getAuthors();
-			final String id = getAuthorIDUnused();
 
 			final Publication publication = new Publication();
 			publication.setTitle(title);
+			publication.setId(id);
 			publication.setYearPublished(year);
 			publication.setType(type);
 			publication.setAuthors(authors);
-			publication.setId(id);
 
 			return publication;
 		} catch (final IOException e) {
@@ -521,7 +521,7 @@ public class DatabaseConfigurationGUI {
 				if (!ValidationHelper.isEmail(email)) {
 					// input is not a id
 					System.out
-							.println("The id entered is not a valid email please enter another one.");
+							.println("The email entered is not a valid email please enter another one.");
 				} else {
 					return email;
 				}
