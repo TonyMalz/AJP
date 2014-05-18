@@ -11,75 +11,85 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(propOrder = { "email", "id", "name", "publications" })
 public class Author {
 
-	private String id;
+    private String id;
 
-	private String name;
+    private String name;
 
-	private String email;
+    private String email;
 
-	private List<Publication> publications = new LinkedList<>();
+    private List<Publication> publications = new LinkedList<>();
 
-	public Author() {
-		super();
+    public Author() {
+	super();
+    }
+
+    @XmlElement
+    public String getName() {
+	return name;
+    }
+
+    public void setName(String name) {
+	this.name = name;
+    }
+
+    @XmlElement
+    public String getEmail() {
+	return email;
+    }
+
+    public void setEmail(String email) {
+	this.email = email;
+    }
+
+    @XmlElement
+    @XmlID
+    public String getId() {
+	return id;
+    }
+
+    public void setId(String id) {
+	this.id = id;
+    }
+
+    @XmlElement(name = "publication")
+    @XmlIDREF
+    public List<Publication> getPublications() {
+	return publications;
+    }
+
+    public void setPublications(List<Publication> publications) {
+	this.publications = publications;
+    }
+
+    @Override
+    public String toString() {
+	return String.format("[%s] %s (%s) published %d publication(s): %s",
+		id, name, email, publications.size(), getPublicationIds());
+    }
+
+    private String getPublicationIds() {
+	String publicationIds = "";
+
+	for (Publication publication : publications) {
+	    publicationIds += publication.getId() + ", ";
 	}
-
-	@XmlElement
-	public String getName() {
-		return name;
+	if (!publicationIds.isEmpty()) {
+	    return publicationIds.substring(0, publicationIds.length() - 2);
 	}
+	return publicationIds;
 
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	@XmlElement
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	@XmlElement
-	@XmlID
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
-
-	@XmlElement(name = "publication")
-	@XmlIDREF
-	public List<Publication> getPublications() {
-		return publications;
-
-	}
-
-	public void setPublications(List<Publication> publications) {
-		this.publications = publications;
-	}
-
-	@Override
-	public String toString() {
-		return String.format("[%s] %s (%s) published %d publication(s): %s",
-				id, name, email, publications.size(), getPublicationIds());
-	}
-
-	private String getPublicationIds() {
-		String publicationIds = "";
-		for (int i = 0; i < publications.size(); i++) {
-			Publication publication = publications.get(i);
-			publicationIds += publication.getId();
-
-			if (i + 1 != publications.size()) {
-				publicationIds += ", ";
-			}
-
-		}
-		return publicationIds;
-	}
+	// Calling get() on LinkedLists results in O(n^2) :(
+	// Besides the string concatenation is broken
+	//
+	// for (int i = 0; i < publications.size(); i++) {
+	// Publication publication = publications.get(i);
+	// publicationIds += publication.getId();
+	//
+	// if (i + 1 == publications.size()) {
+	// publicationIds += ", ";
+	// }
+	//
+	// }
+    }
 
 }
