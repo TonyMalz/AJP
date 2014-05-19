@@ -125,11 +125,22 @@ public class DatabaseServiceImpl implements DatabaseService {
 
 	for (final Publication publication : database.getPublications()) {
 	    if (publication.getId().equals(id)) {
+		removePublicationFromAuthors(publication,
+			publication.getAuthors());
 		database.getPublications().remove(publication);
 		return;
 	    }
 	}
 	throw new LiteratureDatabaseException("id not found");
+    }
+
+    private void removePublicationFromAuthors(Publication publication,
+	    List<Author> authorsToRemoveFrom) {
+	for (Author author : database.getAuthors()) {
+	    if (authorsToRemoveFrom.contains(author)) {
+		author.getPublications().remove(publication);
+	    }
+	}
     }
 
     @Override
@@ -160,11 +171,10 @@ public class DatabaseServiceImpl implements DatabaseService {
 		break;
 	    }
 	}
-
-	database.getPublications().removeAll(pubsToDelete);
-
 	if (!foundAuthor)
 	    throw new LiteratureDatabaseException("id not found");
+
+	database.getPublications().removeAll(pubsToDelete);
     }
 
     @Override

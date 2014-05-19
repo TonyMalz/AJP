@@ -9,6 +9,7 @@ import de.uniba.wiai.dsg.ajp.assignment2.literature.logic.action.CreateDatabaseA
 import de.uniba.wiai.dsg.ajp.assignment2.literature.logic.action.LoadDatabaseAction;
 import de.uniba.wiai.dsg.ajp.assignment2.literature.logic.action.PrintXmlAction;
 import de.uniba.wiai.dsg.ajp.assignment2.literature.logic.action.RemoveAuthorAction;
+import de.uniba.wiai.dsg.ajp.assignment2.literature.logic.action.RemovePublicationAction;
 import de.uniba.wiai.dsg.ajp.assignment2.literature.logic.action.ShowDatabaseMenuAction;
 import de.uniba.wiai.dsg.ajp.assignment2.literature.logic.action.ShowMainMenuAction;
 import de.uniba.wiai.dsg.ajp.assignment2.literature.logic.impl.DatabaseServiceImpl;
@@ -72,6 +73,11 @@ public class Main {
 
 	case ADD_PUBLICATION:
 	    action = new AddPublicationAction(request);
+	    request.setNextRequest(action.processRequest());
+	    break;
+
+	case REMOVE_PUBLICATION:
+	    action = new RemovePublicationAction(request);
 	    request.setNextRequest(action.processRequest());
 	    break;
 
