@@ -3,7 +3,9 @@ package de.uniba.wiai.dsg.ajp.assignment2.literature.logic.impl;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -33,6 +35,54 @@ public class DatabaseServiceImpl implements DatabaseService {
     public void addPublication(String title, int yearPublished,
 	    PublicationType type, Author[] authors, String id)
 	    throws LiteratureDatabaseException {
+
+	if (title == null) {
+	    throw new LiteratureDatabaseException("title is null");
+	}
+	if (title.isEmpty()) {
+	    throw new LiteratureDatabaseException("title is empty");
+	}
+
+	if (yearPublished < 0) {
+	    throw new LiteratureDatabaseException("yearPublished is negative");
+	}
+
+	if (type == null) {
+	    throw new LiteratureDatabaseException("type is null");
+	}
+
+	if (id == null) {
+	    throw new LiteratureDatabaseException("id is null");
+	}
+	if (id.isEmpty()) {
+	    throw new LiteratureDatabaseException("id is empty");
+	}
+	if (!ValidationHelper.isId(id)) {
+	    throw new LiteratureDatabaseException("id is not valid");
+	}
+
+	for (final Publication publication : database.getPublications()) {
+	    if (publication.getId().equals(id)) {
+		throw new LiteratureDatabaseException("id is already used");
+	    }
+	}
+
+	if (authors == null) {
+	    throw new LiteratureDatabaseException("authors is null");
+	}
+
+	if (authors.length == 0) {
+	    throw new LiteratureDatabaseException("authors is empty");
+	}
+
+	// check for duplicate author ids
+	Set<String> uniqAuthors = new HashSet<>();
+	for (int i = 0; i < authors.length; i++) {
+	    if (!uniqAuthors.add(authors[i].getId()))
+		throw new LiteratureDatabaseException(
+			"authors contains duplicates");
+	}
+
 	final Publication publication = new Publication();
 	publication.setYearPublished(yearPublished);
 	publication.setType(type);
@@ -40,23 +90,21 @@ public class DatabaseServiceImpl implements DatabaseService {
 	publication.setId(id);
 	publication.setTitle(title);
 	database.getPublications().add(publication);
-	// when any author is not yet in the list he/she is added
+	// if any author is not yet in the list he/she is added
 	for (final Author author : authors) {
-	    // TODO this might not be implemented right
 	    if (!database.getAuthors().contains(author)) {
 		database.getAuthors().add(author);
 	    }
 	}
 	addPublicationToAuthor(authors, publication);
-
     }
 
-    public void addPublicationToAuthor(Author[] authorsToAdd,
+    private void addPublicationToAuthor(Author[] authorsToAdd,
 	    Publication publication) {
 	for (int i = 0; i < authorsToAdd.length; i++) {
-	    for (Author next : database.getAuthors()) {
-		if (next.getId().equals(authorsToAdd[i].getId())) {
-		    next.getPublications().add(publication);
+	    for (Author nextAuthor : database.getAuthors()) {
+		if (nextAuthor.getId().equals(authorsToAdd[i].getId())) {
+		    nextAuthor.getPublications().add(publication);
 		}
 	    }
 	}
