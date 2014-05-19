@@ -27,7 +27,7 @@ public class DatabaseConfigurationGUI {
 	/**
 	 * the database to be modified. By default, an empty dataBase is created.
 	 */
-	private DatabaseService dataBaseService = mainService.create();
+	private DatabaseService dataBaseService;
 
 	/**
 	 * Constructor. <br>
@@ -35,6 +35,13 @@ public class DatabaseConfigurationGUI {
 	 */
 	public DatabaseConfigurationGUI() {
 		// TODO Feedback auch bei erfolgreichen Aktionen
+		try {
+			dataBaseService = mainService.create();
+		} catch (final LiteratureDatabaseException e) {
+			System.out
+					.println("Initzialitzation of the database failed. Reason:"
+							+ e.getMessage());
+		}
 		boolean run = true;
 		while (run) {
 			try {
@@ -648,7 +655,8 @@ public class DatabaseConfigurationGUI {
 		}
 	}
 
-	private boolean isPublicationIDUsed(String id, Publication[] publications) {
+	private boolean isPublicationIDUsed(final String id,
+			final Publication[] publications) {
 		for (final Publication publication : publications) {
 			if (publication.getId().equals(id)) {
 				return false;
