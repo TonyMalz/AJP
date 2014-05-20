@@ -13,17 +13,18 @@ public class RemoveAuthorAction extends DatabaseAction {
     private int option = -1;
     private Author authorToRemove;
 
-    public RemoveAuthorAction(DatabaseRequest request) {
+    public RemoveAuthorAction(final DatabaseRequest request) {
 	super(request);
 	authors = database.getAuthors();
     }
 
     @Override
     public void show() {
+	// TODO show removed publications
 	System.out.println("\n\t REMOVE AUTHOR");
 	int i = 1;
-	for (Author author : authors) {
-	    System.out.println("( " + (i++) + " )" + author);
+	for (final Author author : authors) {
+	    System.out.println("( " + i++ + " )" + author);
 	}
 	System.out.println("--------------");
 	System.out.println("( 0 ) cancel");
@@ -57,7 +58,7 @@ public class RemoveAuthorAction extends DatabaseAction {
 	    System.out.println("\t id:\t" + authorToRemove.getId());
 	    System.out.println("\t email:\t" + authorToRemove.getEmail());
 
-	} catch (LiteratureDatabaseException e) {
+	} catch (final LiteratureDatabaseException e) {
 	    System.out
 		    .println("\n>>> ERROR while removing author from database");
 	    System.out.println(e);

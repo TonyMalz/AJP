@@ -88,8 +88,8 @@ public class DatabaseServiceImpl implements DatabaseService {
 	final Publication publication = new Publication();
 	publication.setYearPublished(yearPublished);
 	publication.setType(type);
-	List<Author> authorsList = new LinkedList<>();
-	authorsList = Arrays.asList(authors);
+	final List<Author> authorsList = new LinkedList<>();
+	authorsList.addAll(Arrays.asList(authors));
 	publication.setAuthors(authorsList);
 	publication.setId(id);
 	publication.setTitle(title);
@@ -251,12 +251,10 @@ public class DatabaseServiceImpl implements DatabaseService {
 	    ms.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 	    ms.marshal(database, System.out);
 	} catch (final MarshalException e) {
-	    // TODO add message
 	    throw new LiteratureDatabaseException(
 		    "An internal error occured, while trying to convert database to XML. ",
 		    e);
 	} catch (final JAXBException e) {
-	    // TODO add message
 	    throw new LiteratureDatabaseException(
 		    "An internal error occured, while trying to convert database to XML. ",
 		    e);
