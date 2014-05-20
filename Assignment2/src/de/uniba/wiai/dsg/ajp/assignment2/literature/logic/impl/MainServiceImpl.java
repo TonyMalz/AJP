@@ -2,6 +2,10 @@ package de.uniba.wiai.dsg.ajp.assignment2.literature.logic.impl;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.InvalidPathException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import javax.xml.XMLConstants;
 import javax.xml.bind.JAXBContext;
@@ -35,6 +39,7 @@ public class MainServiceImpl implements MainService {
 
     @Override
     public void validate(String path) throws LiteratureDatabaseException {
+	checkPath(path);
 	try {
 	    final SchemaFactory sf = SchemaFactory
 		    .newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
@@ -54,6 +59,7 @@ public class MainServiceImpl implements MainService {
 
     @Override
     public DatabaseService load(String path) throws LiteratureDatabaseException {
+	checkPath(path);
 	try {
 	    final JAXBContext context = JAXBContext.newInstance(Database.class);
 	    final Unmarshaller ms = context.createUnmarshaller();
@@ -73,4 +79,34 @@ public class MainServiceImpl implements MainService {
 	return new DatabaseServiceImpl();
     }
 
+    private void checkPath(String path) throws LiteratureDatabaseException {
+	if (path == null) {
+	    throw new LiteratureDatabaseException("Given path is null");
+	}
+	if (path.isEmpty()) {
+	    throw new LiteratureDatabaseException("Given path is empty");
+	}
+	try {
+	    Path filePath = Paths.get(path);
+
+	    if (!Files.exists(filePath)) {
+		throw new LiteratureDatabaseException(
+			"Given path does not exist");
+	    }
+	    if (!Files.isReadable(filePath)) {
+		throw new LiteratureDatabaseException(
+			"Given path is not readable");
+	    }
+	    if (!Files.isRegularFile(filePath)) {
+		throw new LiteratureDatabaseException(
+			"Given path is not a file");
+	    }
+
+	} catch (InvalidPathException e) {
+	    throw new LiteratureDatabaseException("Given path is not valid", e);
+	} catch (SecurityException e) {
+	    throw new LiteratureDatabaseException(
+		    "Path is not accessible due to security reasons", e);
+	}
+    }
 }

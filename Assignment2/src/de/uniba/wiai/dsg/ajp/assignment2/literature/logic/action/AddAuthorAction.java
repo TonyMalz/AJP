@@ -111,9 +111,9 @@ public class AddAuthorAction extends DatabaseAction {
 	try {
 	    database.addAuthor(authorName, authorEmail, authorId);
 	    System.out.println("\n>>> Successfully added author:");
-	    System.out.println("\t name:\t" + authorName);
-	    System.out.println("\t id:\t" + authorId);
-	    System.out.println("\t email:\t" + authorEmail);
+	    System.out.println("\t Name:\t" + authorName);
+	    System.out.println("\t ID:\t" + authorId);
+	    System.out.println("\t Email:\t" + authorEmail);
 
 	} catch (final LiteratureDatabaseException e) {
 	    System.out

@@ -94,7 +94,7 @@ public class LoadDatabaseAction extends DatabaseAction {
 	try {
 	    mainService.validate(fileName);
 	} catch (final LiteratureDatabaseException e) {
-	    System.out.println(e.getMessage());
+	    System.out.println("\n>>> " + e.getMessage());
 	    setNextRequest(Request.LOAD_DATABASE);
 	}
 
@@ -106,10 +106,12 @@ public class LoadDatabaseAction extends DatabaseAction {
 	    System.out.println("\n>>> Loading database " + fileName);
 	    database = mainService.load(fileName);
 	    setDatabase(database, fileName);
+	    System.out.println(">>> Database " + fileName
+		    + " was successfully loaded");
 	    setNextRequest(Request.SHOW_DATABASE_MENU);
 
 	} catch (final LiteratureDatabaseException e) {
-	    System.out.println(e);
+	    System.out.println("\n>>>" + e.getMessage());
 	    setNextRequest(Request.SHOW_MAIN_MENU);
 	}
 

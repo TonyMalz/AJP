@@ -1,6 +1,10 @@
 package de.uniba.wiai.dsg.ajp.assignment2.literature.logic.impl;
 
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.InvalidPathException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -290,12 +294,7 @@ public class DatabaseServiceImpl implements DatabaseService {
     @Override
     public void saveXMLToFile(final String path)
 	    throws LiteratureDatabaseException {
-	if (path == null) {
-	    throw new LiteratureDatabaseException("Given file path is null");
-	}
-	if (path.isEmpty()) {
-	    throw new LiteratureDatabaseException("Given file path is empty");
-	}
+	checkPath(path);
 
 	try {
 	    final JAXBContext context = JAXBContext.newInstance(Database.class);
@@ -312,5 +311,39 @@ public class DatabaseServiceImpl implements DatabaseService {
 		    e);
 	}
 
+    }
+
+    private void checkPath(String path) throws LiteratureDatabaseException {
+	if (path == null) {
+	    throw new LiteratureDatabaseException("Given path is null");
+	}
+	if (path.isEmpty()) {
+	    throw new LiteratureDatabaseException("Given path is empty");
+	}
+	try {
+	    Path filePath = Paths.get(path);
+	    // check for valid parent folder if more than a filename is given
+	    if (filePath.getNameCount() > 1) {
+		Path subPath = filePath.subpath(0, filePath.getNameCount() - 1);
+		if (!Files.exists(subPath)) {
+		    throw new LiteratureDatabaseException(
+			    "Invalid path: parent folder does not exist");
+		}
+		if (!Files.isDirectory(subPath)) {
+		    throw new LiteratureDatabaseException(
+			    "Invalid path: parent folder is not a directory");
+		}
+		if (!Files.isWritable(subPath)) {
+		    throw new LiteratureDatabaseException(
+			    "Invalid path: parent folder is not writable");
+		}
+	    }
+
+	} catch (InvalidPathException e) {
+	    throw new LiteratureDatabaseException("Given path is not valid", e);
+	} catch (SecurityException e) {
+	    throw new LiteratureDatabaseException(
+		    "Path is not accessible due to security reasons", e);
+	}
     }
 }
