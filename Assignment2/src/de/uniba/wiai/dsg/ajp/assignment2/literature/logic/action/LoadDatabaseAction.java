@@ -28,12 +28,12 @@ public class LoadDatabaseAction extends DatabaseAction {
     @Override
     public void show() {
 	System.out.println("\n\t LOAD DATABASE:");
-	System.out.println("( 0 ) cancel");
-	System.out.println("--------------");
 	int i = 1;
 	for (Path file : databaseList) {
 	    System.out.println("( " + (i++) + " ) " + file);
 	}
+	System.out.println("--------------");
+	System.out.println("( 0 ) cancel");
     }
 
     @Override

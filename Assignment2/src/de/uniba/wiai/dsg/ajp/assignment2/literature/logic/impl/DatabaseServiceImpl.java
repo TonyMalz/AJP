@@ -260,18 +260,23 @@ public class DatabaseServiceImpl implements DatabaseService {
 
     @Override
     public void saveXMLToFile(String path) throws LiteratureDatabaseException {
+	if (path == null) {
+	    throw new LiteratureDatabaseException("Given file path is null");
+	}
+	if (path.isEmpty()) {
+	    throw new LiteratureDatabaseException("Given file path is empty");
+	}
+
 	try {
 	    final JAXBContext context = JAXBContext.newInstance(Database.class);
 	    final Marshaller ms = context.createMarshaller();
 	    ms.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 	    ms.marshal(database, new File(path));
 	} catch (final MarshalException e) {
-	    // TODO add message
 	    throw new LiteratureDatabaseException(
 		    "An internal error occured, while trying to convert database to XML. ",
 		    e);
 	} catch (final JAXBException e) {
-	    // TODO add message
 	    throw new LiteratureDatabaseException(
 		    "An internal error occured, while trying to convert database to XML. ",
 		    e);

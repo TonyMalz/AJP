@@ -16,8 +16,7 @@ public class ShowDatabaseMenuAction extends DatabaseAction {
 
     @Override
     public void show() {
-	System.out.println("\nCurrent database: " + getDatabaseFileName());// TODO
-									   // DEBUG
+	System.out.println("\n\t DATABASE " + getDatabaseFileName());
 	System.out.println("( 1 ) Add Author");
 	System.out.println("( 2 ) Remove Author");
 	System.out.println("( 3 ) Add Publication");
@@ -53,7 +52,7 @@ public class ShowDatabaseMenuAction extends DatabaseAction {
 	case 7:
 	    return Request.PRINT_XML;
 	case 8:
-	    return Request.SHOW_DATABASE_MENU;
+	    return Request.SAVE_XML;
 	case 0:
 	    return Request.SHOW_MAIN_MENU;
 	default:
