@@ -16,11 +16,21 @@ import de.uniba.wiai.dsg.ajp.assignment2.literature.Main.DatabaseRequest;
 import de.uniba.wiai.dsg.ajp.assignment2.literature.Main.Request;
 import de.uniba.wiai.dsg.ajp.assignment2.literature.ui.ConsoleHelper;
 
+/**
+ * Abstract class for any database action <br>
+ * 
+ * Mainly used as a template for how to handle and process the database request
+ * and subsequently trigger a new request.
+ * 
+ */
 public abstract class DatabaseAction {
-    // TODO comment
+    /* helper object to read from console */
     protected static ConsoleHelper console = ConsoleHelper.build();
+    /* the request that should be processed after this action finished */
     protected Request nextRequest = null;
+    /* the current database */
     protected DatabaseService database;
+    /* the global request object */
     protected final DatabaseRequest request;
 
     /**
@@ -67,17 +77,42 @@ public abstract class DatabaseAction {
 	return database;
     }
 
-    // TODO comment
+    /**
+     * Show content specific to this action
+     */
     public abstract void show();
 
+    /**
+     * Ask user for input or any interactivity <br>
+     * Called right after {@link #show()}
+     * 
+     * @throws IOException
+     *             in case an error occurs while reading from console
+     */
     public abstract void readInput() throws IOException;
 
+    /**
+     * Validate user input that was given in {@link #readInput()}<br>
+     * Called right after {@link #readInput()}
+     * 
+     * @throws IOException
+     *             in case an error occurs while reading from console
+     */
     public abstract void validateInput() throws IOException;
 
+    /**
+     * Main processing method <br>
+     * Should be used to carry out any specific logic/operations inherent to
+     * this action <br>
+     * Called right after {@link #validateInput()}
+     * 
+     * @throws IOException
+     *             in case an error occurs while reading from console
+     */
     public abstract void process() throws IOException;
 
     /**
-     * Tries to process the request. <br>
+     * Tries to process the current database request. <br>
      * (1) {@link #show()} <br>
      * (2) {@link #readInput()} <br>
      * (3) {@link #validateInput()} <br>

@@ -32,7 +32,7 @@ public class RemovePublicationAction extends DatabaseAction {
 	System.out.println("\n\t REMOVE PUBLICATION:");
 	int i = 1;
 	for (final Publication publication : publications) {
-	    System.out.println("( " + i++ + " ) " + publication);
+	    System.out.println("( " + (i++) + " ) " + publication);
 	}
 	System.out.println("--------------");
 	System.out.println("( 0 ) cancel");

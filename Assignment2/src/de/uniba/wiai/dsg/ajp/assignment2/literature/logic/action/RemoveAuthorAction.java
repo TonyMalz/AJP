@@ -29,11 +29,10 @@ public class RemoveAuthorAction extends DatabaseAction {
 
     @Override
     public void show() {
-	// TODO show removed publications
 	System.out.println("\n\t REMOVE AUTHOR");
 	int i = 1;
 	for (final Author author : authors) {
-	    System.out.println("( " + i++ + " )" + author);
+	    System.out.println("( " + (i++) + " ) " + author);
 	}
 	System.out.println("--------------");
 	System.out.println("( 0 ) cancel");

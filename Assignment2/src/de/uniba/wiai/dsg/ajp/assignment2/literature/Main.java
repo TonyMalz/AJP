@@ -113,46 +113,102 @@ public class Main {
 
     }
 
+    /**
+     * Contains all valid requests which are handled by corresponding database
+     * action classes
+     * 
+     */
     public enum Request {
 	SHOW_MAIN_MENU, SHOW_DATABASE_MENU, EXIT, LOAD_DATABASE, CREATE_DATABASE, ADD_AUTHOR, REMOVE_AUTHOR, ADD_PUBLICATION, REMOVE_PUBLICATION, LIST_PUBLICATIONS, LIST_AUTHORS, PRINT_XML, SAVE_XML
 
     }
 
+    /**
+     * Global Request Class <br>
+     * <br>
+     * Holds all mandatory database configuration objects: <br>
+     * <ul>
+     * <li>Current request object (request)</li>
+     * <li>Current main service implementation (mainService)</li>
+     * <li>Current database service implementation (dbs)</li>
+     * <li>File name of current database (dbFileName)</li>
+     * </ul>
+     * 
+     * This object is shared between all DatabaseAction implementations and is
+     * mainly used as a container to query the current state of the application
+     * including the current request
+     * 
+     */
     public static class DatabaseRequest {
 
+	/* the current request object to be handled by an action */
 	private Request request;
+	/* the MainService interface implementation */
 	private final MainService mainService = new MainServiceImpl();
+	/*
+	 * the database service implementation which provides access to current
+	 * database
+	 */
 	private DatabaseService dbs = new DatabaseServiceImpl();
+	/* the file name of the current database */
 	private String dbFileName;
 
+	/**
+	 * @param request
+	 *            the initial request
+	 */
 	public DatabaseRequest(final Request request) {
 	    this.request = request;
 	}
 
+	/**
+	 * @return the current request
+	 */
 	public Request getCurrentRequest() {
 	    return request;
 	}
 
+	/**
+	 * @param request
+	 *            the request which should be handled next
+	 */
 	public void setNextRequest(final Request request) {
 	    this.request = request;
 	}
 
+	/**
+	 * @return current database service object
+	 */
 	public DatabaseService getDatabase() {
 	    return dbs;
 	}
 
+	/**
+	 * @return main service object
+	 */
 	public MainService getMainService() {
 	    return mainService;
 	}
 
+	/**
+	 * @return current database file name
+	 */
 	public String getDatabaseFileName() {
 	    return dbFileName;
 	}
 
+	/**
+	 * @param fileName
+	 *            the file name / path which to save to
+	 */
 	public void setDatabaseFileName(final String fileName) {
 	    dbFileName = fileName;
 	}
 
+	/**
+	 * @param database
+	 *            current database which should be globally used
+	 */
 	public void setDatabase(final DatabaseService database) {
 	    dbs = database;
 	}

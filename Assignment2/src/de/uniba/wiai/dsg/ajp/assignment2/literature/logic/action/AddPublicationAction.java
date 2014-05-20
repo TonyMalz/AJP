@@ -86,7 +86,6 @@ public class AddPublicationAction extends DatabaseAction {
 		authorsToSelectedFrom[i] = author;
 		System.out.println("( " + ++i + " )" + author);
 	    }
-	    // TODO ( 0 ) new Author
 	    final int maxOption = i;
 
 	    // no authors left to add

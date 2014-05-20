@@ -20,7 +20,7 @@ public class PrintXmlAction extends DatabaseAction {
 
     @Override
     public void show() {
-	System.out.println("\nDatabase: " + getDatabaseFileName());// TODO DEBUG
+	System.out.println("\n\t  XML of " + getDatabaseFileName());
 	try {
 	    database.printXMLToConsole();
 	} catch (final LiteratureDatabaseException e) {
