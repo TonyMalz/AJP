@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -24,16 +25,16 @@ public class DatabaseServiceImpl implements DatabaseService {
     private final Database database;
 
     public DatabaseServiceImpl() {
-	this.database = new Database();
+	database = new Database();
     }
 
-    public DatabaseServiceImpl(Database database) {
+    public DatabaseServiceImpl(final Database database) {
 	this.database = database;
     }
 
     @Override
-    public void addPublication(String title, int yearPublished,
-	    PublicationType type, Author[] authors, String id)
+    public void addPublication(final String title, final int yearPublished,
+	    final PublicationType type, final Author[] authors, final String id)
 	    throws LiteratureDatabaseException {
 
 	if (title == null) {
@@ -76,17 +77,20 @@ public class DatabaseServiceImpl implements DatabaseService {
 	}
 
 	// check for duplicate author ids
-	Set<String> uniqAuthors = new HashSet<>();
+	final Set<String> uniqAuthors = new HashSet<>();
 	for (int i = 0; i < authors.length; i++) {
-	    if (!uniqAuthors.add(authors[i].getId()))
+	    if (!uniqAuthors.add(authors[i].getId())) {
 		throw new LiteratureDatabaseException(
 			"authors contains duplicates");
+	    }
 	}
 
 	final Publication publication = new Publication();
 	publication.setYearPublished(yearPublished);
 	publication.setType(type);
-	publication.setAuthors(Arrays.asList(authors));
+	List<Author> authorsList = new LinkedList<>();
+	authorsList = Arrays.asList(authors);
+	publication.setAuthors(authorsList);
 	publication.setId(id);
 	publication.setTitle(title);
 	database.getPublications().add(publication);
@@ -99,11 +103,11 @@ public class DatabaseServiceImpl implements DatabaseService {
 	addPublicationToAuthor(authors, publication);
     }
 
-    private void addPublicationToAuthor(Author[] authorsToAdd,
-	    Publication publication) {
-	for (int i = 0; i < authorsToAdd.length; i++) {
-	    for (Author nextAuthor : database.getAuthors()) {
-		if (nextAuthor.getId().equals(authorsToAdd[i].getId())) {
+    private void addPublicationToAuthor(final Author[] authorsToAdd,
+	    final Publication publication) {
+	for (final Author element : authorsToAdd) {
+	    for (final Author nextAuthor : database.getAuthors()) {
+		if (nextAuthor.getId().equals(element.getId())) {
 		    nextAuthor.getPublications().add(publication);
 		}
 	    }
@@ -111,7 +115,7 @@ public class DatabaseServiceImpl implements DatabaseService {
     }
 
     @Override
-    public void removePublicationByID(String id)
+    public void removePublicationByID(final String id)
 	    throws LiteratureDatabaseException {
 	if (id == null) {
 	    throw new LiteratureDatabaseException("id is null");
@@ -134,9 +138,9 @@ public class DatabaseServiceImpl implements DatabaseService {
 	throw new LiteratureDatabaseException("id not found");
     }
 
-    private void removePublicationFromAuthors(Publication publication,
-	    List<Author> authorsToRemoveFrom) {
-	for (Author author : database.getAuthors()) {
+    private void removePublicationFromAuthors(final Publication publication,
+	    final List<Author> authorsToRemoveFrom) {
+	for (final Author author : database.getAuthors()) {
 	    if (authorsToRemoveFrom.contains(author)) {
 		author.getPublications().remove(publication);
 	    }
@@ -144,7 +148,8 @@ public class DatabaseServiceImpl implements DatabaseService {
     }
 
     @Override
-    public void removeAuthorByID(String id) throws LiteratureDatabaseException {
+    public void removeAuthorByID(final String id)
+	    throws LiteratureDatabaseException {
 	if (id == null) {
 	    throw new LiteratureDatabaseException("id is null");
 	}
@@ -156,11 +161,11 @@ public class DatabaseServiceImpl implements DatabaseService {
 	}
 
 	boolean foundAuthor = false;
-	List<Publication> pubsToDelete = new ArrayList<>();
+	final List<Publication> pubsToDelete = new ArrayList<>();
 
-	for (Author author : database.getAuthors()) {
+	for (final Author author : database.getAuthors()) {
 	    if (author.getId().equals(id)) {
-		for (Publication publication : author.getPublications()) {
+		for (final Publication publication : author.getPublications()) {
 		    publication.getAuthors().remove(author);
 		    if (publication.getAuthors().isEmpty()) {
 			pubsToDelete.add(publication);
@@ -171,14 +176,15 @@ public class DatabaseServiceImpl implements DatabaseService {
 		break;
 	    }
 	}
-	if (!foundAuthor)
+	if (!foundAuthor) {
 	    throw new LiteratureDatabaseException("id not found");
+	}
 
 	database.getPublications().removeAll(pubsToDelete);
     }
 
     @Override
-    public void addAuthor(String name, String email, String id)
+    public void addAuthor(final String name, final String email, final String id)
 	    throws LiteratureDatabaseException {
 
 	if (name == null) {
@@ -259,7 +265,8 @@ public class DatabaseServiceImpl implements DatabaseService {
     }
 
     @Override
-    public void saveXMLToFile(String path) throws LiteratureDatabaseException {
+    public void saveXMLToFile(final String path)
+	    throws LiteratureDatabaseException {
 	if (path == null) {
 	    throw new LiteratureDatabaseException("Given file path is null");
 	}
