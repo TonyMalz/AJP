@@ -14,13 +14,22 @@ import de.uniba.wiai.dsg.ajp.assignment2.literature.logic.MainService;
 import de.uniba.wiai.dsg.ajp.assignment2.literature.logic.impl.MainServiceImpl;
 
 public class LoadDatabaseAction extends DatabaseAction {
+    /** database to be loaded. */
     private String fileName;
+    /** path to the database to be loaded. */
     private Path databaseFile;
+    /** list of the pathes to all databse. */
     private final List<Path> databaseList;
-
+    /** main Service to used to load. */
     private final static MainService mainService = new MainServiceImpl();
 
-    public LoadDatabaseAction(DatabaseRequest request) {
+    /**
+     * Constructor.
+     * 
+     * @param request
+     *            to be processed.
+     */
+    public LoadDatabaseAction(final DatabaseRequest request) {
 	super(request);
 	databaseList = getXMLFilesInDirectory();
     }
@@ -29,8 +38,8 @@ public class LoadDatabaseAction extends DatabaseAction {
     public void show() {
 	System.out.println("\n\t LOAD DATABASE:");
 	int i = 1;
-	for (Path file : databaseList) {
-	    System.out.println("( " + (i++) + " ) " + file);
+	for (final Path file : databaseList) {
+	    System.out.println("( " + i++ + " ) " + file);
 	}
 	System.out.println("--------------");
 	System.out.println("( 0 ) cancel");
@@ -53,7 +62,7 @@ public class LoadDatabaseAction extends DatabaseAction {
 	// handle file selection
 	if (fileName.matches("\\d+")) {
 	    try {
-		int selectedFile = Integer.valueOf(fileName);
+		final int selectedFile = Integer.valueOf(fileName);
 		if (selectedFile > 0 && selectedFile <= databaseList.size()) {
 		    fileName = databaseList.get(selectedFile - 1).toString();
 		} else {
@@ -61,7 +70,7 @@ public class LoadDatabaseAction extends DatabaseAction {
 		    setNextRequest(Request.LOAD_DATABASE);
 		    return;
 		}
-	    } catch (NumberFormatException e) {
+	    } catch (final NumberFormatException e) {
 		System.out.println("\n>>> Error parsing option: " + fileName);
 		setNextRequest(Request.LOAD_DATABASE);
 		return;
@@ -84,7 +93,7 @@ public class LoadDatabaseAction extends DatabaseAction {
 
 	try {
 	    mainService.validate(fileName);
-	} catch (LiteratureDatabaseException e) {
+	} catch (final LiteratureDatabaseException e) {
 	    System.out.println(e.getMessage());
 	    setNextRequest(Request.LOAD_DATABASE);
 	}
@@ -99,13 +108,18 @@ public class LoadDatabaseAction extends DatabaseAction {
 	    setDatabase(database, fileName);
 	    setNextRequest(Request.SHOW_DATABASE_MENU);
 
-	} catch (LiteratureDatabaseException e) {
+	} catch (final LiteratureDatabaseException e) {
 	    System.out.println(e);
 	    setNextRequest(Request.SHOW_MAIN_MENU);
 	}
 
     }
 
+    /**
+     * adds a .xml after the name when not yet there.
+     * 
+     * @return the name +".xml"
+     */
     private String getFileName() {
 	return fileName.matches(".+\\.xml$") ? fileName : fileName + ".xml";
     }

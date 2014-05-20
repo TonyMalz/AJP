@@ -7,10 +7,16 @@ import de.uniba.wiai.dsg.ajp.assignment2.literature.Main.Request;
 import de.uniba.wiai.dsg.ajp.assignment2.literature.logic.DatabaseAction;
 
 public class ShowDatabaseMenuAction extends DatabaseAction {
-
+    /** the choice of the user. */
     private int option = -1;
 
-    public ShowDatabaseMenuAction(DatabaseRequest request) {
+    /**
+     * Constructor.
+     * 
+     * @param request
+     *            to be processed.
+     */
+    public ShowDatabaseMenuAction(final DatabaseRequest request) {
 	super(request);
     }
 

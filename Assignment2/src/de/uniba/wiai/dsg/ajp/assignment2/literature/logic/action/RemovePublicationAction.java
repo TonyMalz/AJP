@@ -9,11 +9,20 @@ import de.uniba.wiai.dsg.ajp.assignment2.literature.logic.LiteratureDatabaseExce
 import de.uniba.wiai.dsg.ajp.assignment2.literature.logic.model.Publication;
 
 public class RemovePublicationAction extends DatabaseAction {
+    /** Publications of the database. */
     private final Publication[] publications;
+    /** the choice of the user. */
     private int option = -1;
+    /** Publication to be removed. */
     private Publication publicationToRemove;
 
-    public RemovePublicationAction(DatabaseRequest request) {
+    /**
+     * Constructor.
+     * 
+     * @param request
+     *            to be processed.
+     */
+    public RemovePublicationAction(final DatabaseRequest request) {
 	super(request);
 	publications = database.getPublications();
     }
@@ -22,8 +31,8 @@ public class RemovePublicationAction extends DatabaseAction {
     public void show() {
 	System.out.println("\n\t REMOVE PUBLICATION:");
 	int i = 1;
-	for (Publication publication : publications) {
-	    System.out.println("( " + (i++) + " ) " + publication);
+	for (final Publication publication : publications) {
+	    System.out.println("( " + i++ + " ) " + publication);
 	}
 	System.out.println("--------------");
 	System.out.println("( 0 ) cancel");
@@ -60,7 +69,7 @@ public class RemovePublicationAction extends DatabaseAction {
 	    System.out.println("\t Year:\t"
 		    + publicationToRemove.getYearPublished());
 
-	} catch (LiteratureDatabaseException e) {
+	} catch (final LiteratureDatabaseException e) {
 	    System.out
 		    .println("\n>>> ERROR while removing publication from database");
 	    System.out.println(e);

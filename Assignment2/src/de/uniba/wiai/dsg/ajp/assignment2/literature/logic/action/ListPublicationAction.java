@@ -8,15 +8,20 @@ import de.uniba.wiai.dsg.ajp.assignment2.literature.logic.DatabaseAction;
 import de.uniba.wiai.dsg.ajp.assignment2.literature.logic.model.Publication;
 
 public class ListPublicationAction extends DatabaseAction {
-
-    public ListPublicationAction(DatabaseRequest request) {
+    /**
+     * Constructor.
+     * 
+     * @param request
+     *            to be processed.
+     */
+    public ListPublicationAction(final DatabaseRequest request) {
 	super(request);
     }
 
     @Override
     public void show() {
 	System.out.println("\n\t LIST PUBLICATIONS:");
-	for (Publication publication : database.getPublications()) {
+	for (final Publication publication : database.getPublications()) {
 	    System.out.println(publication);
 	}
     }

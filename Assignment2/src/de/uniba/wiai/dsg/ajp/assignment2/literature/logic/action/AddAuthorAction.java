@@ -10,12 +10,20 @@ import de.uniba.wiai.dsg.ajp.assignment2.literature.logic.ValidationHelper;
 import de.uniba.wiai.dsg.ajp.assignment2.literature.logic.model.Author;
 
 public class AddAuthorAction extends DatabaseAction {
-
+    /** name of the author. */
     private String authorName;
+    /** id of the author. */
     private String authorId;
+    /** email of the author. */
     private String authorEmail;
 
-    public AddAuthorAction(DatabaseRequest request) {
+    /**
+     * Constructor.
+     * 
+     * @param request
+     *            to be processed.
+     */
+    public AddAuthorAction(final DatabaseRequest request) {
 	super(request);
     }
 
@@ -107,7 +115,7 @@ public class AddAuthorAction extends DatabaseAction {
 	    System.out.println("\t id:\t" + authorId);
 	    System.out.println("\t email:\t" + authorEmail);
 
-	} catch (LiteratureDatabaseException e) {
+	} catch (final LiteratureDatabaseException e) {
 	    System.out
 		    .println("\n>>> ERROR while adding author to the database");
 	    System.out.println(e);

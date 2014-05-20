@@ -11,11 +11,18 @@ import de.uniba.wiai.dsg.ajp.assignment2.literature.logic.DatabaseAction;
 import de.uniba.wiai.dsg.ajp.assignment2.literature.logic.LiteratureDatabaseException;
 
 public class CreateDatabaseAction extends DatabaseAction {
-
+    /** name of the datbase. */
     private String newName;
+    /** path to the database. */
     private Path databaseFile;
 
-    public CreateDatabaseAction(DatabaseRequest request) {
+    /**
+     * Constructor.
+     * 
+     * @param request
+     *            to be processed.
+     */
+    public CreateDatabaseAction(final DatabaseRequest request) {
 	super(request);
     }
 
@@ -23,7 +30,7 @@ public class CreateDatabaseAction extends DatabaseAction {
     public void show() {
 	System.out.println("\n\t CREATE DATABASE");
 	System.out.println("Current databases:");
-	for (Path file : getXMLFilesInDirectory()) {
+	for (final Path file : getXMLFilesInDirectory()) {
 	    System.out.println(file.toString());
 	}
 	System.out.println("--------------");
@@ -62,7 +69,7 @@ public class CreateDatabaseAction extends DatabaseAction {
 
 	    setNextRequest(Request.SHOW_DATABASE_MENU);
 
-	} catch (LiteratureDatabaseException e) {
+	} catch (final LiteratureDatabaseException e) {
 	    System.out.println("\n>>> ERROR: Database " + newName
 		    + " could not be created!");
 	    setNextRequest(Request.CREATE_DATABASE);
@@ -70,6 +77,11 @@ public class CreateDatabaseAction extends DatabaseAction {
 
     }
 
+    /**
+     * adds a .xml after the name when not yet there.
+     * 
+     * @return the name +".xml"
+     */
     private String getFileName() {
 	return newName.matches(".+\\.xml$") ? newName : newName + ".xml";
     }

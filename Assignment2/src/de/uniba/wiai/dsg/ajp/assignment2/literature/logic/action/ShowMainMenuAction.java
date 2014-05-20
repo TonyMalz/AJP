@@ -8,9 +8,17 @@ import de.uniba.wiai.dsg.ajp.assignment2.literature.logic.DatabaseAction;
 
 public class ShowMainMenuAction extends DatabaseAction {
 
+    /** the choice of the user. */
     private int option = -1;
 
-    public ShowMainMenuAction(DatabaseRequest request) {
+    /**
+     * Constructor.
+     * 
+     * @param request
+     *            to be processed.
+     */
+
+    public ShowMainMenuAction(final DatabaseRequest request) {
 	super(request);
 	// always start with clean database
 	request.getDatabase().clear();

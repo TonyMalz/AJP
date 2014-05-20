@@ -9,10 +9,19 @@ import de.uniba.wiai.dsg.ajp.assignment2.literature.logic.LiteratureDatabaseExce
 import de.uniba.wiai.dsg.ajp.assignment2.literature.logic.model.Author;
 
 public class RemoveAuthorAction extends DatabaseAction {
+    /** author in the datbase. */
     private final Author[] authors;
+    /** the choice of the user. */
     private int option = -1;
+    /** Author to be removed. */
     private Author authorToRemove;
 
+    /**
+     * Constructor.
+     * 
+     * @param request
+     *            to be processed.
+     */
     public RemoveAuthorAction(final DatabaseRequest request) {
 	super(request);
 	authors = database.getAuthors();

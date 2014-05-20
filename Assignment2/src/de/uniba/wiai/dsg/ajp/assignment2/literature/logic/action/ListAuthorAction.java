@@ -8,15 +8,20 @@ import de.uniba.wiai.dsg.ajp.assignment2.literature.logic.DatabaseAction;
 import de.uniba.wiai.dsg.ajp.assignment2.literature.logic.model.Author;
 
 public class ListAuthorAction extends DatabaseAction {
-
-    public ListAuthorAction(DatabaseRequest request) {
+    /**
+     * Constructor.
+     * 
+     * @param request
+     *            to be processed.
+     */
+    public ListAuthorAction(final DatabaseRequest request) {
 	super(request);
     }
 
     @Override
     public void show() {
 	System.out.println("\n\t LIST AUTHORS:");
-	for (Author author : database.getAuthors()) {
+	for (final Author author : database.getAuthors()) {
 	    System.out.println(author);
 	}
     }

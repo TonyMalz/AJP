@@ -10,10 +10,18 @@ import de.uniba.wiai.dsg.ajp.assignment2.literature.logic.DatabaseAction;
 import de.uniba.wiai.dsg.ajp.assignment2.literature.logic.LiteratureDatabaseException;
 
 public class SaveXmlAction extends DatabaseAction {
+    /** name of the database to be saved. */
     private String fileName;
+    /** list of all paths to databases. */
     private final List<Path> databaseList;
 
-    public SaveXmlAction(DatabaseRequest request) {
+    /**
+     * Constructor.
+     * 
+     * @param request
+     *            to be processed.
+     */
+    public SaveXmlAction(final DatabaseRequest request) {
 	super(request);
 	databaseList = getXMLFilesInDirectory();
     }
@@ -23,8 +31,8 @@ public class SaveXmlAction extends DatabaseAction {
 	System.out.println("\n\t SAVE DATABASE:");
 	System.out.println("Current databases:");
 	int i = 1;
-	for (Path file : databaseList) {
-	    System.out.println("(" + (i++) + ") " + file.toString());
+	for (final Path file : databaseList) {
+	    System.out.println("(" + i++ + ") " + file.toString());
 	}
 	System.out.println("--------------");
 	System.out.println("( 0 ) cancel");
@@ -48,7 +56,7 @@ public class SaveXmlAction extends DatabaseAction {
 	// handle file selection
 	if (fileName.matches("\\d+")) {
 	    try {
-		int selectedFile = Integer.valueOf(fileName);
+		final int selectedFile = Integer.valueOf(fileName);
 		if (selectedFile > 0 && selectedFile <= databaseList.size()) {
 		    fileName = databaseList.get(selectedFile - 1).toString();
 		} else {
@@ -56,7 +64,7 @@ public class SaveXmlAction extends DatabaseAction {
 		    setNextRequest(Request.SAVE_XML);
 		    return;
 		}
-	    } catch (NumberFormatException e) {
+	    } catch (final NumberFormatException e) {
 		System.out.println("\n>>> Error parsing option: " + fileName);
 		setNextRequest(Request.SAVE_XML);
 		return;
@@ -79,7 +87,7 @@ public class SaveXmlAction extends DatabaseAction {
 
 	    setNextRequest(Request.SHOW_DATABASE_MENU);
 
-	} catch (LiteratureDatabaseException e) {
+	} catch (final LiteratureDatabaseException e) {
 	    System.out.println("\n>>> ERROR: Database " + fileName
 		    + " could not be saved!");
 	    System.out.println("Reason:\n" + e.getMessage());
@@ -88,6 +96,11 @@ public class SaveXmlAction extends DatabaseAction {
 
     }
 
+    /**
+     * adds a .xml after the name when not yet there.
+     * 
+     * @return the name +".xml"
+     */
     private String formatFileName() {
 	return fileName.matches(".+\\.xml$") ? fileName : fileName + ".xml";
     }

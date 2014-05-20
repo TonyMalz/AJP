@@ -13,16 +13,26 @@ import de.uniba.wiai.dsg.ajp.assignment2.literature.logic.model.Publication;
 import de.uniba.wiai.dsg.ajp.assignment2.literature.logic.model.PublicationType;
 
 public class AddPublicationAction extends DatabaseAction {
-
+    /** authors of the database. */
     private final Author[] authors;
-
+    /** ID of the publication. */
     private String pubId;
+    /** title of the publication. */
     private String pubTitle;
+    /** publication year of the publication. */
     private int pubYear;
+    /** type of the publication. */
     private PublicationType pubType;
+    /** authors of the publication. */
     private final HashMap<String, Author> pubAuthors = new HashMap<>();
 
-    public AddPublicationAction(DatabaseRequest request) {
+    /**
+     * Constructor.
+     * 
+     * @param request
+     *            to be processed.
+     */
+    public AddPublicationAction(final DatabaseRequest request) {
 	super(request);
 	authors = database.getAuthors();
     }
@@ -54,6 +64,12 @@ public class AddPublicationAction extends DatabaseAction {
 
     }
 
+    /**
+     * Asks the user which author has written the publication.
+     * 
+     * @throws IOException
+     *             in case of error.
+     */
     private void selectPublicationAuthors() throws IOException {
 	while (true) {
 	    System.out.println("Please select an author:");
@@ -62,15 +78,16 @@ public class AddPublicationAction extends DatabaseAction {
 	    int i = 0;
 
 	    // list all authors not added yet
-	    Author[] authorsToSelectedFrom = new Author[authors.length];
-	    for (Author author : authors) {
+	    final Author[] authorsToSelectedFrom = new Author[authors.length];
+	    for (final Author author : authors) {
 		if (pubAuthors.containsKey(author.getId())) {
 		    continue;
 		}
 		authorsToSelectedFrom[i] = author;
-		System.out.println("( " + (++i) + " )" + author);
+		System.out.println("( " + ++i + " )" + author);
 	    }
-	    int maxOption = i;
+	    // TODO ( 0 ) new Author
+	    final int maxOption = i;
 
 	    // no authors left to add
 	    if (maxOption == 0) {
@@ -84,11 +101,11 @@ public class AddPublicationAction extends DatabaseAction {
 		minOption = 0;
 	    }
 
-	    int selectedOption = selectOption(minOption, maxOption);
+	    final int selectedOption = selectOption(minOption, maxOption);
 	    if (selectedOption == 0) {
 		return;
 	    } else {
-		Author selectedAuthor = authorsToSelectedFrom[selectedOption - 1];
+		final Author selectedAuthor = authorsToSelectedFrom[selectedOption - 1];
 		pubAuthors.put(selectedAuthor.getId(), selectedAuthor);
 	    }
 	}
@@ -107,8 +124,8 @@ public class AddPublicationAction extends DatabaseAction {
 	System.out.println("Please select the type of the publication:");
 
 	int i = 1;
-	for (PublicationType publicationType : PublicationType.values()) {
-	    System.out.println("( " + (i++) + " )" + publicationType);
+	for (final PublicationType publicationType : PublicationType.values()) {
+	    System.out.println("( " + i++ + " )" + publicationType);
 	}
 	final int type = selectOption(1, PublicationType.values().length);
 
@@ -138,7 +155,14 @@ public class AddPublicationAction extends DatabaseAction {
 	}
     }
 
-    private boolean isPublicationIDUsed(String id) {
+    /**
+     * Checks if the id is used as an ID for a publication.
+     * 
+     * @param id
+     *            to be checked
+     * @return true when NOT used, false otherwise
+     */
+    private boolean isPublicationIDUsed(final String id) {
 	for (final Publication publication : database.getPublications()) {
 	    if (publication.getId().equals(id)) {
 		return true;
@@ -166,7 +190,7 @@ public class AddPublicationAction extends DatabaseAction {
 	    System.out.println("\t Year:\t" + pubYear);
 	    System.out.println("\t Type:\t" + pubType);
 
-	} catch (LiteratureDatabaseException e) {
+	} catch (final LiteratureDatabaseException e) {
 	    System.out
 		    .println("\n>>> ERROR while adding publication to the database");
 	    System.out.println(e);
