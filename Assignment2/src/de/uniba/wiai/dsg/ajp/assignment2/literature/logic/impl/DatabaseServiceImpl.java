@@ -24,10 +24,19 @@ import de.uniba.wiai.dsg.ajp.assignment2.literature.logic.model.PublicationType;
 public class DatabaseServiceImpl implements DatabaseService {
     private final Database database;
 
+    /**
+     * Constructor creates an empty database.
+     */
     public DatabaseServiceImpl() {
 	database = new Database();
     }
 
+    /**
+     * Constructor sets the database.
+     * 
+     * @param database
+     *            to be set.
+     */
     public DatabaseServiceImpl(final Database database) {
 	this.database = database;
     }
@@ -103,6 +112,14 @@ public class DatabaseServiceImpl implements DatabaseService {
 	addPublicationToAuthor(authors, publication);
     }
 
+    /**
+     * adds the publication to the authors.
+     * 
+     * @param authorsToAdd
+     *            authors where the publication is added.
+     * @param publication
+     *            to be added.
+     */
     private void addPublicationToAuthor(final Author[] authorsToAdd,
 	    final Publication publication) {
 	for (final Author element : authorsToAdd) {
@@ -138,6 +155,14 @@ public class DatabaseServiceImpl implements DatabaseService {
 	throw new LiteratureDatabaseException("id not found");
     }
 
+    /**
+     * removes the publication from the publications of the authors.
+     * 
+     * @param publication
+     *            to be removed from the authors.
+     * @param authorsToRemoveFrom
+     *            authors to be removed from
+     */
     private void removePublicationFromAuthors(final Publication publication,
 	    final List<Author> authorsToRemoveFrom) {
 	for (final Author author : database.getAuthors()) {
