@@ -9,33 +9,33 @@ import de.uniba.wiai.dsg.ajp.assignment2.literature.logic.LiteratureDatabaseExce
 
 public class PrintXmlAction extends DatabaseAction {
 
-    public PrintXmlAction(DatabaseRequest request) {
-	super(request);
-    }
-
-    @Override
-    public void show() {
-	System.out.println("\nDatabase: " + getDatabaseFileName());// TODO DEBUG
-	try {
-	    database.printXMLToConsole();
-	} catch (LiteratureDatabaseException e) {
-	    System.out.println("An error occured while printing...");
+	public PrintXmlAction(final DatabaseRequest request) {
+		super(request);
 	}
-    }
 
-    @Override
-    public void readInput() throws IOException {
-	console.askString("\nPress any key to continue...");
-    }
+	@Override
+	public void show() {
+		System.out.println("\nDatabase: " + getDatabaseFileName());// TODO DEBUG
+		try {
+			database.printXMLToConsole();
+		} catch (final LiteratureDatabaseException e) {
+			System.out.println("An error occured while printing...");
+		}
+	}
 
-    @Override
-    public void validateInput() throws IOException {
+	@Override
+	public void readInput() throws IOException {
+		console.askString("\nPress enter to continue...");
+	}
 
-    }
+	@Override
+	public void validateInput() throws IOException {
 
-    @Override
-    public void process() throws IOException {
-	setNextRequest(Request.SHOW_DATABASE_MENU);
-    }
+	}
+
+	@Override
+	public void process() throws IOException {
+		setNextRequest(Request.SHOW_DATABASE_MENU);
+	}
 
 }
