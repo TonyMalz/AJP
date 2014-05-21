@@ -3,17 +3,18 @@
  */
 package de.uniba.wiai.dsg.ajp.assignment3;
 
-import static org.junit.Assert.*;
+import java.util.Random;
 
 import org.junit.After;
 import org.junit.AfterClass;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
  * @author mathias
- *
+ * 
  */
 public class ChidrensPriceTest {
 
@@ -46,27 +47,69 @@ public class ChidrensPriceTest {
     }
 
     /**
-     * Test method for {@link de.uniba.wiai.dsg.ajp.assignment3.ChildrensPrice#getCharge(int)}.
+     * Test method for
+     * {@link de.uniba.wiai.dsg.ajp.assignment3.ChildrensPrice#getCharge(int)}.
      */
     @Test
-    public final void testGetCharge() {
-	fail("Not yet implemented"); // TODO
+    public final void testGetChargeUpToThree() {
+	final ChildrensPrice childPrice = new ChildrensPrice();
+	double charge = childPrice.getCharge(0);
+	Assert.assertEquals(1.5, charge, 0.0);
+
+	charge = childPrice.getCharge(1);
+	Assert.assertEquals(1.5, charge, 0.0);
+
+	charge = childPrice.getCharge(2);
+	Assert.assertEquals(1.5, charge, 0.0);
+
+	charge = childPrice.getCharge(3);
+	Assert.assertEquals(1.5, charge, 0.0);
+
     }
 
     /**
-     * Test method for {@link de.uniba.wiai.dsg.ajp.assignment3.ChildrensPrice#getPriceCode()}.
+     * Test method for
+     * {@link de.uniba.wiai.dsg.ajp.assignment3.ChildrensPrice#getCharge(int)}.
+     */
+    @Test
+    public final void testGetChargeGreaterThree() {
+	final ChildrensPrice childPrice = new ChildrensPrice();
+	double charge = childPrice.getCharge(4);
+	Assert.assertEquals(1.5 * 2, charge, 0.0);
+
+	charge = childPrice.getCharge(10);
+	Assert.assertEquals(1.5 * 8, charge, 0.0);
+
+	charge = childPrice.getCharge(100);
+	Assert.assertEquals(1.5 * 98, charge, 0.0);
+
+	charge = childPrice.getCharge(5);
+	Assert.assertEquals(1.5 * 3, charge, 0.0);
+
+    }
+
+    /**
+     * Test method for
+     * {@link de.uniba.wiai.dsg.ajp.assignment3.ChildrensPrice#getPriceCode()}.
      */
     @Test
     public final void testGetPriceCode() {
-	fail("Not yet implemented"); // TODO
+	Assert.assertEquals(2, new ChildrensPrice().getPriceCode());
     }
 
     /**
-     * Test method for {@link de.uniba.wiai.dsg.ajp.assignment3.Price#getFrequentRenterPoints(int)}.
+     * Test method for
+     * {@link de.uniba.wiai.dsg.ajp.assignment3.Price#getFrequentRenterPoints(int)}
+     * .
      */
     @Test
     public final void testGetFrequentRenterPoints() {
-	fail("Not yet implemented"); // TODO
+	final Random r = new Random(123456789);
+	final ChildrensPrice childPrice = new ChildrensPrice();
+	for (int i = 0; i < 10000; i++) {
+	    Assert.assertEquals(1,
+		    childPrice.getFrequentRenterPoints(r.nextInt()));
+	}
     }
 
 }
