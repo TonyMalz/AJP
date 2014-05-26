@@ -99,7 +99,7 @@ public class ChidrensPriceTest {
 
     /**
      * Test method for
-     * {@link de.uniba.wiai.dsg.ajp.assignment3.Price#getFrequentRenterPoints(int)}
+     * {@link de.uniba.wiai.dsg.ajp.assignment3.ChildrensPrice#getFrequentRenterPoints(int)}
      * .
      */
     @Test

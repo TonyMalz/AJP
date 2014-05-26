@@ -1,6 +1,6 @@
 package de.uniba.wiai.dsg.ajp.assignment3;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.fail;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -9,6 +9,11 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class CustomerTest {
+    // not implemented because trivial getter/setters:
+    // getName()
+    // setName()
+    // getRentals()
+    // setRentals()
 
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {

@@ -3,7 +3,7 @@
  */
 package de.uniba.wiai.dsg.ajp.assignment3;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.fail;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -13,9 +13,12 @@ import org.junit.Test;
 
 /**
  * @author mathias
- *
+ * 
  */
 public class MovieTest {
+    // not implemented because trivial getter/setters:
+    // getTitle()
+    // setTitle()
 
     /**
      * @throws java.lang.Exception
@@ -54,7 +57,9 @@ public class MovieTest {
     }
 
     /**
-     * Test method for {@link de.uniba.wiai.dsg.ajp.assignment3.Movie#Movie(java.lang.String, int)}.
+     * Test method for
+     * {@link de.uniba.wiai.dsg.ajp.assignment3.Movie#Movie(java.lang.String, int)}
+     * .
      */
     @Test
     public final void testMovieStringInt() {
@@ -62,23 +67,8 @@ public class MovieTest {
     }
 
     /**
-     * Test method for {@link de.uniba.wiai.dsg.ajp.assignment3.Movie#getTitle()}.
-     */
-    @Test
-    public final void testGetTitle() {
-	fail("Not yet implemented"); // TODO
-    }
-
-    /**
-     * Test method for {@link de.uniba.wiai.dsg.ajp.assignment3.Movie#setTitle(java.lang.String)}.
-     */
-    @Test
-    public final void testSetTitle() {
-	fail("Not yet implemented"); // TODO
-    }
-
-    /**
-     * Test method for {@link de.uniba.wiai.dsg.ajp.assignment3.Movie#getCharge(int)}.
+     * Test method for
+     * {@link de.uniba.wiai.dsg.ajp.assignment3.Movie#getCharge(int)}.
      */
     @Test
     public final void testGetCharge() {
@@ -86,7 +76,8 @@ public class MovieTest {
     }
 
     /**
-     * Test method for {@link de.uniba.wiai.dsg.ajp.assignment3.Movie#getPriceCode()}.
+     * Test method for
+     * {@link de.uniba.wiai.dsg.ajp.assignment3.Movie#getPriceCode()}.
      */
     @Test
     public final void testGetPriceCode() {
@@ -94,7 +85,8 @@ public class MovieTest {
     }
 
     /**
-     * Test method for {@link de.uniba.wiai.dsg.ajp.assignment3.Movie#setPriceCode(int)}.
+     * Test method for
+     * {@link de.uniba.wiai.dsg.ajp.assignment3.Movie#setPriceCode(int)}.
      */
     @Test
     public final void testSetPriceCode() {
@@ -102,7 +94,9 @@ public class MovieTest {
     }
 
     /**
-     * Test method for {@link de.uniba.wiai.dsg.ajp.assignment3.Movie#getFrequentRenterPoints(int)}.
+     * Test method for
+     * {@link de.uniba.wiai.dsg.ajp.assignment3.Movie#getFrequentRenterPoints(int)}
+     * .
      */
     @Test
     public final void testGetFrequentRenterPoints() {

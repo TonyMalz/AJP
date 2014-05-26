@@ -3,7 +3,7 @@
  */
 package de.uniba.wiai.dsg.ajp.assignment3;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.fail;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -13,9 +13,14 @@ import org.junit.Test;
 
 /**
  * @author mathias
- *
+ * 
  */
 public class RentalTest {
+    // not implemented because trivial getter/setters:
+    // getMovie()
+    // setMovie()
+    // getDaysRented()
+    // setDaysRented()
 
     /**
      * @throws java.lang.Exception
@@ -46,39 +51,8 @@ public class RentalTest {
     }
 
     /**
-     * Test method for {@link de.uniba.wiai.dsg.ajp.assignment3.Rental#getMovie()}.
-     */
-    @Test
-    public final void testGetMovie() {
-	fail("Not yet implemented"); // TODO
-    }
-
-    /**
-     * Test method for {@link de.uniba.wiai.dsg.ajp.assignment3.Rental#setMovie(de.uniba.wiai.dsg.ajp.assignment3.Movie)}.
-     */
-    @Test
-    public final void testSetMovie() {
-	fail("Not yet implemented"); // TODO
-    }
-
-    /**
-     * Test method for {@link de.uniba.wiai.dsg.ajp.assignment3.Rental#getDaysRented()}.
-     */
-    @Test
-    public final void testGetDaysRented() {
-	fail("Not yet implemented"); // TODO
-    }
-
-    /**
-     * Test method for {@link de.uniba.wiai.dsg.ajp.assignment3.Rental#setDaysRented(int)}.
-     */
-    @Test
-    public final void testSetDaysRented() {
-	fail("Not yet implemented"); // TODO
-    }
-
-    /**
-     * Test method for {@link de.uniba.wiai.dsg.ajp.assignment3.Rental#getCharge()}.
+     * Test method for
+     * {@link de.uniba.wiai.dsg.ajp.assignment3.Rental#getCharge()}.
      */
     @Test
     public final void testGetCharge() {
@@ -86,7 +60,9 @@ public class RentalTest {
     }
 
     /**
-     * Test method for {@link de.uniba.wiai.dsg.ajp.assignment3.Rental#getFrequentRenterPoints()}.
+     * Test method for
+     * {@link de.uniba.wiai.dsg.ajp.assignment3.Rental#getFrequentRenterPoints()}
+     * .
      */
     @Test
     public final void testGetFrequentRenterPoints() {
