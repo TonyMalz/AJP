@@ -93,6 +93,16 @@ public class NewReleasePriceTest {
 
     /**
      * Test method for
+     * {@link de.uniba.wiai.dsg.ajp.assignment3.NewReleasePrice#getCharge(int)}.
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public final void testGetChargeDaysRentedLessZero() {
+	final NewReleasePrice newReleasePrice = new NewReleasePrice();
+	newReleasePrice.getCharge(-4);
+    }
+
+    /**
+     * Test method for
      * {@link de.uniba.wiai.dsg.ajp.assignment3.NewReleasePrice#getPriceCode()}.
      */
     @Test
@@ -117,6 +127,17 @@ public class NewReleasePriceTest {
 	Assert.assertEquals(2, newReleasePrice.getFrequentRenterPoints(4));
 	Assert.assertEquals(2, newReleasePrice.getFrequentRenterPoints(5));
 
+    }
+
+    /**
+     * Test method for
+     * {@link de.uniba.wiai.dsg.ajp.assignment3.RegualarPrice#getFrequentRenterPoints(int)}
+     * .
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public final void testGetFrequentRenterPointsDaysRentedLessZero() {
+	final NewReleasePrice newReleasePrice = new NewReleasePrice();
+	newReleasePrice.getFrequentRenterPoints(-4);
     }
 
 }

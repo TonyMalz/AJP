@@ -1,7 +1,6 @@
 package de.uniba.wiai.dsg.ajp.assignment3;
 
 public class Rental {
-    // TODO imput validation
     // TODO test mock/Stub
     // TODO test integration
 
@@ -14,6 +13,9 @@ public class Rental {
     }
 
     public void setMovie(final Movie movie) {
+	if (movie == null) {
+	    throw new IllegalArgumentException("movie was null");
+	}
 	this.movie = movie;
     }
 
@@ -22,6 +24,9 @@ public class Rental {
     }
 
     public void setDaysRented(final int daysRented) {
+	if (daysRented < 0) {
+	    throw new IllegalArgumentException("daysRented was less than 0");
+	}
 	this.daysRented = daysRented;
     }
 

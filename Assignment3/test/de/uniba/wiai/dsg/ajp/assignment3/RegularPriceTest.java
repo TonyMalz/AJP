@@ -87,6 +87,16 @@ public class RegularPriceTest {
 
     /**
      * Test method for
+     * {@link de.uniba.wiai.dsg.ajp.assignment3.RegularPrice#getCharge(int)}.
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public final void testGetChargeDaysRentedLessZero() {
+	final RegularPrice regularPrice = new RegularPrice();
+	regularPrice.getCharge(-4);
+    }
+
+    /**
+     * Test method for
      * {@link de.uniba.wiai.dsg.ajp.assignment3.RegularPrice#getPriceCode()}.
      */
     @Test

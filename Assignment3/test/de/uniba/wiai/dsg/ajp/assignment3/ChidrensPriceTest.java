@@ -90,6 +90,16 @@ public class ChidrensPriceTest {
 
     /**
      * Test method for
+     * {@link de.uniba.wiai.dsg.ajp.assignment3.ChildrensPrice#getCharge(int)}.
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public final void testGetChargeDaysRentedLessZero() {
+	final ChildrensPrice childPrice = new ChildrensPrice();
+	childPrice.getCharge(-4);
+    }
+
+    /**
+     * Test method for
      * {@link de.uniba.wiai.dsg.ajp.assignment3.ChildrensPrice#getPriceCode()}.
      */
     @Test
