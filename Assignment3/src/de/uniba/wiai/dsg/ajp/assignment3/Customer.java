@@ -69,9 +69,9 @@ public class Customer {
      * <p>
      * Example of the format:<br>
      * Rental record for exampleCustomer <br>
-     * MovieA &nbsp &nbsp 30.00<br>
-     * MovieB &nbsp &nbsp 2.00<br>
-     * MovieC &nbsp &nbsp 0.00<br>
+     * &nbsp &nbsp MovieA &nbsp &nbsp 30.00<br>
+     * &nbsp &nbsp MovieB &nbsp &nbsp 2.00<br>
+     * &nbsp &nbsp MovieC &nbsp &nbsp 0.00<br>
      * Amount owed is 32.00<br>
      * You earned 3 frequent renter points<br>
      * 
@@ -105,7 +105,7 @@ public class Customer {
      * <P>
      * Movie A: 30.00<BR>
      * Movie B: 2.00<BR>
-     * Movie A: 0.00<BR>
+     * Movie C: 0.00<BR>
      * <P>
      * You owe <EM>32.00</EM>
      * <P>
