@@ -3,6 +3,8 @@
  */
 package de.uniba.wiai.dsg.ajp.assignment3;
 
+import static org.junit.Assert.fail;
+
 import java.util.Random;
 
 import org.junit.After;
@@ -117,5 +119,15 @@ public class RegularPriceTest {
 			Assert.assertEquals(1,
 					regularPrice.getFrequentRenterPoints(r.nextInt()));
 		}
+	}
+
+	/**
+	 * Test method for
+	 * {@link de.uniba.wiai.dsg.ajp.assignment3.RegularPrice#getCreatorCharge(double)}
+	 * .
+	 */
+	@Test
+	public final void testGetCreatorCharge() {
+		fail("Not yet implemented"); // TODO
 	}
 }

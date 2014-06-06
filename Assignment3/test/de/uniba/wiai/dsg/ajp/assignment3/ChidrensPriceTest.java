@@ -3,6 +3,8 @@
  */
 package de.uniba.wiai.dsg.ajp.assignment3;
 
+import static org.junit.Assert.fail;
+
 import java.util.Random;
 
 import org.junit.After;
@@ -121,5 +123,13 @@ public class ChidrensPriceTest {
 					childPrice.getFrequentRenterPoints(r.nextInt()));
 		}
 	}
-
+	/**
+	 * Test method for
+	 * {@link de.uniba.wiai.dsg.ajp.assignment3.ChildrensPrice#getCreatorCharge(double)}
+	 * .
+	 */
+	@Test
+	public final void testGetCreatorCharge() {
+		fail("Not yet implemented"); // TODO
+	}
 }

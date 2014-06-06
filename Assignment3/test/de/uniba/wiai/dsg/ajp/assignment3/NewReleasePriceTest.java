@@ -3,6 +3,8 @@
  */
 package de.uniba.wiai.dsg.ajp.assignment3;
 
+import static org.junit.Assert.fail;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -139,5 +141,13 @@ public class NewReleasePriceTest {
 		final NewReleasePrice newReleasePrice = new NewReleasePrice();
 		newReleasePrice.getFrequentRenterPoints(-4);
 	}
-
+	/**
+	 * Test method for
+	 * {@link de.uniba.wiai.dsg.ajp.assignment3.NewReleasePrice#getCreatorCharge(double)}
+	 * .
+	 */
+	@Test
+	public final void testGetCreatorCharge() {
+		fail("Not yet implemented"); // TODO
+	}
 }

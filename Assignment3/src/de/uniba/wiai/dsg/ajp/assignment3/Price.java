@@ -1,10 +1,12 @@
 package de.uniba.wiai.dsg.ajp.assignment3;
 
 public abstract class Price {
+	/** the percentage the creator of the film gets for for every charge. */
+	private double creatorChargePercentage;
+
 	// TODO test mock/Stub
 	// TODO test integration
 
-	// TODO implment new price for series
 	/**
 	 * Computes the charge depending on the type of the Price.<br>
 	 * Types:<br>
@@ -49,5 +51,25 @@ public abstract class Price {
 	 * @return the price code
 	 */
 	abstract int getPriceCode();
+
+	double getCreatorCharge(final double price) {
+		return creatorChargePercentage * price;
+	}
+
+	/**
+	 * @return the creatorChargePercentage
+	 */
+	public final double getCreatorChargePercentage() {
+		return creatorChargePercentage;
+	}
+
+	/**
+	 * @param creatorChargePercentage
+	 *            the creatorChargePercentage to set
+	 */
+	public final void setCreatorChargePercentage(
+			final double creatorChargePercentage) {
+		this.creatorChargePercentage = creatorChargePercentage;
+	}
 
 }
