@@ -1,5 +1,7 @@
 package de.uniba.wiai.dsg.ajp.assignment3;
 
+import java.util.Objects;
+
 public class Rental {
 	// TODO test mock/Stub
 	// TODO test integration
@@ -20,9 +22,8 @@ public class Rental {
 	}
 
 	public void setMovie(final Movie movie) {
-		if (movie == null) {
-			throw new IllegalArgumentException("movie was null");
-		}
+		Objects.requireNonNull(movie, "movie is null");
+
 		this.movie = movie;
 	}
 

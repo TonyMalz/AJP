@@ -3,8 +3,6 @@
  */
 package de.uniba.wiai.dsg.ajp.assignment3;
 
-import static org.junit.Assert.fail;
-
 import java.util.Random;
 
 import org.junit.After;
@@ -56,16 +54,16 @@ public class ChidrensPriceTest {
 	public final void testGetChargeUpToThree() {
 		final ChildrensPrice childPrice = new ChildrensPrice();
 		double charge = childPrice.getCharge(0);
-		Assert.assertEquals(1.5, charge, 0.0);
+		Assert.assertEquals(1.5 * 1.42, charge, 0.0);
 
 		charge = childPrice.getCharge(1);
-		Assert.assertEquals(1.5, charge, 0.0);
+		Assert.assertEquals(1.5 * 1.42, charge, 0.0);
 
 		charge = childPrice.getCharge(2);
-		Assert.assertEquals(1.5, charge, 0.0);
+		Assert.assertEquals(1.5 * 1.42, charge, 0.0);
 
 		charge = childPrice.getCharge(3);
-		Assert.assertEquals(1.5, charge, 0.0);
+		Assert.assertEquals(1.5 * 1.42, charge, 0.0);
 
 	}
 
@@ -77,16 +75,16 @@ public class ChidrensPriceTest {
 	public final void testGetChargeGreaterThree() {
 		final ChildrensPrice childPrice = new ChildrensPrice();
 		double charge = childPrice.getCharge(4);
-		Assert.assertEquals(1.5 * 2, charge, 0.0);
+		Assert.assertEquals(1.5 * 2 * 1.42, charge, 0.0);
 
 		charge = childPrice.getCharge(10);
-		Assert.assertEquals(1.5 * 8, charge, 0.0);
+		Assert.assertEquals(1.5 * 8 * 1.42, charge, 0.0);
 
 		charge = childPrice.getCharge(100);
-		Assert.assertEquals(1.5 * 98, charge, 0.0);
+		Assert.assertEquals(1.5 * 98 * 1.42, charge, 0.0);
 
 		charge = childPrice.getCharge(5);
-		Assert.assertEquals(1.5 * 3, charge, 0.0);
+		Assert.assertEquals(1.5 * 3 * 1.42, charge, 0.0);
 
 	}
 
@@ -123,13 +121,24 @@ public class ChidrensPriceTest {
 					childPrice.getFrequentRenterPoints(r.nextInt()));
 		}
 	}
-	/**
-	 * Test method for
-	 * {@link de.uniba.wiai.dsg.ajp.assignment3.ChildrensPrice#getCreatorCharge(double)}
-	 * .
-	 */
+
 	@Test
-	public final void testGetCreatorCharge() {
-		fail("Not yet implemented"); // TODO
+	public final void testSetCopyrightFee() {
+		final ChildrensPrice childPrice = new ChildrensPrice();
+		childPrice.setCopyrightFee(20.5);
+		Assert.assertEquals(20.5, childPrice.getCopyrightFee(), 0.0);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public final void testSetCopyrightFeeLowerThanCurrentValue() {
+		final ChildrensPrice childPrice = new ChildrensPrice();
+		childPrice.setCopyrightFee(20.5);
+		childPrice.setCopyrightFee(10.5);
+	}
+
+	@Test
+	public final void testGetCopyrightFeeForCalc() {
+		Assert.assertEquals(1.42,
+				new ChildrensPrice().getCopyrightFeeForCalc(), 0.0);
 	}
 }

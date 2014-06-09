@@ -3,8 +3,6 @@
  */
 package de.uniba.wiai.dsg.ajp.assignment3;
 
-import static org.junit.Assert.fail;
-
 import java.util.Random;
 
 import org.junit.After;
@@ -56,13 +54,13 @@ public class RegularPriceTest {
 	public final void testGetChargeUpToThree() {
 		final RegularPrice regularPrice = new RegularPrice();
 		double charge = regularPrice.getCharge(0);
-		Assert.assertEquals(2.0, charge, 0.0);
+		Assert.assertEquals(2.0 * 1.42, charge, 0.0);
 
 		charge = regularPrice.getCharge(1);
-		Assert.assertEquals(2.0, charge, 0.0);
+		Assert.assertEquals(2.0 * 1.42, charge, 0.0);
 
 		charge = regularPrice.getCharge(2);
-		Assert.assertEquals(2.0, charge, 0.0);
+		Assert.assertEquals(2.0 * 1.42, charge, 0.0);
 
 	}
 
@@ -74,16 +72,16 @@ public class RegularPriceTest {
 	public final void testGetChargeGreaterThree() {
 		final RegularPrice regularPrice = new RegularPrice();
 		double charge = regularPrice.getCharge(4);
-		Assert.assertEquals(1.5 * 2 + 2.0, charge, 0.0);
+		Assert.assertEquals((1.5 * 2 + 2.0) * 1.42, charge, 0.0);
 
 		charge = regularPrice.getCharge(10);
-		Assert.assertEquals(1.5 * 8 + 2.0, charge, 0.0);
+		Assert.assertEquals((1.5 * 8 + 2.0) * 1.42, charge, 0.0);
 
 		charge = regularPrice.getCharge(100);
-		Assert.assertEquals(1.5 * 98 + 2.0, charge, 0.0);
+		Assert.assertEquals((1.5 * 98 + 2.0) * 1.42, charge, 0.0);
 
 		charge = regularPrice.getCharge(5);
-		Assert.assertEquals(1.5 * 3 + 2.0, charge, 0.0);
+		Assert.assertEquals((1.5 * 3 + 2.0) * 1.42, charge, 0.0);
 
 	}
 
@@ -121,13 +119,24 @@ public class RegularPriceTest {
 		}
 	}
 
-	/**
-	 * Test method for
-	 * {@link de.uniba.wiai.dsg.ajp.assignment3.RegularPrice#getCreatorCharge(double)}
-	 * .
-	 */
 	@Test
-	public final void testGetCreatorCharge() {
-		fail("Not yet implemented"); // TODO
+	public final void testSetCopyrightFee() {
+		final RegularPrice releasePrice = new RegularPrice();
+		releasePrice.setCopyrightFee(20.5);
+		Assert.assertEquals(20.5, releasePrice.getCopyrightFee(), 0.0);
 	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public final void testSetCopyrightFeeLowerThanCurrentValue() {
+		final RegularPrice releasePrice = new RegularPrice();
+		releasePrice.setCopyrightFee(20.5);
+		releasePrice.setCopyrightFee(10.5);
+	}
+
+	@Test
+	public final void testGetCopyrightFeeForCalc() {
+		Assert.assertEquals(1.42, new RegularPrice().getCopyrightFeeForCalc(),
+				0.0);
+	}
+
 }

@@ -8,6 +8,7 @@ public class NewReleasePrice extends Price {
 		if (daysRented < 0) {
 			throw new IllegalArgumentException("daysRented was less than 0");
 		}
+		// TODO 0 days: getCharge = 3 * 1.42
 		double result = 3;
 		if (daysRented > 1) {
 			result += (daysRented - 1) * 3;

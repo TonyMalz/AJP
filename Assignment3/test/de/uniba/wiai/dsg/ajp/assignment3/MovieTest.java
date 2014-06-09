@@ -3,10 +3,9 @@
  */
 package de.uniba.wiai.dsg.ajp.assignment3;
 
-import static org.junit.Assert.fail;
-
 import org.junit.After;
 import org.junit.AfterClass;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -52,36 +51,20 @@ public class MovieTest {
 	 * Test method for {@link de.uniba.wiai.dsg.ajp.assignment3.Movie#Movie()}.
 	 */
 	@Test
-	public final void testMovie() {
-		fail("Not yet implemented"); // TODO
+	public final void testMovieConstructor() {
+		Movie movie = new Movie("Titel", 1);
+		Assert.assertEquals("Titel", movie.getTitle());
+		Assert.assertEquals(1, movie.getPriceCode());
 	}
 
-	/**
-	 * Test method for
-	 * {@link de.uniba.wiai.dsg.ajp.assignment3.Movie#Movie(java.lang.String, int)}
-	 * .
-	 */
-	@Test
-	public final void testMovieStringInt() {
-		fail("Not yet implemented"); // TODO
+	@Test(expected = NullPointerException.class)
+	public final void testSetTitleNull() {
+		new Movie().setTitle(null);;
 	}
 
-	/**
-	 * Test method for
-	 * {@link de.uniba.wiai.dsg.ajp.assignment3.Movie#getCharge(int)}.
-	 */
-	@Test
-	public final void testGetCharge() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
-	 * Test method for
-	 * {@link de.uniba.wiai.dsg.ajp.assignment3.Movie#getPriceCode()}.
-	 */
-	@Test
-	public final void testGetPriceCode() {
-		fail("Not yet implemented"); // TODO
+	@Test(expected = IllegalArgumentException.class)
+	public final void testSetTitleEmptyString() {
+		new Movie().setTitle("");;
 	}
 
 	/**
@@ -89,18 +72,37 @@ public class MovieTest {
 	 * {@link de.uniba.wiai.dsg.ajp.assignment3.Movie#setPriceCode(int)}.
 	 */
 	@Test
-	public final void testSetPriceCode() {
-		fail("Not yet implemented"); // TODO
+	public final void testSetPriceCodeRegular() {
+		Movie movie = new Movie("Titel", 0);
+		Assert.assertEquals(0, movie.getPriceCode());
 	}
 
-	/**
-	 * Test method for
-	 * {@link de.uniba.wiai.dsg.ajp.assignment3.Movie#getFrequentRenterPoints(int)}
-	 * .
-	 */
 	@Test
-	public final void testGetFrequentRenterPoints() {
-		fail("Not yet implemented"); // TODO
+	public final void testSetPriceCodeChildrens() {
+		Movie movie = new Movie("Titel", 2);
+		Assert.assertEquals(2, movie.getPriceCode());
+	}
+
+	@Test
+	public final void testSetPriceCodeNewRelease() {
+		Movie movie = new Movie("Titel", 1);
+		Assert.assertEquals(1, movie.getPriceCode());
+	}
+
+	@Test
+	public final void testSetPriceCodeSeries() {
+		Movie movie = new Movie("Titel", 3);
+		Assert.assertEquals(3, movie.getPriceCode());
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public final void testSetPriceCodeGreaterThanThree() {
+		new Movie("Titel", 234);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public final void testSetPriceCodeLessThanZero() {
+		new Movie("Titel", -234);
 	}
 
 }

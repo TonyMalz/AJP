@@ -56,6 +56,9 @@ public class Movie {
 			case NEW_RELEASE :
 				price = new NewReleasePrice();
 				break;
+			case SERIES :
+				// TODO: create new SeriesPrice
+				break;
 			default :
 				throw new IllegalArgumentException("Incorrect Price Code");
 		}

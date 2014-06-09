@@ -3,10 +3,9 @@
  */
 package de.uniba.wiai.dsg.ajp.assignment3;
 
-import static org.junit.Assert.fail;
-
 import org.junit.After;
 import org.junit.AfterClass;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -50,23 +49,22 @@ public class RentalTest {
 	public void tearDown() throws Exception {
 	}
 
-	/**
-	 * Test method for
-	 * {@link de.uniba.wiai.dsg.ajp.assignment3.Rental#getCharge()}.
-	 */
 	@Test
-	public final void testGetCharge() {
-		fail("Not yet implemented"); // TODO
+	public final void testRentalConstructor() {
+		Movie movie = new Movie("Titel", 3);
+		Rental rental = new Rental(movie, 1);
+		Assert.assertEquals(movie, rental.getMovie());
+		Assert.assertEquals(1, rental.getDaysRented());
 	}
 
-	/**
-	 * Test method for
-	 * {@link de.uniba.wiai.dsg.ajp.assignment3.Rental#getFrequentRenterPoints()}
-	 * .
-	 */
-	@Test
-	public final void testGetFrequentRenterPoints() {
-		fail("Not yet implemented"); // TODO
+	@Test(expected = NullPointerException.class)
+	public final void testSetMovieNull() {
+		new Rental().setMovie(null);;
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public final void testSetDaysRentedLessThanZero() {
+		new Rental().setDaysRented(-3);
 	}
 
 }
