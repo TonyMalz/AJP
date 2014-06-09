@@ -6,7 +6,6 @@ public class Rental {
 
 	private int daysRented;
 	private Movie movie;
-	private double copyrightFee = 0.;
 
 	public Rental() {
 	}
@@ -14,27 +13,6 @@ public class Rental {
 	public Rental(Movie movie, int daysRented) {
 		setMovie(movie);
 		setDaysRented(daysRented);
-	}
-	/**
-	 * @return current copyright fee
-	 */
-	public final double getCopyrightFee() {
-		return copyrightFee;
-	}
-
-	/**
-	 * @param copyrightFee
-	 *            the new copyright fee
-	 * @throws IllegalArgumentException
-	 *             if new fee is less than current one
-	 */
-	public final void setCopyrightFee(final double copyrightFee) {
-		if (copyrightFee < this.copyrightFee) {
-			throw new IllegalArgumentException(
-					"given copyright fee is less than current fee of "
-							+ this.copyrightFee);
-		}
-		this.copyrightFee = copyrightFee;
 	}
 
 	public Movie getMovie() {
