@@ -2,9 +2,9 @@ package de.uniba.wiai.dsg.ajp.assignment3;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 public class Customer {
-	// TODO imput validation
 	// TODO javadoc
 	// TODO test mock/Stub
 	// TODO test integration
@@ -30,7 +30,7 @@ public class Customer {
 	 */
 	public Customer(final String name) {
 		super();
-		this.name = name;
+		setName(name);
 	}
 
 	/**
@@ -52,6 +52,7 @@ public class Customer {
 	 *            the rentals to set
 	 */
 	public void setRentals(final List<Rental> rentals) {
+		Objects.requireNonNull(rentals, "rentals is null");
 		this.rentals = rentals;
 	}
 
@@ -60,6 +61,10 @@ public class Customer {
 	 *            the name to set
 	 */
 	public void setName(final String name) {
+		Objects.requireNonNull(name, "name is null");
+		if (name.length() == 0) {
+			throw new IllegalArgumentException("name is empty");
+		}
 		this.name = name;
 	}
 
@@ -113,11 +118,9 @@ public class Customer {
 	 */
 	public String statement(Coupon coupon) {
 		if (coupon.getValue() < 0.0) {
-			throw new IllegalArgumentException("Coupons value was less 0");
+			throw new IllegalArgumentException("Coupons value was less than 0");
 		}
-		if (coupon.getValue() == 0.0) {
-			return statement();
-		}
+
 		String result = "Rental Record for " + getName() + "\n";
 
 		for (final Rental each : rentals) {
@@ -128,11 +131,23 @@ public class Customer {
 		}
 
 		// add footer lines
-		double couponSaving = coupon.useCoupon(getTotalCharge());
 
-		result += "Coupon:\t\t-" + couponSaving + "\n";
-		result += "Amount owed is "
-				+ String.valueOf(getTotalCharge() - couponSaving) + "\n";
+		result += "Amount owed is " + getTotalCharge() + "\n";
+		// redeem voucher
+		result += "#### Voucher redeemed ####\n";
+		result += "Code: \t" + coupon.getCode() + "\n";
+		result += "Value:\t" + coupon.getValue() + "\n";
+		result += "####\n";
+		double totalAmountOwed = getTotalCharge() - coupon.getValue();
+		if (totalAmountOwed < 0.) {
+			coupon.setValue(totalAmountOwed * -1);
+			totalAmountOwed = 0.;
+		} else {
+			coupon.setValue(0);
+		}
+		result += "Total amount owed is " + totalAmountOwed + "\n";
+		result += "Voucher value left is " + coupon.getValue() + "\n";
+		// /
 		result += "You earned "
 				+ String.valueOf(getTotalFrequentRenterPoints() + 3)
 				+ " frequent renter points";
@@ -197,9 +212,6 @@ public class Customer {
 		if (coupon.getValue() < 0.0) {
 			throw new IllegalArgumentException("Coupons value was less 0");
 		}
-		if (coupon.getValue() == 0.0) {
-			return htmlStatement();
-		}
 
 		String result = "<H1>Rentals for <EM>" + getName() + "</EM></H1><P>\n";
 
@@ -209,12 +221,22 @@ public class Customer {
 					+ String.valueOf(each.getCharge()) + "<BR>\n";
 		}
 
-		double couponSaving = coupon.useCoupon(getTotalCharge());
-
-		// add footer lines
-		result += "<P>Coupon: -" + couponSaving + "<BR>\n";
-		result += "<P>You owe <EM>" + String.valueOf(getTotalCharge())
-				+ "</EM><P>\n";
+		result += "<P>You owe " + String.valueOf(getTotalCharge()) + "<P>\n";
+		// redeem voucher
+		result += "#### Voucher redeemed ####<BR>\n";
+		result += "Code: \t" + coupon.getCode() + "<BR>\n";
+		result += "Value:\t" + coupon.getValue() + "<BR>\n";
+		result += "####<BR>\n";
+		double totalAmountOwed = getTotalCharge() - coupon.getValue();
+		if (totalAmountOwed < 0.) {
+			coupon.setValue(totalAmountOwed * -1);
+			totalAmountOwed = 0.;
+		} else {
+			coupon.setValue(0);
+		}
+		result += "Total amount owed is <EM>" + totalAmountOwed + "</EM><BR>\n";
+		result += "Voucher value left is " + coupon.getValue() + "<BR>\n";
+		// /
 		result += "On this rental you earned <EM>"
 				+ String.valueOf(getTotalFrequentRenterPoints() + 3)
 				+ "</EM> frequent renter points<P>";

@@ -1,8 +1,8 @@
 package de.uniba.wiai.dsg.ajp.assignment3;
 
 public abstract class Price {
-	/** the percentage the creator of the film gets for for every charge. */
-	private double creatorChargePercentage;
+	/** the percentage the creator of the film gets for every charge. */
+	protected double copyrightFee = 0.42;
 
 	// TODO test mock/Stub
 	// TODO test integration
@@ -52,24 +52,30 @@ public abstract class Price {
 	 */
 	abstract int getPriceCode();
 
-	double getCreatorCharge(final double price) {
-		return creatorChargePercentage * price;
+	/**
+	 * @return current copyright fee
+	 */
+	public final double getCopyrightFee() {
+		return copyrightFee;
+	}
+
+	protected double getCopyrightFeeForCalc() {
+		return copyrightFee + 1;
 	}
 
 	/**
-	 * @return the creatorChargePercentage
+	 * @param copyrightFee
+	 *            the new copyright fee
+	 * @throws IllegalArgumentException
+	 *             if new fee is less than current one
 	 */
-	public final double getCreatorChargePercentage() {
-		return creatorChargePercentage;
-	}
-
-	/**
-	 * @param creatorChargePercentage
-	 *            the creatorChargePercentage to set
-	 */
-	public final void setCreatorChargePercentage(
-			final double creatorChargePercentage) {
-		this.creatorChargePercentage = creatorChargePercentage;
+	public final void setCopyrightFee(final double copyrightFee) {
+		if (copyrightFee < this.copyrightFee) {
+			throw new IllegalArgumentException(
+					"given copyright fee is less than current fee of "
+							+ this.copyrightFee);
+		}
+		this.copyrightFee = copyrightFee;
 	}
 
 }

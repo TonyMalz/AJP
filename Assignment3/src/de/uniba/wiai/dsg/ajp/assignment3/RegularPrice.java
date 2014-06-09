@@ -13,7 +13,7 @@ public class RegularPrice extends Price {
 		if (daysRented > 2) {
 			result += (daysRented - 2) * 1.5;
 		}
-		return result;
+		return result * getCopyrightFeeForCalc();
 	}
 
 	@Override

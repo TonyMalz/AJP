@@ -12,7 +12,7 @@ public class ChildrensPrice extends Price {
 		if (daysRented > 3) {
 			result += (daysRented - 3) * 1.5;
 		}
-		return result;
+		return result * getCopyrightFeeForCalc();
 	}
 
 	@Override

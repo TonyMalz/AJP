@@ -8,7 +8,11 @@ public class NewReleasePrice extends Price {
 		if (daysRented < 0) {
 			throw new IllegalArgumentException("daysRented was less than 0");
 		}
-		return daysRented * 3;
+		double result = 3;
+		if (daysRented > 1) {
+			result += (daysRented - 1) * 3;
+		}
+		return result * getCopyrightFeeForCalc();
 	}
 
 	@Override

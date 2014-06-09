@@ -1,5 +1,7 @@
 package de.uniba.wiai.dsg.ajp.assignment3;
 
+import java.util.Objects;
+
 public class Movie {
 	// TODO imput validation
 	// TODO javadoc
@@ -19,7 +21,7 @@ public class Movie {
 	}
 
 	public Movie(final String title, final int priceCode) {
-		this.title = title;
+		setTitle(title);
 		setPriceCode(priceCode);
 	}
 
@@ -28,6 +30,10 @@ public class Movie {
 	}
 
 	public void setTitle(final String title) {
+		Objects.requireNonNull(title, "title is null");
+		if (title.length() == 0) {
+			throw new IllegalArgumentException("name is empty");
+		}
 		this.title = title;
 	}
 
