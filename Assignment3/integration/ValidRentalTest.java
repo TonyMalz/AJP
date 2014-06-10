@@ -20,6 +20,7 @@ public class ValidRentalTest {
 	Movie childsMovie;
 	Movie regularMovie;
 	Movie newReleaseMovie;
+	Movie tvSeries;
 	List<Rental> testRentals;
 
 	@Before
@@ -27,6 +28,7 @@ public class ValidRentalTest {
 		childsMovie = new Movie("A CHilds FLick", Movie.CHILDRENS);
 		regularMovie = new Movie("A Regular Movie", Movie.REGULAR);
 		newReleaseMovie = new Movie("A BlockBustOoor", Movie.NEW_RELEASE);
+		tvSeries = new Movie("A TV Series", Movie.SERIES);
 		testRentals = new ArrayList<>();
 		testRentals.add(new Rental(childsMovie, 0));
 		testRentals.add(new Rental(childsMovie, 3));
@@ -37,6 +39,10 @@ public class ValidRentalTest {
 		testRentals.add(new Rental(newReleaseMovie, 0));
 		testRentals.add(new Rental(newReleaseMovie, 1));
 		testRentals.add(new Rental(newReleaseMovie, 2));
+		testRentals.add(new Rental(tvSeries, 0));
+		testRentals.add(new Rental(tvSeries, 1));
+		testRentals.add(new Rental(tvSeries, 2));
+		testRentals.add(new Rental(tvSeries, 3));
 
 	}
 
@@ -54,6 +60,7 @@ public class ValidRentalTest {
 	public void testValidRentalWithoutVoucher() throws IOException {
 		Customer customer = new Customer(CUSTOMER_1);
 		customer.setRentals(testRentals);
+
 		Assert.assertEquals(
 				getTestContentFromFile("testValidRentalWithoutVoucher"),
 				customer.statement());
@@ -68,7 +75,7 @@ public class ValidRentalTest {
 
 		Assert.assertEquals(
 				getTestContentFromFile("testValidRentalWithVoucherRedemptionGreaterThanTotalSum"),
-				customer.statement(new Coupon(VOUCHER_CODE_1, 20)));
+				customer.statement(new Coupon(VOUCHER_CODE_1, 80)));
 	}
 
 	@Test
@@ -96,6 +103,7 @@ public class ValidRentalTest {
 	public void testValidRentalWithoutVoucherHTML() throws IOException {
 		Customer customer = new Customer(CUSTOMER_1);
 		customer.setRentals(testRentals);
+
 		Assert.assertEquals(
 				getTestContentFromFile("testValidRentalWithoutVoucherHTML"),
 				customer.htmlStatement());
@@ -107,9 +115,10 @@ public class ValidRentalTest {
 			throws IOException {
 		Customer customer = new Customer(CUSTOMER_1);
 		customer.setRentals(testRentals);
+
 		Assert.assertEquals(
 				getTestContentFromFile("testValidRentalWithVoucherRedemptionGreaterThanTotalSumHTML"),
-				customer.htmlStatement(new Coupon(VOUCHER_CODE_1, 20)));
+				customer.htmlStatement(new Coupon(VOUCHER_CODE_1, 80)));
 	}
 
 	@Test
@@ -117,6 +126,7 @@ public class ValidRentalTest {
 			throws IOException {
 		Customer customer = new Customer(CUSTOMER_1);
 		customer.setRentals(testRentals);
+
 		Assert.assertEquals(
 				getTestContentFromFile("testValidRentalWithVoucherRedemptionLessThanTotalSumHTML"),
 				customer.htmlStatement(new Coupon(VOUCHER_CODE_1, 2)));
@@ -127,6 +137,7 @@ public class ValidRentalTest {
 			throws IOException {
 		Customer customer = new Customer(CUSTOMER_1);
 		customer.setRentals(testRentals);
+
 		Assert.assertEquals(
 				getTestContentFromFile("testValidRentalWithZeroVoucherRedemptionHTML"),
 				customer.htmlStatement(new Coupon(VOUCHER_CODE_1, 0)));
