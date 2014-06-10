@@ -6,10 +6,6 @@ import java.util.Objects;
 
 public class Customer {
 	// TODO javadoc
-	// TODO test mock/Stub
-	// TODO test integration
-
-	// TODO implement gutschein
 	/** the name of the Customer. */
 	private String name;
 	/** All the active rentals of the customer. */

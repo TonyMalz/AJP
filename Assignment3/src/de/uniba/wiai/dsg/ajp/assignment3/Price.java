@@ -46,6 +46,7 @@ public abstract class Price {
 	 * <Li>Regular: 0
 	 * <Li>Children: 1
 	 * <Li>New release: 2
+	 * <Li>Series: 3
 	 * <UL>
 	 * 
 	 * @return the price code
@@ -60,12 +61,12 @@ public abstract class Price {
 	}
 
 	protected double getCopyrightFeeForCalc() {
-		return copyrightFee + 1;
+		return getCopyrightFee() + 1;
 	}
 
 	/**
 	 * @param copyrightFee
-	 *            the new copyright fee
+	 *            the new copyright fee (e.g. .42 -> 42%)
 	 * @throws IllegalArgumentException
 	 *             if new fee is less than current one
 	 */

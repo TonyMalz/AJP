@@ -3,10 +3,7 @@ package de.uniba.wiai.dsg.ajp.assignment3;
 import java.util.Objects;
 
 public class Movie {
-	// TODO imput validation
 	// TODO javadoc
-	// TODO test mock/Stub
-	// TODO test integration
 	public static final int CHILDRENS = 2;
 	public static final int REGULAR = 0;
 	public static final int NEW_RELEASE = 1;
@@ -57,7 +54,7 @@ public class Movie {
 				price = new NewReleasePrice();
 				break;
 			case SERIES :
-				// TODO: create new SeriesPrice
+				price = new SeriesPrice();
 				break;
 			default :
 				throw new IllegalArgumentException("Incorrect Price Code");
