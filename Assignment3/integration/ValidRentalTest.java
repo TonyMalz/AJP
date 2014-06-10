@@ -57,6 +57,24 @@ public class ValidRentalTest {
 	}
 
 	@Test
+	public void testStatementWithoutAnyRentals() throws IOException {
+		Customer customer = new Customer(CUSTOMER_1);
+
+		Assert.assertEquals(
+				getTestContentFromFile("testStatementWithoutAnyRentals"),
+				customer.statement());
+	}
+
+	@Test
+	public void testStatementWithoutAnyRentalsHTML() throws IOException {
+		Customer customer = new Customer(CUSTOMER_1);
+
+		Assert.assertEquals(
+				getTestContentFromFile("testStatementWithoutAnyRentalsHTML"),
+				customer.htmlStatement());
+	}
+
+	@Test
 	public void testValidRentalWithoutVoucher() throws IOException {
 		Customer customer = new Customer(CUSTOMER_1);
 		customer.setRentals(testRentals);
