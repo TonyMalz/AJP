@@ -1,8 +1,6 @@
 package de.uniba.wiai.dsg.ajp.assignment3;
 
 public class ChildrensPrice extends Price {
-	// TODO test mock/Stub
-	// TODO test integration
 	@Override
 	double getCharge(final int daysRented) {
 		if (daysRented < 0) {

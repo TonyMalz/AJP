@@ -3,8 +3,6 @@ package de.uniba.wiai.dsg.ajp.assignment3;
 import java.util.Objects;
 
 public class Rental {
-	// TODO test mock/Stub
-	// TODO test integration
 
 	private int daysRented;
 	private Movie movie;

@@ -4,9 +4,6 @@ public abstract class Price {
 	/** the percentage the creator of the film gets for every charge. */
 	protected double copyrightFee = 0.42;
 
-	// TODO test mock/Stub
-	// TODO test integration
-
 	/**
 	 * Computes the charge depending on the type of the Price.<br>
 	 * Types:<br>

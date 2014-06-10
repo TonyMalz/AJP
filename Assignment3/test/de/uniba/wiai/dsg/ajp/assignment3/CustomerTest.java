@@ -6,35 +6,10 @@ import static org.mockito.Mockito.when;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Assert;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class CustomerTest {
-	// not implemented because trivial getter/setters:
-	// getName()
-	// setName()
-	// getRentals()
-	// setRentals()
-
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-	}
-
-	@AfterClass
-	public static void tearDownAfterClass() throws Exception {
-	}
-
-	@Before
-	public void setUp() throws Exception {
-	}
-
-	@After
-	public void tearDown() throws Exception {
-	}
 
 	@Test
 	public final void testCustomerConstructor() {
@@ -188,7 +163,6 @@ public class CustomerTest {
 		Coupon mockedCoupon = mock(Coupon.class);
 		when(mockedCoupon.getValue()).thenReturn(-10.0);
 		customer.htmlStatement(mockedCoupon);
-
 	}
 
 	@Test
@@ -210,8 +184,8 @@ public class CustomerTest {
 		customer.setRentals(mockedRentals);
 
 		Assert.assertEquals(9.0, customer.getTotalCharge(), 0.0);
-
 	}
+
 	@Test
 	public final void testGetTotalFrequentRenterPoints() {
 		Rental mockedRental1 = mock(Rental.class);
@@ -231,7 +205,5 @@ public class CustomerTest {
 		customer.setRentals(mockedRentals);
 
 		Assert.assertEquals(6, customer.getTotalFrequentRenterPoints(), 0);
-
 	}
-
 }

@@ -4,8 +4,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * This class contains all Rentals and the name of one Costumer. It is possible
+ * to print a customers statement.
+ */
 public class Customer {
-	// TODO javadoc
 	/** the name of the Customer. */
 	private String name;
 	/** All the active rentals of the customer. */
@@ -97,15 +100,21 @@ public class Customer {
 	}
 
 	/**
-	 * Generates a statement with coupon customer.
+	 * Generates a statement with coupon customer and adjusts value of used
+	 * coupon.
 	 * <p>
 	 * Example of the format:<br>
 	 * Rental record for exampleCustomer <br>
 	 * &nbsp &nbsp MovieA &nbsp &nbsp 30.00<br>
 	 * &nbsp &nbsp MovieB &nbsp &nbsp 2.00<br>
 	 * &nbsp &nbsp MovieC &nbsp &nbsp 0.00<br>
-	 * Coupon:&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp -15.00<br>
 	 * Amount owed is 17.00<br>
+	 * #### Voucher redeemed ####<br>
+	 * Code: &nbsp &nbsp &nbspXYZ123<br>
+	 * Value: &nbsp &nbsp 15.00<br>
+	 * ####<br>
+	 * Total amount owed is 2.00<br>
+	 * Voucher value left is 0.00<br>
 	 * You earned 6 frequent renter points<br>
 	 * 
 	 * @param coupon
@@ -149,6 +158,7 @@ public class Customer {
 				+ " frequent renter points";
 		return result;
 	}
+
 	/**
 	 * Generates a html statement with coupon.
 	 * 
@@ -183,8 +193,9 @@ public class Customer {
 				+ "</EM> frequent renter points<P>";
 		return result;
 	}
+
 	/**
-	 * Generates a html statement with coupon.
+	 * Generates a html statement with coupon and adjusts value of used coupon.
 	 * 
 	 * Example of the format:<br>
 	 * <H1>Rentals for <EM>exampleCustomer</EM></H1>
@@ -193,10 +204,14 @@ public class Customer {
 	 * Movie B: 2.00<BR>
 	 * Movie C: 0.00<BR>
 	 * <P>
-	 * Coupon: -15.00<BR>
-	 * <P>
 	 * You owe <EM>17.00</EM>
 	 * <P>
+	 * #### Voucher redeemed ####<BR>
+	 * Code: &nbsp &nbsp &nbsp XYZ123<BR>
+	 * Value: &nbsp &nbsp 15.00<BR>
+	 * ####<BR>
+	 * Total amount owed is <EM>2.00</EM><BR>
+	 * Voucher value left is 0.00<BR>
 	 * On this rental you earned <EM>6</EM> frequent renter points
 	 * <P>
 	 * 
@@ -250,7 +265,6 @@ public class Customer {
 		for (final Rental each : rentals) {
 			result += each.getCharge();
 		}
-
 		return result;
 	}
 
@@ -265,8 +279,6 @@ public class Customer {
 		for (final Rental each : rentals) {
 			result += each.getFrequentRenterPoints();
 		}
-
 		return result;
 	}
-
 }
