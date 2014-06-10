@@ -1,13 +1,15 @@
 package de.uniba.wiai.dsg.ajp.assignment3;
 
+import java.util.Objects;
+
 public class Coupon {
 
 	String code;
 	double value;
 
 	public Coupon(String code, double value) {
-		this.code = code;
-		this.value = value;
+		setCode(code);
+		setValue(value);
 	}
 
 	public String getCode() {
@@ -15,6 +17,10 @@ public class Coupon {
 	}
 
 	public void setCode(String code) {
+		Objects.requireNonNull(code, "code is null");
+		if (code.length() == 0) {
+			throw new IllegalArgumentException("code is empty");
+		}
 		this.code = code;
 	}
 
@@ -23,17 +29,9 @@ public class Coupon {
 	}
 
 	public void setValue(double value) {
+		if (value < 0) {
+			throw new IllegalArgumentException("value was less than 0");
+		}
 		this.value = value;
 	}
-
-	public double useCoupon(double totalCharge) {
-		if (value - totalCharge > 0) {
-			value = value - totalCharge;
-			return totalCharge;
-		} else {
-			value = 0.0;
-			return value;
-		}
-	}
-
 }
