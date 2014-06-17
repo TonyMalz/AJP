@@ -10,7 +10,12 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
+import de.uniba.wiai.dsg.ajp.assignment4.literature.gui.view.LiteratureDatabaseView;
+
 /**
+ * Menu bar of the main menu. has the items: NEW, LOAD, SAVE AS, EXIT, and
+ * SHORTCUTS.
+ * 
  * @author mathias
  * 
  */
@@ -23,7 +28,7 @@ public class DatabaseMenuBar extends JMenuBar {
 
 	/**
 	 * Constructor generates a new Menu bar with an option "File". Sub options
-	 * are "New", "Load", "Save As" and "Exit".
+	 * are "New", "Load", "Save As","Exit" and "Shortcuts".
 	 * */
 	public DatabaseMenuBar() {
 		final JMenu menu = new JMenu("File");
@@ -32,7 +37,7 @@ public class DatabaseMenuBar extends JMenuBar {
 
 			@Override
 			public void actionPerformed(final ActionEvent arg0) {
-				// TODO connect to controller when ew menuItem is pressed
+				LiteratureDatabaseView.createDatabase();
 
 			}
 		});
@@ -43,7 +48,7 @@ public class DatabaseMenuBar extends JMenuBar {
 
 			@Override
 			public void actionPerformed(final ActionEvent arg0) {
-				// TODO connect to controller when Load menuItem is pressed
+				LiteratureDatabaseView.loadDatabase();
 
 			}
 		});
@@ -54,7 +59,7 @@ public class DatabaseMenuBar extends JMenuBar {
 
 			@Override
 			public void actionPerformed(final ActionEvent arg0) {
-				// TODO connect to controller when "Save As" menuItem is pressed
+				LiteratureDatabaseView.saveDatabaseAs();
 
 			}
 		});
@@ -65,11 +70,21 @@ public class DatabaseMenuBar extends JMenuBar {
 
 			@Override
 			public void actionPerformed(final ActionEvent arg0) {
-				// TODO connect to controller when exit menuItem is pressed
+				LiteratureDatabaseView.exit();
 
 			}
 		});
 		menu.add(exitItem);
+		final JMenuItem shortcutItem = new JMenuItem("Shortcuts");
+		shortcutItem.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(final ActionEvent arg0) {
+				LiteratureDatabaseView.showShortcuts();
+
+			}
+		});
+		menu.add(shortcutItem);
 		add(menu);
 	}
 
