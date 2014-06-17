@@ -16,6 +16,8 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+import com.sun.istack.internal.logging.Logger;
+
 import de.uniba.wiai.dsg.ajp.assignment4.literature.logic.ValidationHelper;
 import de.uniba.wiai.dsg.ajp.assignment4.literature.logic.model.Author;
 import de.uniba.wiai.dsg.ajp.assignment4.literature.logic.model.Publication;
@@ -26,7 +28,7 @@ import de.uniba.wiai.dsg.ajp.assignment4.literature.logic.model.PublicationType;
  * 
  */
 public class PublicationConfigurationView extends JFrame {
-
+	Logger LOGGER = Logger.getLogger(PublicationConfigurationView.class);
 	/**
 	 * 
 	 */
