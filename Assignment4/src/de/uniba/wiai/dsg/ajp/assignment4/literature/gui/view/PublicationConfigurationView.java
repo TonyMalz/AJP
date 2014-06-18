@@ -95,7 +95,7 @@ public class PublicationConfigurationView extends JFrame {
 
 			@Override
 			public void actionPerformed(final ActionEvent arg0) {
-				createAuthor();
+				createPublication();
 
 			}
 
@@ -118,7 +118,7 @@ public class PublicationConfigurationView extends JFrame {
 	/**
 	 * tries to create a new Publication.
 	 */
-	private void createAuthor() {
+	private void createPublication() {
 		final String id = idTextField.getText();
 		final String title = titleTextField.getText();
 		final String year = yearTextField.getText();
@@ -174,7 +174,9 @@ public class PublicationConfigurationView extends JFrame {
 		pubToAdd.setYearPublished(yearPublished);
 		pubToAdd.setType(type);
 		pubToAdd.setAuthors(selectedAuthors);
+		dispose();
 		LiteratureDatabaseView.createPublication(pubToAdd);
+
 	}
 	public static void main(final String[] args) {
 		final Author[] authors = new Author[4];
