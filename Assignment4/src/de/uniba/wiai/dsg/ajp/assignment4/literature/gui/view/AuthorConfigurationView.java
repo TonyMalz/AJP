@@ -4,6 +4,7 @@
 package de.uniba.wiai.dsg.ajp.assignment4.literature.gui.view;
 
 import java.awt.Button;
+import java.awt.Frame;
 import java.awt.GridLayout;
 import java.awt.Label;
 import java.awt.TextField;
@@ -13,9 +14,9 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
-import com.sun.istack.internal.logging.Logger;
-
+import de.uniba.wiai.dsg.ajp.assignment4.literature.controller.LiteratureDatabaseController;
 import de.uniba.wiai.dsg.ajp.assignment4.literature.logic.ValidationHelper;
 import de.uniba.wiai.dsg.ajp.assignment4.literature.logic.model.Author;
 
@@ -29,7 +30,6 @@ import de.uniba.wiai.dsg.ajp.assignment4.literature.logic.model.Author;
  * 
  */
 public class AuthorConfigurationView extends JFrame {
-	Logger LOGGER = Logger.getLogger(AuthorConfigurationView.class);
 	/** serial version. */
 	private static final long serialVersionUID = -6884370948256093402L;
 	/** text field to input the id. */
@@ -39,10 +39,13 @@ public class AuthorConfigurationView extends JFrame {
 	/** text field for the email. */
 	private final TextField emailTextField;
 
+	private final LiteratureDatabaseController controller;
+
 	/**
 	 * Constructor to initiate the components.
 	 */
-	public AuthorConfigurationView() {
+	public AuthorConfigurationView(final LiteratureDatabaseController controller) {
+		this.controller = controller;
 		addKeyListener(new AuthorConfigurationKeyListener());
 		setTitle("Create Author");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -93,17 +96,16 @@ public class AuthorConfigurationView extends JFrame {
 		final String email = emailTextField.getText();
 		boolean authorValid = true;
 		if (!ValidationHelper.isId(id)) {
-			LiteratureDatabaseView
-					.showErrorMessage(
-							"The entered Id is not correct.\nPlease choose another one.",
-							"Invalid input");
+			// TODO keep static or controller.showErrorMessage(String)?
+			showErrorMessage(
+					"The entered Id is not correct.\nPlease choose another one.",
+					"Invalid input");
 			authorValid = false;
 		}
 		if (!ValidationHelper.isEmail(email)) {
-			LiteratureDatabaseView
-					.showErrorMessage(
-							"The entered email is not correct.\nPlease choose another one.",
-							"Invalid input");
+			showErrorMessage(
+					"The entered email is not correct.\nPlease choose another one.",
+					"Invalid input");
 			authorValid = false;
 		}
 		if (!authorValid) {
@@ -114,15 +116,24 @@ public class AuthorConfigurationView extends JFrame {
 		authorToAdd.setId(id);
 		authorToAdd.setName(name);
 
-		LiteratureDatabaseView.createAuthor(authorToAdd);
+		controller.createAuthor(authorToAdd);
 		dispose();
 
 	}
-
-	public static void main(final String[] args) {
-		new AuthorConfigurationView();
-		// TODO remove
+	/**
+	 * Shows the default error message
+	 * 
+	 * @param message
+	 *            to be displayed
+	 * @param title
+	 *            of the error window
+	 */
+	private static void showErrorMessage(final String message,
+			final String title) {
+		JOptionPane.showMessageDialog(new Frame(), message, title,
+				JOptionPane.ERROR_MESSAGE);
 	}
+
 	/**
 	 * The key Listener for the view to add an new author.<br>
 	 * ENTER: create a new author. <br>

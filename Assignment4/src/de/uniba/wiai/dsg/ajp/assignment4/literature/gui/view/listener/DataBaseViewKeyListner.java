@@ -4,35 +4,48 @@ import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.uniba.wiai.dsg.ajp.assignment4.literature.gui.view.LiteratureDatabaseView;
+import de.uniba.wiai.dsg.ajp.assignment4.literature.controller.LiteratureDatabaseController;
 /**
  * 
  * @author mathias
  * 
  */
 public class DataBaseViewKeyListner implements KeyListener {
+	/** controller. */
+	LiteratureDatabaseController controller;
+	/**
+	 * Constructor.
+	 * 
+	 * @param controller
+	 *            for the listener.
+	 */
+	public DataBaseViewKeyListner(final LiteratureDatabaseController controller) {
+		this.controller = controller;
+	}
 
 	@Override
 	public void keyPressed(final KeyEvent e) {
 		switch (e.getKeyCode()) {
 			case KeyEvent.VK_A :
-				LiteratureDatabaseView.showAddAuthorView();
+				controller.showAddAuthorView();
 				break;
 			case KeyEvent.VK_P :
-				LiteratureDatabaseView.showAddPublication();
+				controller.showAddPublication();
 				break;
 			case KeyEvent.VK_N :
-				LiteratureDatabaseView.createDatabase();
+				controller.createDatabase();
 				break;
 			case KeyEvent.VK_ESCAPE :
-				LiteratureDatabaseView.exit();
+				controller.exit();
 				break;
 			case KeyEvent.VK_S :
-				LiteratureDatabaseView.saveDatabaseAs();
+				controller.saveDatabaseAs();
 				break;
 			case KeyEvent.VK_L :
-				LiteratureDatabaseView.loadDatabase();
+				controller.loadDatabase();
 				break;
+			case KeyEvent.VK_DELETE :
+				controller.removeAuthorOrPublication();
 
 		}
 
@@ -47,7 +60,11 @@ public class DataBaseViewKeyListner implements KeyListener {
 	public void keyTyped(final KeyEvent e) {
 
 	}
-
+	/**
+	 * Get the current shortcuts with a help message.
+	 * 
+	 * @return the help string
+	 */
 	public static String[] getHelp() {
 		final List<String> helpContenets = new ArrayList<>();
 		helpContenets.add("A: Add a new Author");

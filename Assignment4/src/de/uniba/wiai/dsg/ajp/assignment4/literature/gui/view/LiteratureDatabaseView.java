@@ -8,21 +8,24 @@ import java.awt.Frame;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.JComponent;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenuBar;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
-import com.sun.istack.internal.logging.Logger;
-
-import de.uniba.wiai.dsg.ajp.assignment4.literature.gui.view.components.DataBaseAuthorTable;
+import de.uniba.wiai.dsg.ajp.assignment4.literature.controller.LiteratureDatabaseController;
+import de.uniba.wiai.dsg.ajp.assignment4.literature.gui.view.components.DatabaseAuthorTable;
 import de.uniba.wiai.dsg.ajp.assignment4.literature.gui.view.components.DatabaseMenuBar;
 import de.uniba.wiai.dsg.ajp.assignment4.literature.gui.view.components.DatabasePublicationTable;
 import de.uniba.wiai.dsg.ajp.assignment4.literature.gui.view.listener.DataBaseViewKeyListner;
-import de.uniba.wiai.dsg.ajp.assignment4.literature.logic.model.Author;
-import de.uniba.wiai.dsg.ajp.assignment4.literature.logic.model.Publication;
+import de.uniba.wiai.dsg.ajp.assignment4.literature.models.LiteratureDatabaseModel;
 
 /**
  * The view for manipulating a database.
@@ -30,37 +33,46 @@ import de.uniba.wiai.dsg.ajp.assignment4.literature.logic.model.Publication;
  * @author mathias
  * 
  */
-public class LiteratureDatabaseView extends JFrame {
-	/** default logger. */
-	private final static Logger LOGGER = Logger
-			.getLogger(LiteratureDatabaseView.class);
+public class LiteratureDatabaseView extends JFrame implements Observer {
+
 	/** serial version. */
 	private static final long serialVersionUID = -30430229188690490L;
+
+	private final LiteratureDatabaseController controller;
+	private final LiteratureDatabaseModel model;
+
 	/**
 	 * the first half of the view contains the table and two buttons(remove/add
 	 * author).
 	 */
-	private final JComponent authorComponenet;
+	private JComponent authorComponent;
 	/**
 	 * the second half of the view contains the table and two buttons(remove/add
 	 * publication).
 	 */
-	private final JComponent publicationComponent;
+	private JComponent publicationComponent;
 	/** the menu with the choices new, load,save As,exit and shortcuts . */
-	private final JMenuBar menu;
+	private JMenuBar menu;
 	/**
 	 * Constructor of the view. initiates the components.
 	 */
-	public LiteratureDatabaseView() {
-		authorComponenet = new DataBaseAuthorTable();
-		publicationComponent = new DatabasePublicationTable();
-		menu = new DatabaseMenuBar();
+	public LiteratureDatabaseView(final LiteratureDatabaseModel model,
+			final LiteratureDatabaseController controller) {
+
+		this.controller = controller;
+		this.model = model;
+		model.addObserver(this);
+
+		authorComponent = new DatabaseAuthorTable(controller);
+		publicationComponent = new DatabasePublicationTable(controller);
+		menu = new DatabaseMenuBar(controller);
 		setLayout(new GridLayout(2, 1));
-		this.add(authorComponenet);
+		this.add(authorComponent);
 		this.add(publicationComponent);
 		setJMenuBar(menu);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		addKeyListener(new DataBaseViewKeyListner());
+		setTitle("New Literature Database");
+		addKeyListener(new DataBaseViewKeyListner(controller));
 		pack();
 		validate();
 		setVisible(true);
@@ -68,52 +80,20 @@ public class LiteratureDatabaseView extends JFrame {
 	/**
 	 * starts the view to adda new Author.
 	 */
-	public static void showAddAuthorView() {
-		LOGGER.info("Shoming author config view");
-		new AuthorConfigurationView();
+	public void showAddAuthorView() {
+
+		new AuthorConfigurationView(controller);
 
 	}
-	/**
-	 * Creates a new database.
-	 */
-	public static void createDatabase() {
-		// TODO Auto-generated method stub
-		LOGGER.info("Creating new Datbase.");
 
-	}
 	/**
 	 * Starts the view to add a new publication.
 	 */
-	public static void showAddPublication() {
-		LOGGER.info("Showing add Publication view");
-		new PublicationConfigurationView(null);
+	public void showAddPublication() {
+		new PublicationConfigurationView(null, controller);
 
 	}
-	/**
-	 * Adds a new author to the database.
-	 * 
-	 * @param authorToAdd
-	 *            author to be added.
-	 */
-	public static void createAuthor(final Author authorToAdd) {
-		// TODO Auto-generated method stub
-		showInfoMessage("Adding the author: " + authorToAdd.toString(),
-				"Just for testing");
-		LOGGER.info("Adding author: " + authorToAdd.toString());
-	}
-	/**
-	 * Adds a new publication to the database.
-	 * 
-	 * @param pubToAdd
-	 *            publication to be added
-	 */
-	public static void createPublication(final Publication pubToAdd) {
-		// TODO add connection to controller to add a new Author
-		showInfoMessage("Adding the author: " + pubToAdd.toString(),
-				"Just for testing");
-		LOGGER.info("Adding Publication: " + pubToAdd.toString());
 
-	}
 	/**
 	 * shows the Standard error message.
 	 * 
@@ -122,7 +102,7 @@ public class LiteratureDatabaseView extends JFrame {
 	 * @param title
 	 *            of the frame
 	 */
-	public static void showErrorMessage(final String message, final String title) {
+	public void showErrorMessage(final String message, final String title) {
 		JOptionPane.showMessageDialog(new Frame(), message, title,
 				JOptionPane.ERROR_MESSAGE);
 	}
@@ -134,62 +114,36 @@ public class LiteratureDatabaseView extends JFrame {
 	 * @param title
 	 *            of the frame
 	 */
-	public static void showInfoMessage(final String message, final String title) {
+	public void showInfoMessage(final String message, final String title) {
 		JOptionPane.showMessageDialog(new Frame(), message, title,
 				JOptionPane.INFORMATION_MESSAGE);
-	}
-	/**
-	 * removes an authro from the datbase.
-	 * 
-	 * @param authorToRemove
-	 *            author to be removed.
-	 */
-	public static void removeAuthor(final Author authorToRemove) {
-		// TODO Auto-generated method stub
-		LOGGER.info("Removing Author: " + authorToRemove);
-
-	}
-	/**
-	 * removes the publication from the database.
-	 * 
-	 * @param pubToRemove
-	 *            publication to be removed.
-	 */
-	public static void removePublication(final Publication pubToRemove) {
-		// TODO Auto-generated method stub
-		LOGGER.info("Removing Publication: " + pubToRemove);
-
 	}
 
 	/**
 	 * Loads an exiting database.
 	 */
-	public static void loadDatabase() {
-		// TODO Auto-generated method stub
-		LOGGER.info("Loading database.");
+	public void loadDatabase() {
+		final JFileChooser chooser = new JFileChooser();
+		chooser.setCurrentDirectory(new File("."));
+		chooser.setFileFilter(new FileNameExtensionFilter(
+				"Extensible Markup Language (*.xml)", "xml"));
+		chooser.showOpenDialog(null);
+		controller.loadDatabaseDestination(chooser.getSelectedFile());
 
 	}
 	/**
 	 * saves the current database.
 	 */
-	public static void saveDatabaseAs() {
-		// TODO Auto-generated method stub
-		LOGGER.info("Saving database.");
-
-	}
-	/**
-	 * exits from the view.
-	 */
-	public static void exit() {
-		// TODO Auto-generated method stub
-		// TODO dialog for saving?
-		LOGGER.info("EXIT");
-
+	public void saveDatabaseAs() {
+		final JFileChooser chooser = new JFileChooser();
+		chooser.setCurrentDirectory(new File("."));
+		chooser.showSaveDialog(null);
+		controller.saveDatabaseAsDestination(chooser.getSelectedFile());
 	}
 	/**
 	 * shows a new frame with the shortcuts of the main menu.
 	 */
-	public static void showShortcuts() {
+	public void showShortcuts() {
 		final JFrame helpFrame = new JFrame("Shortcuts");
 		helpFrame.setLayout(new GridLayout(0, 1));
 		final String[] content = DataBaseViewKeyListner.getHelp();
@@ -212,9 +166,36 @@ public class LiteratureDatabaseView extends JFrame {
 		helpFrame.validate();
 		helpFrame.setVisible(true);
 	}
-	public static void main(final String[] args) {
-		new LiteratureDatabaseView();
-		// TODO remove
+
+	@Override
+	public void update(final Observable arg0, final Object arg1) {
+		remove(authorComponent);
+		remove(publicationComponent);
+		authorComponent = new DatabaseAuthorTable(controller);
+		publicationComponent = new DatabasePublicationTable(controller);
+		menu = new DatabaseMenuBar(controller);
+		setLayout(new GridLayout(2, 1));
+		this.add(authorComponent);
+		this.add(publicationComponent);
+		addKeyListener(new DataBaseViewKeyListner(controller));
+		validate();
 	}
 
+	public int getSelectedAuthorRow() {
+		return ((DatabaseAuthorTable) authorComponent).getSelectedRow();
+	}
+	public int getSelectedPublicationRow() {
+		return ((DatabasePublicationTable) publicationComponent)
+				.getSelectedRow();
+	}
+	public boolean exitDialog() {
+		return JOptionPane.showConfirmDialog(null,
+				"Do you really want to exit without saving?", "Exit?",
+				JOptionPane.YES_NO_OPTION) == 0;
+	}
+	public boolean removeDialog() {
+		return JOptionPane.showConfirmDialog(null,
+				"Do you really want to delete this entry?", "Delete??",
+				JOptionPane.YES_NO_OPTION) == 0;
+	}
 }

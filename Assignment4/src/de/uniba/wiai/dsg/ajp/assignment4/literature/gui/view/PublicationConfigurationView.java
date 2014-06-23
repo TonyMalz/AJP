@@ -4,7 +4,6 @@
 package de.uniba.wiai.dsg.ajp.assignment4.literature.gui.view;
 
 import java.awt.Button;
-import java.awt.Component;
 import java.awt.Frame;
 import java.awt.GridLayout;
 import java.awt.HeadlessException;
@@ -23,8 +22,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 
-import com.sun.istack.internal.logging.Logger;
-
+import de.uniba.wiai.dsg.ajp.assignment4.literature.controller.LiteratureDatabaseController;
 import de.uniba.wiai.dsg.ajp.assignment4.literature.logic.ValidationHelper;
 import de.uniba.wiai.dsg.ajp.assignment4.literature.logic.model.Author;
 import de.uniba.wiai.dsg.ajp.assignment4.literature.logic.model.Publication;
@@ -35,23 +33,30 @@ import de.uniba.wiai.dsg.ajp.assignment4.literature.logic.model.PublicationType;
  * 
  */
 public class PublicationConfigurationView extends JFrame {
-	Logger LOGGER = Logger.getLogger(PublicationConfigurationView.class);
-	/**
-	 * 
-	 */
+	/** serial version. */
 	private static final long serialVersionUID = -7064747956754582339L;
-	private static final Component authorsToSelect = null;
+	/** the controller. */
+	private final LiteratureDatabaseController controller;
+	/** the text field for the published year. */
 	private final TextField yearTextField;
+	/** the text field for the title. */
 	private final TextField titleTextField;
+	/** the text fied for the id. */
 	private final TextField idTextField;
+	/** the choice for the Publication type. */
 	private final JComboBox<PublicationType> typeChoice;
+	/** the selecton field for the authors. */
 	private final List<JCheckBox> authorToSelect = new ArrayList<>();
+	/** authros to chose from. */
 	private final Author[] authorsToChose;
 	/**
-	 * @throws HeadlessException
+	 * Constructor initiates the view.
 	 */
-	public PublicationConfigurationView(final Author[] authorsToChose)
+	public PublicationConfigurationView(final Author[] authorsToChose,
+			final LiteratureDatabaseController controller)
 			throws HeadlessException {
+		this.controller = controller;
+
 		setTitle("Create Publication");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
@@ -106,14 +111,12 @@ public class PublicationConfigurationView extends JFrame {
 		pack();
 		validate();
 		setVisible(true);
-		// TODO uncoment when ready to handle
-		// if (authorsToChose == null || authorsToChose.length == 0) {
-		// dispose();
-		// LiteratureDatabaseView
-		// .showErrorMessage(
-		// "No authors to select are available.\n You must first add a new Author.",
-		// "No Authors");
-		// }
+		if (authorsToChose == null || authorsToChose.length == 0) {
+			dispose();
+			showErrorMessage(
+					"No authors to select are available.\n You must first add a new Author.",
+					"No Authors");
+		}
 	}
 	/**
 	 * tries to create a new Publication.
@@ -136,19 +139,16 @@ public class PublicationConfigurationView extends JFrame {
 		int yearPublished = 0;
 		try {
 			yearPublished = Integer.parseInt(year);
-			// TODO auslagern in Controller?
 			if (yearPublished < 0) {
-				LiteratureDatabaseView
-						.showErrorMessage(
-								"The entered year is not correct.\nPlease choose another one.",
-								"Invalid input");
+				showErrorMessage(
+						"The entered year is not correct.\nPlease choose another one.",
+						"Invalid input");
 				publicationValid = false;
 			}
 		} catch (final NumberFormatException e) {
-			LiteratureDatabaseView
-					.showErrorMessage(
-							"The entered year is not correct.\nPlease choose another one.",
-							"Invalid input");
+			showErrorMessage(
+					"The entered year is not correct.\nPlease choose another one.",
+					"Invalid input");
 			publicationValid = false;
 		}
 		final List<Author> selectedAuthors = new ArrayList<>();
@@ -158,7 +158,7 @@ public class PublicationConfigurationView extends JFrame {
 			}
 		}
 		if (selectedAuthors.size() == 0) {
-			LiteratureDatabaseView.showErrorMessage(
+			showErrorMessage(
 					"No selected authors.\nYou must at least chose one.",
 					"Invalid Input");
 			publicationValid = false;
@@ -175,30 +175,22 @@ public class PublicationConfigurationView extends JFrame {
 		pubToAdd.setType(type);
 		pubToAdd.setAuthors(selectedAuthors);
 		dispose();
-		LiteratureDatabaseView.createPublication(pubToAdd);
+		controller.createPublication(pubToAdd);
 
 	}
-	public static void main(final String[] args) {
-		final Author[] authors = new Author[4];
-		authors[0] = new Author();
-		authors[0].setEmail("a@b.de");
-		authors[0].setId("abc");
-		authors[0].setName("manuel test");
-		authors[1] = new Author();
-		authors[1].setEmail("c@d.de");
-		authors[1].setId("xyz");
-		authors[1].setName("anita test");
+	/**
+	 * Shows the default error message
+	 * 
+	 * @param message
+	 *            to be displayed
+	 * @param title
+	 *            of the error window
+	 */
+	private static void showErrorMessage(final String message,
+			final String title) {
+		JOptionPane.showMessageDialog(new Frame(), message, title,
+				JOptionPane.ERROR_MESSAGE);
 
-		authors[2] = new Author();
-		authors[2].setEmail("hul@la.de");
-		authors[2].setId("babba");
-		authors[2].setName("babba test");
-
-		authors[3] = new Author();
-		authors[3].setEmail("m@m.de");
-		authors[3].setId("mat");
-		authors[3].setName("anita test");
-		new PublicationConfigurationView(authors);
 	}
 
 }

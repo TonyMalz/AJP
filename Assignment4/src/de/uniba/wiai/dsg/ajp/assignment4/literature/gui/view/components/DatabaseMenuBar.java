@@ -10,7 +10,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
-import de.uniba.wiai.dsg.ajp.assignment4.literature.gui.view.LiteratureDatabaseView;
+import de.uniba.wiai.dsg.ajp.assignment4.literature.controller.LiteratureDatabaseController;
 
 /**
  * Menu bar of the main menu. has the items: NEW, LOAD, SAVE AS, EXIT, and
@@ -25,19 +25,24 @@ public class DatabaseMenuBar extends JMenuBar {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	/** the controller. */
+	private final LiteratureDatabaseController controller;
 
 	/**
 	 * Constructor generates a new Menu bar with an option "File". Sub options
 	 * are "New", "Load", "Save As","Exit" and "Shortcuts".
+	 * 
+	 * @param controller
 	 * */
-	public DatabaseMenuBar() {
+	public DatabaseMenuBar(final LiteratureDatabaseController controller) {
+		this.controller = controller;
 		final JMenu menu = new JMenu("File");
 		final JMenuItem newItem = new JMenuItem("New");
 		newItem.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(final ActionEvent arg0) {
-				LiteratureDatabaseView.createDatabase();
+				controller.createDatabase();
 
 			}
 		});
@@ -48,8 +53,7 @@ public class DatabaseMenuBar extends JMenuBar {
 
 			@Override
 			public void actionPerformed(final ActionEvent arg0) {
-				LiteratureDatabaseView.loadDatabase();
-
+				controller.loadDatabase();
 			}
 		});
 		menu.add(loadItem);
@@ -59,8 +63,7 @@ public class DatabaseMenuBar extends JMenuBar {
 
 			@Override
 			public void actionPerformed(final ActionEvent arg0) {
-				LiteratureDatabaseView.saveDatabaseAs();
-
+				controller.saveDatabaseAs();
 			}
 		});
 		menu.add(saveAsItem);
@@ -70,7 +73,7 @@ public class DatabaseMenuBar extends JMenuBar {
 
 			@Override
 			public void actionPerformed(final ActionEvent arg0) {
-				LiteratureDatabaseView.exit();
+				controller.exit();
 
 			}
 		});
@@ -80,7 +83,7 @@ public class DatabaseMenuBar extends JMenuBar {
 
 			@Override
 			public void actionPerformed(final ActionEvent arg0) {
-				LiteratureDatabaseView.showShortcuts();
+				controller.showShortcuts();
 
 			}
 		});
