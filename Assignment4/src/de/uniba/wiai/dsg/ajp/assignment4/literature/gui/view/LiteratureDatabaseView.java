@@ -8,6 +8,8 @@ import java.awt.Frame;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.File;
 import java.util.Observable;
 import java.util.Observer;
@@ -70,7 +72,7 @@ public class LiteratureDatabaseView extends JFrame implements Observer {
 		this.add(authorComponent);
 		this.add(publicationComponent);
 		setJMenuBar(menu);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		addWindowListener(new DatabaseViewWindowListner(controller));
 		setTitle("New Literature Database");
 		addKeyListener(new DataBaseViewKeyListner(controller));
 		pack();
@@ -197,5 +199,35 @@ public class LiteratureDatabaseView extends JFrame implements Observer {
 		return JOptionPane.showConfirmDialog(null,
 				"Do you really want to delete this entry?", "Delete??",
 				JOptionPane.YES_NO_OPTION) == 0;
+	}
+
+	private final class DatabaseViewWindowListner implements WindowListener {
+		private final LiteratureDatabaseController controller;
+		private DatabaseViewWindowListner(
+				final LiteratureDatabaseController controller) {
+			this.controller = controller;
+		}
+		@Override
+		public void windowOpened(final WindowEvent e) {
+		}
+		@Override
+		public void windowIconified(final WindowEvent e) {
+		}
+		@Override
+		public void windowDeiconified(final WindowEvent e) {
+		}
+		@Override
+		public void windowDeactivated(final WindowEvent e) {
+		}
+		@Override
+		public void windowClosing(final WindowEvent e) {
+			controller.exit();
+		}
+		@Override
+		public void windowClosed(final WindowEvent e) {
+		}
+		@Override
+		public void windowActivated(final WindowEvent e) {
+		}
 	}
 }

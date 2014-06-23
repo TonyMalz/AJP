@@ -89,7 +89,11 @@ public class LiteratureDatabaseController implements Observer {
 	 * removes the selected author from the database.
 	 */
 	public void removeAuthor() {
-		model.removeAuthor(view.getSelectedAuthorRow());
+		try {
+			model.removeAuthor(view.getSelectedAuthorRow());
+		} catch (final LiteratureDatabaseException e) {
+			view.showErrorMessage(e.getMessage(), "ERROR");
+		}
 	}
 	/**
 	 * removes the selected publication from the database.
@@ -174,12 +178,18 @@ public class LiteratureDatabaseController implements Observer {
 		final int selectedPublicationRow = view.getSelectedPublicationRow();
 
 		if (selectedAuthorRow >= 0 & selectedPublicationRow >= 0) {
-			// TODO: Error, too much rows chosen
+			view.showErrorMessage(
+					"You can only remove one at a time.Deselect one.", "ERROR");
 		} else if (selectedAuthorRow == -1 & selectedPublicationRow == -1) {
-			// TODO: Error, no row chosen
+			view.showErrorMessage("You must selected something to delete it.",
+					"ERROR");
 		} else if (selectedAuthorRow >= 0) {
 			if (view.removeDialog()) {
-				model.removeAuthor(selectedAuthorRow);
+				try {
+					model.removeAuthor(selectedAuthorRow);
+				} catch (final LiteratureDatabaseException e) {
+					view.showErrorMessage(e.getMessage(), "ERROR");
+				}
 			}
 		} else {
 			if (view.removeDialog()) {

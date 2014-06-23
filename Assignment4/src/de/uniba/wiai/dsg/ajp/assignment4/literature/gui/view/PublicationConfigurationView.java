@@ -59,7 +59,6 @@ public class PublicationConfigurationView extends JFrame {
 
 		setTitle("Create Publication");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
 		setLayout(new GridLayout(6, 2));
 		this.add(new Label("ID:"));
 		idTextField = new TextField("");
