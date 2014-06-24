@@ -1,14 +1,13 @@
 package de.uniba.wiai.dsg.ajp.assignment4.literature;
 
-import de.uniba.wiai.dsg.ajp.assignment4.literature.controller.LiteratureDatabaseController;
-import de.uniba.wiai.dsg.ajp.assignment4.literature.models.LiteratureDatabaseModel;
-
+import de.uniba.wiai.dsg.ajp.assignment4.literature.controller.MainController;
+import de.uniba.wiai.dsg.ajp.assignment4.literature.model.MainModel;
+/**
+ * Main starter class.
+ */
 public class Main {
 
-	public static void main(String[] args) {
-		// TODO startet eure Anwendung ueber diese main-Methode
-		new LiteratureDatabaseController(new LiteratureDatabaseModel());
-
+	public static void main(final String[] args) {
+		new MainController(new MainModel());
 	}
-
 }
