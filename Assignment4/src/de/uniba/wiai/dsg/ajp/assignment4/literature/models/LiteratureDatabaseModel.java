@@ -122,19 +122,17 @@ public class LiteratureDatabaseModel extends Observable {
 	 * 
 	 * @param selectedAuthorRow
 	 *            row index of the selected author to be deleted
+	 * @throws LiteratureDatabaseException
+	 *             // * in case the author could not be deleted.
 	 */
-	public void removeAuthor(final int selectedAuthorRow) {
+	public void removeAuthor(final int selectedAuthorRow)
+			throws LiteratureDatabaseException {
 		if (selectedAuthorRow < 0) {
 			// TODO give error massage to view
 		} else {
-			try {
-				databaseService
-						.removeAuthorByID(databaseService.getAuthors()[selectedAuthorRow]
-								.getId());
-			} catch (final LiteratureDatabaseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			databaseService
+					.removeAuthorByID(databaseService.getAuthors()[selectedAuthorRow]
+							.getId());
 			setChanged();
 			notifyObservers();
 		}
