@@ -39,7 +39,6 @@ public class MenuController {
 	 */
 	public void newDatabase() {
 
-		// TODO maybe you're sure dialog when entries exist?
 		try {
 			model.createNewDatabase();
 		} catch (final LiteratureDatabaseException e) {
@@ -51,7 +50,6 @@ public class MenuController {
 	 */
 	public void loadDatabase() {
 
-		// TODO maybe you're sure dialog when entries exist?
 		view.showLoadDatabaseDialog();
 	}
 	/**
